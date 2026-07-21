@@ -9,8 +9,8 @@ const StarIcon = () => (
   </svg>
 )
 
-const EUStars = () => (
-  <svg viewBox="0 0 100 100" className="eu-stars-svg" fill="currentColor">
+const EUStars = ({ className = "" }) => (
+  <svg viewBox="0 0 100 100" className={`eu-stars-svg ${className}`} fill="currentColor">
     {[...Array(12)].map((_, i) => (
       <path
         key={i}
@@ -26,10 +26,20 @@ function App() {
   const [selectedCountryName, setSelectedCountryName] = useState('France')
   const [hoveredCountryName, setHoveredCountryName] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
+  const [scrolled, setScrolled] = useState(false)
 
   // Modals
   const [isInstModalOpen, setIsInstModalOpen] = useState(false)
   const [activeInstTab, setActiveInstTab] = useState(0)
+
+  // Scroll handler for navbar styling
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   // Intersection Observer for scroll entrance animations
   useEffect(() => {
@@ -90,7 +100,7 @@ function App() {
   return (
     <div className="app">
       {/* Navigation */}
-      <nav className="navbar">
+      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="nav-container">
           <div className="nav-logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
             <EUStars />
@@ -136,7 +146,7 @@ function App() {
       <section className="stats-section">
         <div className="stats-grid">
           {euStats.map((stat, i) => (
-            <div key={i} className="stat-card">
+            <div key={i} className="stat-card animate-entrance" style={{ transitionDelay: `${i * 0.1}s` }}>
               <span className="stat-value">{stat.value}</span>
               <span className="stat-label">{stat.label}</span>
             </div>
@@ -149,7 +159,7 @@ function App() {
         <h2 className="animate-entrance">Foundational Values</h2>
         <div className="values-grid">
           {euValues.map((value, i) => (
-            <div key={i} className="value-card">
+            <div key={i} className="value-card animate-entrance delay-{i}">
               <div className="value-icon"><StarIcon /></div>
               <h3>{value.title}</h3>
               <p>{value.description}</p>
@@ -213,11 +223,11 @@ function App() {
                 <div className="detail-content animate-entrance">
                   <h3>{selectedCountry.flag} {selectedCountry.name}</h3>
                   <div className="detail-stats">
-                    <p><strong>Capital:</strong> {selectedCountry.capital}</p>
-                    <p><strong>Population:</strong> {selectedCountry.population}</p>
-                    <p><strong>EU Accession:</strong> {selectedCountry.joined}</p>
-                    <p><strong>GDP (Nominal):</strong> {selectedCountry.gdp}</p>
-                    <p><strong>Region:</strong> {selectedCountry.region}</p>
+                    <p><strong>Capital:</strong> <span>{selectedCountry.capital}</span></p>
+                    <p><strong>Population:</strong> <span>{selectedCountry.population}</span></p>
+                    <p><strong>EU Accession:</strong> <span>{selectedCountry.joined}</span></p>
+                    <p><strong>GDP (Nominal):</strong> <span>{selectedCountry.gdp}</span></p>
+                    <p><strong>Region:</strong> <span>{selectedCountry.region}</span></p>
                   </div>
                   <p className="detail-desc">{selectedCountry.desc}</p>
                   <button className="primary" style={{ marginTop: '1.25rem' }} onClick={() => setIsInstModalOpen(true)}>
