@@ -30,7 +30,7 @@ nav {
   background: #FFFFFF;
   border-bottom: 1px solid var(--border-light);
   z-index: 1000;
-  padding: 1rem 0;
+  padding: 0.75rem 0;
 }
 
 .nav-inner {
@@ -51,6 +51,7 @@ nav {
   align-items: center;
   gap: 10px;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .logo svg {
@@ -61,7 +62,7 @@ nav {
 
 .nav-links {
   display: flex;
-  gap: 2rem;
+  gap: 1.75rem;
   align-items: center;
 }
 
@@ -71,13 +72,15 @@ nav {
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  text-decoration: none;
 }
 
 .nav-links a:hover, .nav-links a.active {
   color: var(--eu-blue);
+  text-decoration: underline;
 }
 
-/* NameThatUI Pattern: Command Palette Modal */
+/* Command Palette Modal */
 .cmd-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -123,16 +126,20 @@ nav {
   font-size: 1rem;
   color: var(--text-main);
   background: transparent;
+  min-height: 44px;
 }
 
-.cmd-esc-kbd {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  background: var(--bg-alt);
-  border: 1px solid var(--border-light);
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
+.cmd-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
   color: var(--text-subtle);
+  cursor: pointer;
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cmd-results {
@@ -151,12 +158,17 @@ nav {
 }
 
 .cmd-item {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem;
   border-radius: var(--radius-sm);
   cursor: pointer;
+  background: transparent;
+  border: none;
+  text-align: left;
+  min-height: 44px;
   transition: background 0.15s ease;
 }
 
@@ -207,7 +219,7 @@ nav {
   font-size: 0.9rem;
 }
 
-/* NameThatUI Pattern: Segmented Control (Toggle Group) */
+/* Segmented Control (Toggle Group) */
 .segmented-control {
   display: inline-flex;
   background: var(--bg-subtle);
@@ -218,9 +230,10 @@ nav {
 }
 
 .segmented-btn {
+  min-height: 44px;
   padding: 0.45rem 1rem;
   border-radius: 4px;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 600;
   border: none;
   background: transparent;
@@ -273,7 +286,7 @@ header.hero-header {
   flex-wrap: wrap;
 }
 
-/* NameThatUI Pattern: Bento Grid Layout */
+/* Bento Grid Layout */
 .stats-section {
   padding: 4rem 0;
   background: #FFFFFF;
@@ -320,7 +333,7 @@ header.hero-header {
   font-weight: 600;
 }
 
-/* Clean Vector Map Section */
+/* Map Section */
 #map-section {
   padding: 5rem 0;
   background: var(--bg-alt);
@@ -362,7 +375,7 @@ header.hero-header {
 
 .non-eu-path {
   fill: #F1F5F9;
-  stroke: #E2E8F0;
+  stroke: #CBD5E1;
   stroke-width: 0.75;
   stroke-linejoin: round;
   pointer-events: none;
@@ -404,7 +417,7 @@ header.hero-header {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
-/* Formal Data Panel */
+/* Data Panel */
 .info-panel {
   background: #FFFFFF;
   border: 1px solid var(--border-light);
@@ -488,6 +501,7 @@ header.hero-header {
   font-family: var(--font-sans);
   font-size: 0.9rem;
   min-width: 280px;
+  min-height: 44px;
   outline: none;
 }
 
@@ -510,6 +524,7 @@ header.hero-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-height: 48px;
   transition: background 0.15s ease;
 }
 
@@ -536,7 +551,7 @@ header.hero-header {
   color: var(--text-subtle);
 }
 
-/* NameThatUI Pattern: Accordion / Collapsible Policy Framework */
+/* Accordion Policy Section */
 #policies {
   padding: 5rem 0;
   background: var(--bg-alt);
@@ -570,6 +585,7 @@ header.hero-header {
   align-items: center;
   cursor: pointer;
   user-select: none;
+  min-height: 52px;
 }
 
 .accordion-title-group {
@@ -649,6 +665,8 @@ header.hero-header {
   font-size: 1.25rem;
   color: var(--text-subtle);
   cursor: pointer;
+  min-height: 44px;
+  min-width: 44px;
 }
 
 .inst-tabs {
@@ -671,6 +689,7 @@ header.hero-header {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border-radius: 0;
+  min-height: 44px;
 }
 
 .inst-tab-btn.active {
