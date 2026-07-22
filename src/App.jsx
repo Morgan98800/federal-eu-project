@@ -9,20 +9,20 @@ import './App.css'
 gsap.registerPlugin(ScrollTrigger)
 
 const StarIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
     <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
   </svg>
 )
 
-const EUSvgLogo = () => (
-  <svg viewBox="0 0 100 100" fill="none" width="32" height="32">
-    <circle cx="50" cy="50" r="48" fill="#003399"/>
-    <g fill="#FFCC00">
-      <circle cx="50" cy="15" r="3.5"/><circle cx="63" cy="20" r="3.5"/>
-      <circle cx="73" cy="32" r="3.5"/><circle cx="73" cy="50" r="3.5"/>
-      <circle cx="63" cy="68" r="3.5"/><circle cx="50" cy="73" r="3.5"/>
-      <circle cx="37" cy="68" r="3.5"/><circle cx="27" cy="50" r="3.5"/>
-      <circle cx="27" cy="32" r="3.5"/><circle cx="37" cy="20" r="3.5"/>
+const LogoIcon = () => (
+  <svg className="logo-icon" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="4"/>
+    <g fill="currentColor">
+      <circle cx="50" cy="15" r="3"/><circle cx="63" cy="20" r="3"/>
+      <circle cx="73" cy="32" r="3"/><circle cx="73" cy="50" r="3"/>
+      <circle cx="63" cy="68" r="3"/><circle cx="50" cy="73" r="3"/>
+      <circle cx="37" cy="68" r="3"/><circle cx="27" cy="50" r="3"/>
+      <circle cx="27" cy="32" r="3"/><circle cx="37" cy="20" r="3"/>
     </g>
   </svg>
 )
@@ -37,7 +37,7 @@ function App() {
   const [isInstModalOpen, setIsInstModalOpen] = useState(false)
   const [activeInstTab, setActiveInstTab] = useState(0)
 
-  // Scroll listener for sticky navbar background effect
+  // Scroll listener for sticky navbar styling
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
@@ -46,10 +46,10 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // GSAP Animations
+  // GSAP Motion Suite
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Hero Entrance
+      // Hero Text Reveal
       gsap.from('.hero-content h1', {
         opacity: 0,
         y: 40,
@@ -65,7 +65,7 @@ function App() {
         ease: 'power3.out'
       })
 
-      gsap.from('.hero-buttons-row', {
+      gsap.from('.cta-group', {
         opacity: 0,
         y: 20,
         duration: 0.8,
@@ -73,16 +73,20 @@ function App() {
         ease: 'power3.out'
       })
 
-      gsap.from('.stat-item', {
+      // Bento Stat Cards ScrollTrigger Reveal
+      gsap.from('.stat-card', {
+        scrollTrigger: {
+          trigger: '.stats-section',
+          start: 'top 85%'
+        },
         opacity: 0,
-        scale: 0.9,
+        y: 30,
         duration: 0.7,
-        delay: 0.6,
-        stagger: 0.15,
-        ease: 'back.out(1.4)'
+        stagger: 0.12,
+        ease: 'power2.out'
       })
 
-      // Policy Cards Staggered ScrollTrigger
+      // Policy Cards Staggered Reveal
       gsap.from('.policy-card', {
         scrollTrigger: {
           trigger: '#policies',
@@ -90,21 +94,9 @@ function App() {
           toggleActions: 'play none none reverse'
         },
         opacity: 0,
-        y: 50,
+        y: 40,
         duration: 0.8,
         stagger: 0.15,
-        ease: 'power2.out'
-      })
-
-      // Map Section Entrance
-      gsap.from('#map-section', {
-        scrollTrigger: {
-          trigger: '#map-section',
-          start: 'top 85%'
-        },
-        opacity: 0,
-        y: 40,
-        duration: 0.9,
         ease: 'power2.out'
       })
     })
@@ -126,33 +118,33 @@ function App() {
   const policyPillars = [
     {
       icon: '🏛️',
-      title: 'European Federation',
-      desc: 'We must evolve from a confederation of states into a true federal democracy. This means a bicameral parliament, ending unanimous voting in the Council, and a directly elected President.'
+      title: 'Federal Democracy',
+      desc: 'Transition to a bicameral parliament and end unanimous voting. Every citizen\'s vote must carry equal weight across the continent.'
     },
     {
       icon: '🌍',
-      title: 'Climate Action',
-      desc: 'Achieve carbon neutrality by 2035. We propose a massive "Green Deal" investment plan, a circular economy mandate, and a unified European energy grid to end fossil fuel dependence.'
+      title: 'Green Deal 2.0',
+      desc: 'Achieve carbon neutrality by 2035 through massive investment in renewable grids and a circular economy mandate.'
     },
     {
       icon: '⚖️',
-      title: 'Social Justice',
-      desc: 'Implement a European Minimum Income to fight poverty everywhere. Harmonize labor rights, ensure gender parity in all boards, and protect LGBTQ+ rights across all 27 states.'
+      title: 'Social Europe',
+      desc: 'Harmonize labor rights and implement a European Minimum Income to ensure dignity for all citizens, everywhere.'
     },
     {
       icon: '💻',
-      title: 'Digital Revolution',
-      desc: 'Break Big Tech monopolies. Enforce strict data sovereignty (GDPR+), invest in open-source public infrastructure, and make digital skills a fundamental right for every citizen.'
+      title: 'Digital Sovereignty',
+      desc: 'Break Big Tech monopolies and build open-source public infrastructure to protect our data and democracy.'
     },
     {
       icon: '🤝',
-      title: 'Migration & Integration',
-      desc: 'Replace the broken Dublin Regulation with a unified asylum policy. Create safe legal pathways for migration and robust integration programs to turn demographics into strength.'
+      title: 'Rational Migration',
+      desc: 'Replace the broken Dublin Regulation with a unified asylum policy and safe legal pathways.'
     },
     {
       icon: '🚀',
-      title: 'Economic Innovation',
-      desc: 'Shift taxation from labor to digital giants and financial transactions. Fund deep-tech startups via a sovereign venture capital fund and complete the Single Market for services.'
+      title: 'Innovation Economy',
+      desc: 'Shift taxation to financial giants and fund deep-tech startups to make Europe the global innovation leader.'
     }
   ]
 
@@ -160,46 +152,33 @@ function App() {
     <div className="app">
       {/* Navigation */}
       <nav className={scrolled ? 'scrolled' : ''}>
-        <div className="nav-inner">
+        <div className="container nav-inner">
           <a href="#" className="logo" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-            <EUSvgLogo />
-            <span>Federal<span style={{ color: 'var(--volt-purple)' }}>EU</span></span>
+            <LogoIcon />
+            Federal<span className="text-gold">EU</span>
           </a>
           <div className="nav-links">
-            <a href="#vision">Vision</a>
-            <a href="#map-section">Member States</a>
-            <a href="#policies">Policies</a>
-            <button className="btn" style={{ padding: '0.6rem 1.5rem', fontSize: '0.9rem' }} onClick={() => setIsInstModalOpen(true)}>
+            <a href="#about">About</a>
+            <a href="#map-section">Data</a>
+            <a href="#policies">Vision</a>
+            <button className="btn-nav" onClick={() => setIsInstModalOpen(true)}>
               Join Movement
             </button>
           </div>
         </div>
       </nav>
 
-      {/* Hero Header with 3D Globe */}
-      <header className="hero-header" id="vision">
+      {/* Hero Header */}
+      <header className="hero-header" id="about">
+        <div className="bg-grid"></div>
         <div className="hero-grid">
           <div className="hero-content">
-            <h1>One People.<br /><span className="gradient-text">One Future.</span></h1>
-            <p>The European Union is more than a market. It is a community of destiny. We advocate for a true Federal Europe: sovereign, social, and sustainable.</p>
-            <div className="hero-buttons-row">
-              <a href="#policies" className="btn">Discover The Plan</a>
-              <a href="#map-section" className="btn secondary">Explore Map</a>
-            </div>
-            
-            <div className="stats-row">
-              <div className="stat-item">
-                <h3>27</h3>
-                <p>Nations</p>
-              </div>
-              <div className="stat-item">
-                <h3>448M</h3>
-                <p>Citizens</p>
-              </div>
-              <div className="stat-item">
-                <h3>€16.6T</h3>
-                <p>GDP</p>
-              </div>
+            <span className="eyebrow">The Next Chapter of History</span>
+            <h1>Sovereign. Social.<br /><span className="text-gold">United.</span></h1>
+            <p>The European Union is not just a market; it is a community of destiny. We visualize the path toward a true Federal Europe: democratic, powerful, and ready for the future.</p>
+            <div className="cta-group">
+              <a href="#policies" className="btn-primary">Explore Vision</a>
+              <a href="#map-section" className="btn-secondary">View Data</a>
             </div>
           </div>
 
@@ -209,90 +188,118 @@ function App() {
         </div>
       </header>
 
-      {/* Interactive Real Geographic Map Section */}
-      <section id="map-section">
-        <div className="map-header">
-          <h2>The Federation</h2>
-          <p>Explore the 27 member states. Click on any country shape to view its profile within the union.</p>
+      {/* Bento Grid Stats */}
+      <section className="stats-section">
+        <div className="bento-grid">
+          <div className="stat-card">
+            <span className="stat-val">27</span>
+            <span className="stat-label">Member States</span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-val">448M</span>
+            <span className="stat-label">Citizens</span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-val">24</span>
+            <span className="stat-label">Official Languages</span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-val">€16.6T</span>
+            <span className="stat-label">Combined GDP</span>
+          </div>
         </div>
-        
-        <div className="map-interface">
-          <div className="svg-container">
-            <svg viewBox="0 0 920 720" className="eu-real-map-svg">
-              {/* Background Non-EU European shapes */}
-              <g className="non-eu-layer">
-                {NON_EU_MAP_PATHS.map((item, idx) => (
-                  <path key={idx} d={item.d} className="non-eu-path" />
-                ))}
-              </g>
+      </section>
 
-              {/* Real Geographic EU Member State shapes */}
-              <g className="eu-layer">
-                {REAL_EU_MAP_PATHS.map((item) => {
-                  const countryData = EU_MEMBER_STATES.find((c) => c.name === item.name)
-                  const isSelected = selectedCountryName === item.name
-                  const isHovered = hoveredCountryName === item.name
-
-                  return (
-                    <g key={item.name}>
-                      <path
-                        d={item.d}
-                        className={`eu-country-path ${isSelected ? 'selected' : ''} ${isHovered ? 'hovered' : ''}`}
-                        onMouseEnter={() => setHoveredCountryName(item.name)}
-                        onMouseLeave={() => setHoveredCountryName(null)}
-                        onClick={() => setSelectedCountryName(item.name)}
-                      />
-                      <text
-                        x={item.cx}
-                        y={item.cy}
-                        textAnchor="middle"
-                        className={`eu-map-label ${isSelected ? 'selected' : ''}`}
-                      >
-                        {countryData?.flag} {item.name}
-                      </text>
-                    </g>
-                  )
-                })}
-              </g>
-            </svg>
+      {/* Interactive Map Section */}
+      <section id="map-section">
+        <div className="container">
+          <div className="section-header">
+            <h2>The Federation</h2>
+            <p>Click on any member state to explore its demographic and economic profile within the union.</p>
           </div>
 
-          <div className="info-panel">
-            {selectedCountry ? (
-              <div>
-                <h3>{selectedCountry.flag} {selectedCountry.name}</h3>
-                <span className="capital">{selectedCountry.capital} (Capital)</span>
-                
-                <div className="data-grid">
-                  <div className="data-box">
-                    <label>Population</label>
-                    <strong>{selectedCountry.population}</strong>
+          <div className="map-layout">
+            <div className="map-wrapper">
+              <svg viewBox="0 0 920 720" className="eu-real-map-svg">
+                {/* Non-EU European background paths */}
+                <g className="non-eu-layer">
+                  {NON_EU_MAP_PATHS.map((item, idx) => (
+                    <path key={idx} d={item.d} className="non-eu-path" />
+                  ))}
+                </g>
+
+                {/* Real Geographic EU Member State paths */}
+                <g className="eu-layer">
+                  {REAL_EU_MAP_PATHS.map((item) => {
+                    const countryData = EU_MEMBER_STATES.find((c) => c.name === item.name)
+                    const isSelected = selectedCountryName === item.name
+                    const isHovered = hoveredCountryName === item.name
+
+                    return (
+                      <g key={item.name}>
+                        <path
+                          d={item.d}
+                          className={`eu-country-path ${isSelected ? 'selected' : ''} ${isHovered ? 'hovered' : ''}`}
+                          onMouseEnter={() => setHoveredCountryName(item.name)}
+                          onMouseLeave={() => setHoveredCountryName(null)}
+                          onClick={() => setSelectedCountryName(item.name)}
+                        />
+                        <text
+                          x={item.cx}
+                          y={item.cy}
+                          textAnchor="middle"
+                          className={`eu-map-label ${isSelected ? 'selected' : ''}`}
+                        >
+                          {countryData?.flag} {item.name}
+                        </text>
+                      </g>
+                    )
+                  })}
+                </g>
+              </svg>
+            </div>
+
+            <div className="info-panel">
+              {selectedCountry ? (
+                <div>
+                  <div className="panel-header">
+                    <span className="panel-title">{selectedCountry.flag} {selectedCountry.name}</span>
+                    <span className="panel-subtitle">{selectedCountry.capital} (Capital)</span>
                   </div>
-                  <div className="data-box">
-                    <label>GDP (Nominal)</label>
-                    <strong>{selectedCountry.gdp}</strong>
+                  <div className="data-list">
+                    <div className="data-row">
+                      <span className="data-label">Population</span>
+                      <span className="data-value">{selectedCountry.population}</span>
+                    </div>
+                    <div className="data-row">
+                      <span className="data-label">GDP (Nominal)</span>
+                      <span className="data-value">{selectedCountry.gdp}</span>
+                    </div>
+                    <div className="data-row">
+                      <span className="data-label">Foundation</span>
+                      <span className="data-value">{selectedCountry.joined}</span>
+                    </div>
+                    <div className="data-row">
+                      <span className="data-label">Region</span>
+                      <span className="data-value">{selectedCountry.region}</span>
+                    </div>
                   </div>
-                  <div className="data-box">
-                    <label>Joined</label>
-                    <strong>{selectedCountry.joined}</strong>
-                  </div>
-                  <div className="data-box">
-                    <label>Region</label>
-                    <strong>{selectedCountry.region}</strong>
-                  </div>
+                  <p style={{ marginTop: '1.75rem', fontSize: '0.85rem', color: 'var(--slate)', lineHeight: 1.5 }}>
+                    {selectedCountry.desc}
+                  </p>
                 </div>
-                
-                <p style={{ marginTop: '1.75rem', fontSize: '0.9rem', color: '#666', lineHeight: 1.5 }}>
-                  {selectedCountry.desc}
-                </p>
-              </div>
-            ) : (
-              <div>
-                <h3>European Union</h3>
-                <span className="capital">Brussels (De Facto Capital)</span>
-                <p style={{ color: '#666' }}>Select a country on the map to visualize its specific demographic and economic contribution to the Federal project.</p>
-              </div>
-            )}
+              ) : (
+                <div>
+                  <div className="panel-header">
+                    <span className="panel-title">European Union</span>
+                    <span className="panel-subtitle">Brussels (De Facto)</span>
+                  </div>
+                  <p style={{ marginTop: '1rem', fontSize: '0.85rem', color: 'var(--slate)', lineHeight: 1.5 }}>
+                    Select a country on the map to view specific national metrics contributing to the federal whole.
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -332,22 +339,19 @@ function App() {
         </div>
       </section>
 
-      {/* Policy Pillars (Volt Europa Style) */}
-      <section id="policies" className="policies-section">
-        <div className="section-head">
-          <h2>Six Pillars of Change</h2>
-          <p>Inspired by the Volt Europa movement, our roadmap addresses the biggest challenges of our time with pan-European solutions.</p>
-        </div>
-
-        <div className="policy-grid">
-          {policyPillars.map((pillar, idx) => (
-            <div key={idx} className="policy-card">
-              <div className="card-icon">{pillar.icon}</div>
-              <h3>{pillar.title}</h3>
-              <p>{pillar.desc}</p>
-              <a onClick={() => setIsInstModalOpen(true)} className="card-link">Read Manifesto →</a>
-            </div>
-          ))}
+      {/* Policy Section (Clean Light Mode Contrast) */}
+      <section id="policies">
+        <div className="container">
+          <h2>Six Pillars of Reform</h2>
+          <div className="policy-grid">
+            {policyPillars.map((pillar, idx) => (
+              <div key={idx} className="policy-card">
+                <span className="p-icon">{pillar.icon}</span>
+                <h3>{pillar.title}</h3>
+                <p>{pillar.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -373,15 +377,15 @@ function App() {
             </div>
 
             <div className="inst-content">
-              <h3 style={{ color: 'var(--eu-blue)' }}>{EU_INSTITUTIONS[activeInstTab].name}</h3>
+              <h3 style={{ color: 'var(--white)' }}>{EU_INSTITUTIONS[activeInstTab].name}</h3>
               <p style={{ marginTop: '0.5rem' }}><strong>Seat:</strong> {EU_INSTITUTIONS[activeInstTab].city}</p>
               <p style={{ marginTop: '0.5rem' }}><strong>Role:</strong> {EU_INSTITUTIONS[activeInstTab].role}</p>
               <p style={{ marginTop: '0.5rem' }}><strong>Composition:</strong> {EU_INSTITUTIONS[activeInstTab].members}</p>
 
-              <h4 style={{ marginTop: '1.25rem', color: 'var(--volt-purple)' }}>Key Responsibilities</h4>
+              <h4 style={{ marginTop: '1.25rem', color: 'var(--eu-gold)' }}>Key Responsibilities</h4>
               <ul style={{ paddingLeft: '1.25rem', marginTop: '0.5rem' }}>
                 {EU_INSTITUTIONS[activeInstTab].functions.map((fn, idx) => (
-                  <li key={idx} style={{ marginBottom: '0.4rem', color: '#555' }}>{fn}</li>
+                  <li key={idx} style={{ marginBottom: '0.4rem', color: 'var(--slate)' }}>{fn}</li>
                 ))}
               </ul>
             </div>
@@ -391,32 +395,14 @@ function App() {
 
       {/* Footer */}
       <footer>
-        <div className="footer-grid">
-          <div className="footer-brand">
-            <h2>Federal EU Project</h2>
-            <p>An independent visualization project advocating for a united, sovereign, and democratic Europe. Inspired by the pan-European Volt movement.</p>
+        <div className="container">
+          <span className="footer-logo">Federal<span className="text-gold">EU</span></span>
+          <p style={{ color: 'var(--slate)', maxWidth: '400px', margin: '0 auto' }}>
+            Visualizing a united future. An independent project inspired by the pan-European movement.
+          </p>
+          <div className="copyright">
+            &copy; 2026 Federal EU Project. Open Source.
           </div>
-          <div className="footer-col">
-            <h4>Explore</h4>
-            <ul>
-              <li><a href="#vision">Our Vision</a></li>
-              <li><a href="#map-section">Data Map</a></li>
-              <li><a href="#policies">Policy Pillars</a></li>
-              <li><a onClick={() => setIsInstModalOpen(true)}>Institutions</a></li>
-            </ul>
-          </div>
-          <div className="footer-col">
-            <h4>Get Involved</h4>
-            <ul>
-              <li><a onClick={() => setIsInstModalOpen(true)}>Join Movement</a></li>
-              <li><a onClick={() => setIsInstModalOpen(true)}>Volunteer</a></li>
-              <li><a onClick={() => setIsInstModalOpen(true)}>Donate</a></li>
-              <li><a onClick={() => setIsInstModalOpen(true)}>Contact Us</a></li>
-            </ul>
-          </div>
-        </div>
-        <div className="copyright">
-          &copy; 2026 Federal EU Project. Open Source Initiative. Not officially affiliated with EU institutions.
         </div>
       </footer>
     </div>
