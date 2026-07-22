@@ -85,7 +85,6 @@ header.hero-header {
   overflow: hidden;
 }
 
-/* Background Grid Pattern */
 .bg-grid {
   position: absolute;
   inset: 0;
@@ -101,7 +100,7 @@ header.hero-header {
 
 .hero-grid {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1.1fr 0.9fr;
   gap: 4rem;
   align-items: center;
   max-width: var(--container);
@@ -135,7 +134,7 @@ header.hero-header {
   align-items: center;
 }
 
-/* Bento Grid Stats (Overlapping Hero) */
+/* Bento Grid Stats */
 .stats-section {
   padding: 4rem 0;
   position: relative;
@@ -182,6 +181,85 @@ header.hero-header {
   letter-spacing: 1px;
   color: var(--slate);
 }
+
+/* Ray.so Style Code Spec Section */
+.spec-section {
+  padding: 4rem 0 6rem;
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+.ray-card {
+  background: linear-gradient(135deg, rgba(0, 51, 153, 0.25) 0%, rgba(94, 42, 150, 0.25) 100%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  font-family: var(--font-mono);
+}
+
+.ray-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.ray-window-controls {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.ray-window-controls .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dot.red { background: #ff5f56; }
+.dot.yellow { background: #ffbd2e; }
+.dot.green { background: #27c93f; }
+
+.ray-title {
+  color: var(--slate);
+  font-size: 0.85rem;
+}
+
+.ray-copy-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
+  color: var(--eu-gold);
+  font-size: 0.75rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ray-copy-btn:hover {
+  background: var(--eu-gold);
+  color: var(--deep-blue);
+}
+
+.ray-card-body {
+  overflow-x: auto;
+  padding: 0.5rem 0;
+}
+
+.ray-code {
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.code-comment { color: #5c6370; font-style: italic; }
+.code-keyword { color: #c678dd; font-weight: 600; }
+.code-entity { color: #61afef; font-weight: 600; }
+.code-prop { color: #e06c75; }
+.code-string { color: #98c379; }
+.code-number { color: #d19a66; }
 
 /* Interactive Map Section */
 #map-section {

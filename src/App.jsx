@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { EU_MEMBER_STATES, EU_INSTITUTIONS } from './euData'
 import { REAL_EU_MAP_PATHS, NON_EU_MAP_PATHS } from './euMapReal'
 import EUGlobe3D from './components/EUGlobe3D'
+import RayCodePreview from './components/RayCodePreview'
 import './App.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -86,6 +87,18 @@ function App() {
         ease: 'power2.out'
       })
 
+      // Ray.so Spec Section Reveal
+      gsap.from('.spec-section', {
+        scrollTrigger: {
+          trigger: '.spec-section',
+          start: 'top 85%'
+        },
+        opacity: 0,
+        y: 40,
+        duration: 0.9,
+        ease: 'power2.out'
+      })
+
       // Policy Cards Staggered Reveal
       gsap.from('.policy-card', {
         scrollTrigger: {
@@ -159,6 +172,7 @@ function App() {
           </a>
           <div className="nav-links">
             <a href="#about">About</a>
+            <a href="#spec">Spec</a>
             <a href="#map-section">Data</a>
             <a href="#policies">Vision</a>
             <button className="btn-nav" onClick={() => setIsInstModalOpen(true)}>
@@ -173,11 +187,16 @@ function App() {
         <div className="bg-grid"></div>
         <div className="hero-grid">
           <div className="hero-content">
-            <span className="eyebrow">The Next Chapter of History</span>
-            <h1>Sovereign. Social.<br /><span className="text-gold">United.</span></h1>
+            <div className="eyebrow">
+              <span className="badge-glow">✨ Sovereign · Social · United</span>
+              The Next Chapter of History
+            </div>
+            <h1>Sovereign. Social.<br /><span className="text-shimmer">United.</span></h1>
             <p>The European Union is not just a market; it is a community of destiny. We visualize the path toward a true Federal Europe: democratic, powerful, and ready for the future.</p>
             <div className="cta-group">
-              <a href="#policies" className="btn-primary">Explore Vision</a>
+              <button className="btn-shimmer" onClick={() => window.location.href = '#policies'}>
+                <span>Explore Vision →</span>
+              </button>
               <a href="#map-section" className="btn-secondary">View Data</a>
             </div>
           </div>
@@ -208,6 +227,16 @@ function App() {
             <span className="stat-label">Combined GDP</span>
           </div>
         </div>
+      </section>
+
+      {/* Ray.so Style Code Spec Section */}
+      <section id="spec" className="spec-section">
+        <div className="section-header" style={{ marginBottom: '2rem' }}>
+          <span className="badge-glow" style={{ marginBottom: '1rem' }}>⚡ Ray.so Style Spec Card</span>
+          <h2>Federal Treaty Architecture</h2>
+          <p>Executable governance parameters for a unified European constitution.</p>
+        </div>
+        <RayCodePreview />
       </section>
 
       {/* Interactive Map Section */}
