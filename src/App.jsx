@@ -4,35 +4,35 @@ import { REAL_EU_MAP_PATHS, NON_EU_MAP_PATHS } from './euMapReal'
 import './App.css'
 
 const StarIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor">
+  <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
     <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
   </svg>
 )
 
-const EUStars = ({ className = "" }) => (
-  <svg viewBox="0 0 100 100" className={`eu-stars-svg ${className}`} fill="currentColor">
-    {[...Array(12)].map((_, i) => (
-      <path
-        key={i}
-        d="M50 15L52.5 22.5H60L54 27.5L56.5 35L50 30L43.5 35L46 27.5L40 22.5H47.5L50 15Z"
-        transform={`rotate(${i * 30} 50 50)`}
-      />
-    ))}
+const EUSvgLogo = () => (
+  <svg viewBox="0 0 100 100" fill="none" width="32" height="32">
+    <circle cx="50" cy="50" r="48" fill="#003399"/>
+    <g fill="#FFCC00">
+      <circle cx="50" cy="15" r="3.5"/><circle cx="63" cy="20" r="3.5"/>
+      <circle cx="73" cy="32" r="3.5"/><circle cx="73" cy="50" r="3.5"/>
+      <circle cx="63" cy="68" r="3.5"/><circle cx="50" cy="73" r="3.5"/>
+      <circle cx="37" cy="68" r="3.5"/><circle cx="27" cy="50" r="3.5"/>
+      <circle cx="27" cy="32" r="3.5"/><circle cx="37" cy="20" r="3.5"/>
+    </g>
   </svg>
 )
 
 function App() {
-  const [activeSection, setActiveSection] = useState('home')
   const [selectedCountryName, setSelectedCountryName] = useState('France')
   const [hoveredCountryName, setHoveredCountryName] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [scrolled, setScrolled] = useState(false)
 
-  // Modals
+  // Institutional Modal
   const [isInstModalOpen, setIsInstModalOpen] = useState(false)
   const [activeInstTab, setActiveInstTab] = useState(0)
 
-  // Scroll handler for navbar styling
+  // Scroll listener for sticky navbar background effect
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
@@ -41,7 +41,7 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Intersection Observer for scroll entrance animations
+  // Scroll Entrance Observer
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -54,10 +54,10 @@ function App() {
       { threshold: 0.1 }
     )
 
-    const sections = document.querySelectorAll('.animate-entrance')
-    sections.forEach((section) => observer.observe(section))
+    const animateEls = document.querySelectorAll('.animate-entrance')
+    animateEls.forEach((el) => observer.observe(el))
 
-    return () => sections.forEach((section) => observer.unobserve(section))
+    return () => animateEls.forEach((el) => observer.unobserve(el))
   }, [])
 
   const selectedCountry = useMemo(() => {
@@ -71,191 +71,203 @@ function App() {
     )
   }, [searchTerm])
 
-  const euStats = [
-    { label: 'Member States', value: '27' },
-    { label: 'Population', value: '448M' },
-    { label: 'Official Languages', value: '24' },
-    { label: 'GDP (Trillion)', value: '€16.6' }
-  ]
-
-  const euValues = [
+  const policyPillars = [
     {
-      title: 'Unity in Diversity',
-      description: 'Celebrating our rich cultural heritage while working together for common goals.'
+      icon: '🏛️',
+      title: 'European Federation',
+      desc: 'We must evolve from a confederation of states into a true federal democracy. This means a bicameral parliament, ending unanimous voting in the Council, and a directly elected President.'
     },
     {
-      title: 'Democracy & Freedom',
-      description: 'Upholding democratic principles and fundamental freedoms across all member states.'
+      icon: '🌍',
+      title: 'Climate Action',
+      desc: 'Achieve carbon neutrality by 2035. We propose a massive "Green Deal" investment plan, a circular economy mandate, and a unified European energy grid to end fossil fuel dependence.'
     },
     {
-      title: 'Rule of Law',
-      description: 'Ensuring that every citizen and every institution is subject to the law.'
+      icon: '⚖️',
+      title: 'Social Justice',
+      desc: 'Implement a European Minimum Income to fight poverty everywhere. Harmonize labor rights, ensure gender parity in all boards, and protect LGBTQ+ rights across all 27 states.'
     },
     {
-      title: 'Human Dignity',
-      description: 'The inviolable foundation of all our shared rights and freedoms.'
+      icon: '💻',
+      title: 'Digital Revolution',
+      desc: 'Break Big Tech monopolies. Enforce strict data sovereignty (GDPR+), invest in open-source public infrastructure, and make digital skills a fundamental right for every citizen.'
+    },
+    {
+      icon: '🤝',
+      title: 'Migration & Integration',
+      desc: 'Replace the broken Dublin Regulation with a unified asylum policy. Create safe legal pathways for migration and robust integration programs to turn demographics into strength.'
+    },
+    {
+      icon: '🚀',
+      title: 'Economic Innovation',
+      desc: 'Shift taxation from labor to digital giants and financial transactions. Fund deep-tech startups via a sovereign venture capital fund and complete the Single Market for services.'
     }
   ]
 
   return (
     <div className="app">
       {/* Navigation */}
-      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-        <div className="nav-container">
-          <div className="nav-logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <EUStars />
-            <span>European Union</span>
-          </div>
+      <nav className={scrolled ? 'scrolled' : ''}>
+        <div className="nav-inner">
+          <a href="#" className="logo" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+            <EUSvgLogo />
+            <span>Federal<span style={{ color: 'var(--volt-purple)' }}>EU</span></span>
+          </a>
           <div className="nav-links">
-            {['home', 'about', 'members', 'values', 'map'].map((section) => (
-              <a
-                key={section}
-                href={`#${section}`}
-                className={activeSection === section ? 'active' : ''}
-                onClick={() => setActiveSection(section)}
-              >
-                {section}
-              </a>
-            ))}
+            <a href="#vision">Vision</a>
+            <a href="#map-section">Member States</a>
+            <a href="#policies">Policies</a>
+            <button className="btn" style={{ padding: '0.6rem 1.5rem', fontSize: '0.9rem' }} onClick={() => setIsInstModalOpen(true)}>
+              Join Movement
+            </button>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="hero" id="home">
-        <div className="hero-content animate-entrance">
-          <div className="hero-badge">
-            <EUStars />
+      {/* Hero Header */}
+      <header className="hero-header" id="vision">
+        <div className="hero-grid">
+          <div className="hero-content animate-entrance">
+            <h1>One People.<br /><span className="gradient-text">One Future.</span></h1>
+            <p>The European Union is more than a market. It is a community of destiny. We advocate for a true Federal Europe: sovereign, social, and sustainable.</p>
+            <div className="hero-buttons-row">
+              <a href="#policies" className="btn">Discover The Plan</a>
+              <a href="#map-section" className="btn secondary">Explore Map</a>
+            </div>
+            
+            <div className="stats-row">
+              <div className="stat-item">
+                <h3>27</h3>
+                <p>Nations</p>
+              </div>
+              <div className="stat-item">
+                <h3>448M</h3>
+                <p>Citizens</p>
+              </div>
+              <div className="stat-item">
+                <h3>€16.6T</h3>
+                <p>GDP</p>
+              </div>
+            </div>
           </div>
-          <h1 className="hero-title">United in Diversity</h1>
-          <p className="hero-subtitle">
-            A partnership for peace, prosperity, and shared democratic values since 1957.
-          </p>
-          <div className="hero-buttons">
-            <button className="primary" onClick={() => setIsInstModalOpen(true)}>
-              Institutional Overview
-            </button>
-            <a href="#map">
-              <button className="secondary">Member Reports</button>
-            </a>
+
+          <div className="hero-visual">
+            <div className="floating-circle c1"></div>
+            <div className="floating-circle c2"></div>
+            <div className="floating-circle c3"></div>
+            <svg width="400" height="400" viewBox="0 0 400 400" fill="none" style={{ position: 'relative', zIndex: 2 }}>
+              <circle cx="200" cy="200" r="180" stroke="url(#grad1)" strokeWidth="2" strokeDasharray="20 20" opacity="0.3"/>
+              <circle cx="200" cy="200" r="140" stroke="url(#grad1)" strokeWidth="2" opacity="0.5"/>
+              <defs>
+                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style={{ stopColor: '#003399' }}/>
+                  <stop offset="100%" style={{ stopColor: '#5E2A96' }}/>
+                </linearGradient>
+              </defs>
+            </svg>
           </div>
         </div>
-      </section>
+      </header>
 
-      {/* Statistics Section */}
-      <section className="stats-section">
-        <div className="stats-grid">
-          {euStats.map((stat, i) => (
-            <div key={i} className="stat-card animate-entrance" style={{ transitionDelay: `${i * 0.1}s` }}>
-              <span className="stat-value">{stat.value}</span>
-              <span className="stat-label">{stat.label}</span>
-            </div>
-          ))}
+      {/* Interactive Real Geographic Map Section */}
+      <section id="map-section" className="animate-entrance">
+        <div className="map-header">
+          <h2>The Federation</h2>
+          <p>Explore the 27 member states. Click on any country shape to view its profile within the union.</p>
         </div>
-      </section>
+        
+        <div className="map-interface">
+          <div className="svg-container">
+            <svg viewBox="0 0 920 720" className="eu-real-map-svg">
+              {/* Background Non-EU European shapes */}
+              <g className="non-eu-layer">
+                {NON_EU_MAP_PATHS.map((item, idx) => (
+                  <path key={idx} d={item.d} className="non-eu-path" />
+                ))}
+              </g>
 
-      {/* Values Section */}
-      <section className="section-container" id="values">
-        <h2 className="animate-entrance">Foundational Values</h2>
-        <div className="values-grid">
-          {euValues.map((value, i) => (
-            <div key={i} className="value-card animate-entrance delay-{i}">
-              <div className="value-icon"><StarIcon /></div>
-              <h3>{value.title}</h3>
-              <p>{value.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+              {/* Real Geographic EU Member State shapes */}
+              <g className="eu-layer">
+                {REAL_EU_MAP_PATHS.map((item) => {
+                  const countryData = EU_MEMBER_STATES.find((c) => c.name === item.name)
+                  const isSelected = selectedCountryName === item.name
+                  const isHovered = hoveredCountryName === item.name
 
-      {/* Real Geographic Map Section */}
-      <section className="map-section" id="map">
-        <div className="section-container">
-          <h2 className="animate-entrance">Territorial Overview</h2>
-          <p className="animate-entrance" style={{ marginBottom: '1.5rem' }}>
-            Interactive geographic map of the 27 European Union member states. Click on any country shape to view detailed information.
-          </p>
+                  return (
+                    <g key={item.name}>
+                      <path
+                        d={item.d}
+                        className={`eu-country-path ${isSelected ? 'selected' : ''} ${isHovered ? 'hovered' : ''}`}
+                        onMouseEnter={() => setHoveredCountryName(item.name)}
+                        onMouseLeave={() => setHoveredCountryName(null)}
+                        onClick={() => setSelectedCountryName(item.name)}
+                      />
+                      <text
+                        x={item.cx}
+                        y={item.cy}
+                        textAnchor="middle"
+                        className={`eu-map-label ${isSelected ? 'selected' : ''}`}
+                      >
+                        {countryData?.flag} {item.name}
+                      </text>
+                    </g>
+                  )
+                })}
+              </g>
+            </svg>
+          </div>
 
-          <div className="map-layout">
-            <div className="map-container">
-              <svg viewBox="0 0 920 720" className="eu-real-map-svg">
-                {/* Non-EU European country background shapes */}
-                <g className="non-eu-layer">
-                  {NON_EU_MAP_PATHS.map((item, idx) => (
-                    <path key={idx} d={item.d} className="non-eu-path" />
-                  ))}
-                </g>
-
-                {/* Real Geographic EU Member State paths */}
-                <g className="eu-layer">
-                  {REAL_EU_MAP_PATHS.map((item) => {
-                    const countryData = EU_MEMBER_STATES.find((c) => c.name === item.name)
-                    const isSelected = selectedCountryName === item.name
-                    const isHovered = hoveredCountryName === item.name
-
-                    return (
-                      <g key={item.name}>
-                        <path
-                          d={item.d}
-                          className={`eu-country-path ${isSelected ? 'selected' : ''} ${isHovered ? 'hovered' : ''}`}
-                          onMouseEnter={() => setHoveredCountryName(item.name)}
-                          onMouseLeave={() => setHoveredCountryName(null)}
-                          onClick={() => setSelectedCountryName(item.name)}
-                        />
-                        <text
-                          x={item.cx}
-                          y={item.cy}
-                          textAnchor="middle"
-                          className={`eu-map-label ${isSelected ? 'selected' : ''}`}
-                        >
-                          {countryData?.flag} {item.name}
-                        </text>
-                      </g>
-                    )
-                  })}
-                </g>
-              </svg>
-            </div>
-
-            {/* Map Detail Panel */}
-            <div className="map-detail-panel">
-              {selectedCountry ? (
-                <div className="detail-content animate-entrance">
-                  <h3>{selectedCountry.flag} {selectedCountry.name}</h3>
-                  <div className="detail-stats">
-                    <p><strong>Capital:</strong> <span>{selectedCountry.capital}</span></p>
-                    <p><strong>Population:</strong> <span>{selectedCountry.population}</span></p>
-                    <p><strong>EU Accession:</strong> <span>{selectedCountry.joined}</span></p>
-                    <p><strong>GDP (Nominal):</strong> <span>{selectedCountry.gdp}</span></p>
-                    <p><strong>Region:</strong> <span>{selectedCountry.region}</span></p>
+          <div className="info-panel">
+            {selectedCountry ? (
+              <div className="animate-entrance">
+                <h3>{selectedCountry.flag} {selectedCountry.name}</h3>
+                <span className="capital">{selectedCountry.capital} (Capital)</span>
+                
+                <div className="data-grid">
+                  <div className="data-box">
+                    <label>Population</label>
+                    <strong>{selectedCountry.population}</strong>
                   </div>
-                  <p className="detail-desc">{selectedCountry.desc}</p>
-                  <button className="primary" style={{ marginTop: '1.25rem' }} onClick={() => setIsInstModalOpen(true)}>
-                    View Institutional Report
-                  </button>
+                  <div className="data-box">
+                    <label>GDP (Nominal)</label>
+                    <strong>{selectedCountry.gdp}</strong>
+                  </div>
+                  <div className="data-box">
+                    <label>Joined</label>
+                    <strong>{selectedCountry.joined}</strong>
+                  </div>
+                  <div className="data-box">
+                    <label>Region</label>
+                    <strong>{selectedCountry.region}</strong>
+                  </div>
                 </div>
-              ) : (
-                <div className="detail-empty">
-                  <EUStars />
-                  <p>Select a member state on the map to view detailed information.</p>
-                </div>
-              )}
-            </div>
+                
+                <p style={{ marginTop: '1.75rem', fontSize: '0.9rem', color: '#666', lineHeight: 1.5 }}>
+                  {selectedCountry.desc}
+                </p>
+              </div>
+            ) : (
+              <div>
+                <h3>European Union</h3>
+                <span className="capital">Brussels (De Facto Capital)</span>
+                <p style={{ color: '#666' }}>Select a country on the map to visualize its specific demographic and economic contribution to the Federal project.</p>
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Member States Directory */}
-      <section className="section-container" id="members">
+      {/* Member Directory Grid */}
+      <section className="members-section animate-entrance">
         <div className="directory-header">
           <div>
-            <h2>Member States (27)</h2>
-            <p>Complete directory of all 27 European Union member states.</p>
+            <h2 style={{ fontSize: '2.25rem' }}>Member States Directory (27)</h2>
+            <p>Select any member state to highlight its geographic boundaries on the map.</p>
           </div>
           <div className="directory-search">
             <input
               type="text"
-              placeholder="Search country or capital..."
+              placeholder="Search by country or capital..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -280,12 +292,31 @@ function App() {
         </div>
       </section>
 
+      {/* Policy Pillars (Volt Europa Style) */}
+      <section id="policies" className="policies-section animate-entrance">
+        <div className="section-head">
+          <h2>Six Pillars of Change</h2>
+          <p>Inspired by the Volt Europa movement, our roadmap addresses the biggest challenges of our time with pan-European solutions.</p>
+        </div>
+
+        <div className="policy-grid">
+          {policyPillars.map((pillar, idx) => (
+            <div key={idx} className="policy-card animate-entrance">
+              <div className="card-icon">{pillar.icon}</div>
+              <h3>{pillar.title}</h3>
+              <p>{pillar.desc}</p>
+              <a onClick={() => setIsInstModalOpen(true)} className="card-link">Read Manifesto →</a>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Institutional Overview Modal */}
       {isInstModalOpen && (
         <div className="modal-overlay" onClick={() => setIsInstModalOpen(false)}>
           <div className="modal-container" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>Primary EU Institutions</h2>
+              <h2>Primary EU Institutions & Governance</h2>
               <button className="modal-close-btn" onClick={() => setIsInstModalOpen(false)}>✕</button>
             </div>
 
@@ -302,15 +333,15 @@ function App() {
             </div>
 
             <div className="inst-content">
-              <h3>{EU_INSTITUTIONS[activeInstTab].name}</h3>
-              <p style={{ marginTop: '0.5rem' }}><strong>De Facto Seat:</strong> {EU_INSTITUTIONS[activeInstTab].city}</p>
+              <h3 style={{ color: 'var(--eu-blue)' }}>{EU_INSTITUTIONS[activeInstTab].name}</h3>
+              <p style={{ marginTop: '0.5rem' }}><strong>Seat:</strong> {EU_INSTITUTIONS[activeInstTab].city}</p>
               <p style={{ marginTop: '0.5rem' }}><strong>Role:</strong> {EU_INSTITUTIONS[activeInstTab].role}</p>
               <p style={{ marginTop: '0.5rem' }}><strong>Composition:</strong> {EU_INSTITUTIONS[activeInstTab].members}</p>
 
-              <h4 style={{ marginTop: '1.25rem' }}>Key Responsibilities</h4>
+              <h4 style={{ marginTop: '1.25rem', color: 'var(--volt-purple)' }}>Key Responsibilities</h4>
               <ul style={{ paddingLeft: '1.25rem', marginTop: '0.5rem' }}>
                 {EU_INSTITUTIONS[activeInstTab].functions.map((fn, idx) => (
-                  <li key={idx} style={{ marginBottom: '0.4rem', color: 'var(--text-muted)' }}>{fn}</li>
+                  <li key={idx} style={{ marginBottom: '0.4rem', color: '#555' }}>{fn}</li>
                 ))}
               </ul>
             </div>
@@ -319,28 +350,33 @@ function App() {
       )}
 
       {/* Footer */}
-      <footer className="footer">
-        <div className="footer-content">
-          <div className="footer-section">
-            <h4>European Union</h4>
-            <p>The European Union is a unique economic and political union between 27 European countries.</p>
+      <footer>
+        <div className="footer-grid">
+          <div className="footer-brand">
+            <h2>Federal EU Project</h2>
+            <p>An independent visualization project advocating for a united, sovereign, and democratic Europe. Inspired by the pan-European Volt movement.</p>
           </div>
-          <div className="footer-section">
-            <h4>Institutions</h4>
-            <a onClick={() => { setIsInstModalOpen(true); setActiveInstTab(0); }}>European Parliament</a>
-            <a onClick={() => { setIsInstModalOpen(true); setActiveInstTab(1); }}>European Council</a>
-            <a onClick={() => { setIsInstModalOpen(true); setActiveInstTab(2); }}>European Commission</a>
-            <a onClick={() => { setIsInstModalOpen(true); setActiveInstTab(3); }}>European Central Bank</a>
+          <div className="footer-col">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="#vision">Our Vision</a></li>
+              <li><a href="#map-section">Data Map</a></li>
+              <li><a href="#policies">Policy Pillars</a></li>
+              <li><a onClick={() => setIsInstModalOpen(true)}>Institutions</a></li>
+            </ul>
           </div>
-          <div className="footer-section">
-            <h4>Information</h4>
-            <a href="#map">Territorial Map</a>
-            <a href="#members">Member States</a>
-            <a href="#values">Core Values</a>
+          <div className="footer-col">
+            <h4>Get Involved</h4>
+            <ul>
+              <li><a onClick={() => setIsInstModalOpen(true)}>Join Movement</a></li>
+              <li><a onClick={() => setIsInstModalOpen(true)}>Volunteer</a></li>
+              <li><a onClick={() => setIsInstModalOpen(true)}>Donate</a></li>
+              <li><a onClick={() => setIsInstModalOpen(true)}>Contact Us</a></li>
+            </ul>
           </div>
         </div>
-        <div className="footer-bottom">
-          <p>© 2026 European Union · Official Institutional Portal</p>
+        <div className="copyright">
+          &copy; 2026 Federal EU Project. Open Source Initiative. Not officially affiliated with EU institutions.
         </div>
       </footer>
     </div>
