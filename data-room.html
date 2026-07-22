@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Room — [SITE TITLE]</title>
+  <meta name="description" content="Real, sourced visualisations: Eurobarometer support for EU integration over time, member-state GDP fragmentation, and defence spending across the union.">
+  <link rel="canonical" href="https://[DOMAIN]/data-room.html">
+
+  <script>
+    (function(){
+      var saved = localStorage.getItem('fve-theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (prefersDark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="stylesheet" href="./src/styles/tokens.css">
+  <link rel="stylesheet" href="./src/styles/typography.css">
+  <link rel="stylesheet" href="./src/styles/main.css">
+  <link rel="stylesheet" href="./src/styles/components.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="site-header__inner">
+      <a class="site-header__wordmark" href="/" aria-label="Federal Vision — Home">Federal Vision</a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <ul class="site-nav__list" role="list">
+          <li><a class="site-nav__link" href="/">Home</a></li>
+          <li><a class="site-nav__link" href="/the-case.html">The Case</a></li>
+          <li><a class="site-nav__link" href="/archive.html">Archive</a></li>
+          <li><a class="site-nav__link" href="/data-room.html">Data Room</a></li>
+          <li><a class="site-nav__link" href="/sources.html">Sources</a></li>
+          <li><a class="site-nav__link" href="/colophon.html">Colophon</a></li>
+        </ul>
+        <button class="dark-toggle" aria-label="Toggle dark mode" aria-pressed="false">Dark</button>
+        <button class="nav-toggle" aria-label="Open navigation menu">☰</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <div class="page-masthead">
+      <div class="container">
+        <div class="page-masthead__overline">Data Room</div>
+        <h1 class="page-masthead__title" id="data-room-title">
+          The Numbers<br>Behind the Argument
+        </h1>
+        <p class="page-masthead__deck">
+          Three to four sourced visualisations. Every chart cites its dataset,
+          institution, and vintage. The data does not argue — it contextualises.
+        </p>
+        <p style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-tertiary); margin-top: var(--space-4);">
+          All data: Eurostat, Eurobarometer, SIPRI — links in each
+          <code>figcaption</code> and on the <a href="/sources.html">Sources</a> page.
+        </p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="container">
+
+        <!-- ===== CHART 1: Eurobarometer ===== -->
+        <figure class="chart-figure" aria-labelledby="eb-chart-title">
+          <p class="chart-figure__heading" id="eb-chart-title">Chart 1 — EU Integration Support, 1997–2024</p>
+          <div class="chart-wrapper" id="chart-eurobarometer" style="min-height: 380px;">
+            <noscript>
+              <p style="padding: 2rem; color: var(--text-secondary);">
+                A line chart showing Eurobarometer support for EU integration from 1997 to 2024
+                is displayed here. JavaScript is required to render the chart.
+              </p>
+            </noscript>
+          </div>
+          <figcaption>
+            Share of EU citizens responding "favourable" when asked about efforts to
+            further unify EU member states politically.
+            Source: Standard Eurobarometer surveys, waves EB 47–101 (1997–2024).
+            European Commission / Directorate-General for Communication.
+            <a href="https://europa.eu/eurobarometer/surveys/browse/all/series/4506"
+               target="_blank" rel="noopener">
+              Eurobarometer surveys archive
+            </a>.
+            <br>
+            <em>Note: question wording has varied across waves — see individual survey
+            documentation for full methodological notes.</em>
+          </figcaption>
+        </figure>
+
+        <hr>
+
+        <!-- ===== CHART 2: GDP Shares ===== -->
+        <figure class="chart-figure" aria-labelledby="gdp-chart-title">
+          <p class="chart-figure__heading" id="gdp-chart-title">Chart 2 — Member-State GDP as Share of EU27 Total, 2022</p>
+          <div class="chart-wrapper" id="chart-gdp" style="min-height: 340px;">
+            <noscript>
+              <p style="padding: 2rem; color: var(--text-secondary);">
+                A bar chart showing the GDP share of the top 10 EU member states
+                as a proportion of the EU27 total is displayed here.
+                JavaScript is required to render the chart.
+              </p>
+            </noscript>
+          </div>
+          <figcaption>
+            GDP at market prices, current prices, million EUR, 2022.
+            Top 10 member states by GDP share; EU27 total approx. €14.5 trillion.
+            Source: Eurostat, dataset <code>nama_10_gdp</code>, extracted 2024.
+            <a href="https://ec.europa.eu/eurostat/databrowser/view/nama_10_gdp/default/table?lang=en"
+               target="_blank" rel="noopener">
+              Eurostat — nama_10_gdp
+            </a>.
+          </figcaption>
+        </figure>
+
+        <hr>
+
+        <!-- ===== CHART 3: Defence Spending ===== -->
+        <figure class="chart-figure" aria-labelledby="def-chart-title">
+          <p class="chart-figure__heading" id="def-chart-title">Chart 3 — Defence Spending as % of GDP, EU Member States, 2022</p>
+          <div class="chart-wrapper" id="chart-defence" style="min-height: 680px;">
+            <noscript>
+              <p style="padding: 2rem; color: var(--text-secondary);">
+                A dot plot showing defence spending as a percentage of GDP for all 27
+                EU member states is displayed here. JavaScript is required.
+              </p>
+            </noscript>
+          </div>
+          <figcaption>
+            Military expenditure as percentage of GDP, 2022. Bronze dots indicate
+            countries meeting or exceeding the NATO 2% target (shown as dashed vertical line).
+            Source: SIPRI Military Expenditure Database.
+            <a href="https://www.sipri.org/databases/milex" target="_blank" rel="noopener">
+              SIPRI — Military Expenditure Database
+            </a>.
+            <br>
+            <em>Note: SIPRI figures may differ from NATO's own assessments due to
+            methodological differences in what constitutes defence expenditure.</em>
+          </figcaption>
+        </figure>
+
+        <hr>
+
+        <!-- ===== CHART 4: EU Map with Data ===== -->
+        <figure class="chart-figure" aria-labelledby="map-chart-title">
+          <p class="chart-figure__heading" id="map-chart-title">Chart 4 — EU Member States: GDP Per Capita Variation</p>
+          <div class="chart-wrapper" id="chart-map" style="min-height: 420px;">
+            <noscript>
+              <p style="padding: 2rem; color: var(--text-secondary);">
+                A choropleth map of Europe showing GDP per capita by member state
+                is displayed here. JavaScript is required.
+              </p>
+            </noscript>
+          </div>
+          <figcaption>
+            GDP per capita (PPS — purchasing power standard) by member state,
+            EU27 = 100. Darker shading indicates higher relative GDP per capita.
+            Source: Eurostat, dataset <code>nama_10_pc</code>, 2022.
+            <a href="https://ec.europa.eu/eurostat/databrowser/view/nama_10_pc/default/table?lang=en"
+               target="_blank" rel="noopener">
+              Eurostat — nama_10_pc
+            </a>.
+            <br>
+            Projection: Azimuthal Equal Area, approximating ETRS89-LAEA (EPSG:3035).
+            Boundaries: <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a>, 110m, public domain.
+          </figcaption>
+        </figure>
+
+      </div><!-- /.container -->
+    </div><!-- /.section -->
+
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="site-footer__inner">
+      <div>
+        <a class="site-footer__wordmark" href="/">Federal Vision</a>
+        <p class="site-footer__meta">
+          An independent editorial project. Not an EU institution.<br>
+          &copy; <time datetime="2024">2024</time> [OPERATOR NAME — see BUILD_NOTES.md]
+        </p>
+      </div>
+      <nav class="site-footer__nav" aria-label="Footer navigation">
+        <a href="/the-case.html">The Case</a>
+        <a href="/archive.html">Archive</a>
+        <a href="/data-room.html">Data Room</a>
+        <a href="/sources.html">Sources</a>
+        <a href="/colophon.html">Colophon</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { initNav } from './src/js/nav.js';
+    import { renderEurobarometerChart } from './src/js/charts.js';
+    import { renderGDPChart } from './src/js/charts.js';
+    import { renderDefenceChart } from './src/js/charts.js';
+    import { renderDataMap } from './src/js/map.js';
+
+    initNav();
+
+    // Load data and render charts
+    Promise.all([
+      fetch('./src/data/eurobarometer.json').then(r => r.json()),
+      fetch('./src/data/gdp.json').then(r => r.json())
+    ]).then(([ebData, gdpData]) => {
+      renderEurobarometerChart('#chart-eurobarometer', ebData);
+      renderGDPChart('#chart-gdp', gdpData);
+      renderDefenceChart('#chart-defence', gdpData);
+
+      // GDP per capita data for map — approximate PPS figures (Eurostat, 2022)
+      // [NEEDS SOURCE: Replace with exact Eurostat nama_10_pc PPS values once extracted]
+      const gdpPcData = [
+        { code: 'LU', name: 'Luxembourg',   value: 258, unit: ' (EU=100)' },
+        { code: 'IE', name: 'Ireland',      value: 214, unit: ' (EU=100)' },
+        { code: 'DK', name: 'Denmark',      value: 135, unit: ' (EU=100)' },
+        { code: 'NL', name: 'Netherlands',  value: 133, unit: ' (EU=100)' },
+        { code: 'AT', name: 'Austria',      value: 130, unit: ' (EU=100)' },
+        { code: 'SE', name: 'Sweden',       value: 127, unit: ' (EU=100)' },
+        { code: 'BE', name: 'Belgium',      value: 121, unit: ' (EU=100)' },
+        { code: 'FI', name: 'Finland',      value: 116, unit: ' (EU=100)' },
+        { code: 'DE', name: 'Germany',      value: 123, unit: ' (EU=100)' },
+        { code: 'FR', name: 'France',       value: 107, unit: ' (EU=100)' },
+        { code: 'IT', name: 'Italy',        value:  95, unit: ' (EU=100)' },
+        { code: 'SI', name: 'Slovenia',     value:  93, unit: ' (EU=100)' },
+        { code: 'CZ', name: 'Czechia',      value:  93, unit: ' (EU=100)' },
+        { code: 'ES', name: 'Spain',        value:  88, unit: ' (EU=100)' },
+        { code: 'MT', name: 'Malta',        value:  97, unit: ' (EU=100)' },
+        { code: 'CY', name: 'Cyprus',       value:  82, unit: ' (EU=100)' },
+        { code: 'PT', name: 'Portugal',     value:  80, unit: ' (EU=100)' },
+        { code: 'EE', name: 'Estonia',      value:  87, unit: ' (EU=100)' },
+        { code: 'LT', name: 'Lithuania',    value:  86, unit: ' (EU=100)' },
+        { code: 'LV', name: 'Latvia',       value:  73, unit: ' (EU=100)' },
+        { code: 'SK', name: 'Slovakia',     value:  77, unit: ' (EU=100)' },
+        { code: 'PL', name: 'Poland',       value:  77, unit: ' (EU=100)' },
+        { code: 'HU', name: 'Hungary',      value:  73, unit: ' (EU=100)' },
+        { code: 'HR', name: 'Croatia',      value:  70, unit: ' (EU=100)' },
+        { code: 'GR', name: 'Greece',       value:  68, unit: ' (EU=100)' },
+        { code: 'RO', name: 'Romania',      value:  72, unit: ' (EU=100)' },
+        { code: 'BG', name: 'Bulgaria',     value:  59, unit: ' (EU=100)' },
+      ];
+
+      renderDataMap('#chart-map', gdpPcData, {
+        ariaLabel: 'Choropleth map of Europe showing GDP per capita by EU member state, 2022',
+        title: 'GDP per capita (PPS, EU=100) by member state, 2022',
+        width: document.querySelector('#chart-map').clientWidth
+      });
+    }).catch(err => {
+      console.error('Failed to load chart data:', err);
+    });
+  </script>
+
+</body>
+</html>

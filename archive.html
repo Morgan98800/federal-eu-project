@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Archive — [SITE TITLE]</title>
+  <meta name="description" content="A chronological, citation-backed timeline of European federalist thought and integration, from the Ventotene Manifesto (1941) to the Conference on the Future of Europe (2022).">
+  <link rel="canonical" href="https://[DOMAIN]/archive.html">
+
+  <script>
+    (function(){
+      var saved = localStorage.getItem('fve-theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (prefersDark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <link rel="stylesheet" href="./src/styles/tokens.css">
+  <link rel="stylesheet" href="./src/styles/typography.css">
+  <link rel="stylesheet" href="./src/styles/main.css">
+  <link rel="stylesheet" href="./src/styles/components.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="site-header__inner">
+      <a class="site-header__wordmark" href="/" aria-label="Federal Vision — Home">Federal Vision</a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <ul class="site-nav__list" role="list">
+          <li><a class="site-nav__link" href="/">Home</a></li>
+          <li><a class="site-nav__link" href="/the-case.html">The Case</a></li>
+          <li><a class="site-nav__link" href="/archive.html">Archive</a></li>
+          <li><a class="site-nav__link" href="/data-room.html">Data Room</a></li>
+          <li><a class="site-nav__link" href="/sources.html">Sources</a></li>
+          <li><a class="site-nav__link" href="/colophon.html">Colophon</a></li>
+        </ul>
+        <button class="dark-toggle" aria-label="Toggle dark mode" aria-pressed="false">Dark</button>
+        <button class="nav-toggle" aria-label="Open navigation menu">☰</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <div class="page-masthead">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a>
+          <span class="breadcrumb__separator" aria-hidden="true">/</span>
+          <span class="breadcrumb__current" aria-current="page">Archive</span>
+        </nav>
+        <div class="page-masthead__overline">Archive</div>
+        <h1 class="page-masthead__title" id="archive-title">
+          Chronology of<br>European Integration
+        </h1>
+        <p class="page-masthead__deck">
+          A chronological record of significant moments in European federalist thought
+          and institutional integration. Each entry links to its primary source.
+        </p>
+      </div>
+    </div>
+
+    <section class="section" aria-labelledby="archive-title">
+      <div class="container">
+
+        <div class="timeline" id="timeline" aria-label="Timeline of European integration">
+          <!-- Timeline entries rendered by JS from archive.json,
+               or read directly below (static fallback) -->
+
+          <article class="timeline-entry featured" id="ventotene-1941">
+            <time class="timeline-entry__date" datetime="1941">1941</time>
+            <h2 class="timeline-entry__title">The Ventotene Manifesto</h2>
+            <p class="timeline-entry__body">
+              Written in secret on the island of Ventotene by
+              Altiero Spinelli and Ernesto Rossi — both detained under Fascist confinement —
+              the manifesto argued that the nation-state system had become the root cause
+              of European wars and could only be transcended through a federal union.
+              It circulated clandestinely through the Italian resistance and became the
+              founding document of the European federalist movement.
+              <cite class="citation-ref">
+                <button class="citation-ref__trigger" data-cite-id="arc-ventotene">1</button>
+                <div class="citation-popover" id="popover-arc-ventotene" role="dialog" aria-modal="true" aria-label="Citation: Ventotene Manifesto"></div>
+              </cite>
+            </p>
+            <p class="timeline-entry__source">
+              Primary source:
+              <a href="https://www.cvce.eu/en/obj/the_ventotene_manifesto_1941-en-5ada4b99-7445-492f-9fad-7ebeb5f2a8b4.html"
+                 target="_blank" rel="noopener">
+                CVCE.eu — The Ventotene Manifesto (1941)
+              </a>
+            </p>
+          </article>
+
+          <article class="timeline-entry featured" id="schuman-1950">
+            <time class="timeline-entry__date" datetime="1950-05-09">9 May 1950</time>
+            <h2 class="timeline-entry__title">The Schuman Declaration</h2>
+            <p class="timeline-entry__body">
+              French Foreign Minister Robert Schuman, drawing on a text drafted by
+              Jean Monnet, proposed pooling European coal and steel production under
+              a common High Authority — making war between France and Germany
+              "not merely unthinkable, but materially impossible."
+              The declaration led directly to the Treaty of Paris (1951) establishing
+              the European Coal and Steel Community, the first supranational European
+              institution. 9 May is now marked annually as Europe Day.
+              <cite class="citation-ref">
+                <button class="citation-ref__trigger" data-cite-id="arc-schuman">2</button>
+                <div class="citation-popover" id="popover-arc-schuman" role="dialog" aria-modal="true" aria-label="Citation: Schuman Declaration"></div>
+              </cite>
+            </p>
+            <p class="timeline-entry__source">
+              Primary source:
+              <a href="https://european-union.europa.eu/principles-countries-history/history-eu/1945-59/schuman-declaration-may-1950_en"
+                 target="_blank" rel="noopener">
+                European Commission — Schuman Declaration (1950)
+              </a>
+            </p>
+          </article>
+
+          <article class="timeline-entry featured" id="treaty-of-rome-1957">
+            <time class="timeline-entry__date" datetime="1957-03-25">25 March 1957</time>
+            <h2 class="timeline-entry__title">Treaty of Rome</h2>
+            <p class="timeline-entry__body">
+              Signed by Belgium, France, Italy, Luxembourg, the Netherlands, and
+              West Germany, the Treaty of Rome established the European Economic
+              Community (EEC), creating a common market and customs union.
+              It committed signatories to "an ever closer union among the peoples
+              of Europe" — a phrase that has anchored federalist interpretation of
+              European law ever since.
+              <cite class="citation-ref">
+                <button class="citation-ref__trigger" data-cite-id="arc-rome">3</button>
+                <div class="citation-popover" id="popover-arc-rome" role="dialog" aria-modal="true" aria-label="Citation: Treaty of Rome"></div>
+              </cite>
+            </p>
+            <p class="timeline-entry__source">
+              Primary source:
+              <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A11957E%2FTXT"
+                 target="_blank" rel="noopener">
+                EUR-Lex — Treaty of Rome (EEC Treaty, 1957)
+              </a>
+            </p>
+          </article>
+
+          <article class="timeline-entry" id="spinelli-draft-1984">
+            <time class="timeline-entry__date" datetime="1984-02-14">14 February 1984</time>
+            <h2 class="timeline-entry__title">Spinelli Draft Treaty on European Union</h2>
+            <p class="timeline-entry__body">
+              Altiero Spinelli, by then a member of the European Parliament,
+              led the Crocodile Club — an informal grouping of MEPs — to draft a
+              Treaty on European Union going substantially further than any existing
+              Community text in the direction of a federal constitution.
+              The Parliament adopted the draft by 237 votes to 31.
+              Though never ratified by member states, it directly shaped the
+              Single European Act (1986) and the Maastricht Treaty (1992).
+              <cite class="citation-ref">
+                <button class="citation-ref__trigger" data-cite-id="arc-spinelli84">4</button>
+                <div class="citation-popover" id="popover-arc-spinelli84" role="dialog" aria-modal="true" aria-label="Citation: Spinelli Draft Treaty 1984"></div>
+              </cite>
+            </p>
+            <p class="timeline-entry__source">
+              Primary source:
+              <a href="https://www.cvce.eu/en/obj/draft_treaty_establishing_the_european_union_14_february_1984-en-747555ce-e674-4a72-9b6c-c74c31d2acf9.html"
+                 target="_blank" rel="noopener">
+                CVCE.eu — Draft Treaty on European Union (1984)
+              </a>
+            </p>
+          </article>
+
+          <article class="timeline-entry featured" id="maastricht-1992">
+            <time class="timeline-entry__date" datetime="1992-02-07">7 February 1992</time>
+            <h2 class="timeline-entry__title">Treaty of Maastricht</h2>
+            <p class="timeline-entry__body">
+              The Treaty on European Union, signed at Maastricht, created the European
+              Union as a political entity, introduced EU citizenship, established the
+              framework for Economic and Monetary Union, and extended qualified majority
+              voting in the Council. It represented the most significant integration step
+              since the Treaty of Rome. The Danish electorate initially rejected it
+              (50.7% against, June 1992 referendum) before approving it in May 1993
+              after the Edinburgh Agreement secured four opt-outs.
+              <cite class="citation-ref">
+                <button class="citation-ref__trigger" data-cite-id="arc-maastricht">5</button>
+                <div class="citation-popover" id="popover-arc-maastricht" role="dialog" aria-modal="true" aria-label="Citation: Treaty of Maastricht"></div>
+              </cite>
+            </p>
+            <p class="timeline-entry__source">
+              Primary source:
+              <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A11992M%2FTXT"
+                 target="_blank" rel="noopener">
+                EUR-Lex — Treaty on European Union (Maastricht, 1992)
+              </a>
+            </p>
+          </article>
+
+          <article class="timeline-entry featured" id="lisbon-2007">
+            <time class="timeline-entry__date" datetime="2007-12-13">13 December 2007</time>
+            <h2 class="timeline-entry__title">Treaty of Lisbon</h2>
+            <p class="timeline-entry__body">
+              Signed following the failure of the Constitutional Treaty (rejected
+              in French and Dutch referendums in 2005), the Lisbon Treaty gave the
+              EU its current legal and institutional structure: a permanent European
+              Council President, a strengthened European Parliament with co-legislative
+              powers, a legally binding Charter of Fundamental Rights, and the
+              Article 50 withdrawal mechanism. It entered into force on 1 December 2009.
+              <cite class="citation-ref">
+                <button class="citation-ref__trigger" data-cite-id="arc-lisbon">6</button>
+                <div class="citation-popover" id="popover-arc-lisbon" role="dialog" aria-modal="true" aria-label="Citation: Treaty of Lisbon"></div>
+              </cite>
+            </p>
+            <p class="timeline-entry__source">
+              Primary source:
+              <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A12007L%2FTXT"
+                 target="_blank" rel="noopener">
+                EUR-Lex — Treaty of Lisbon (2007)
+              </a>
+            </p>
+          </article>
+
+          <article class="timeline-entry" id="spinelli-group-2010">
+            <time class="timeline-entry__date" datetime="2010-09">September 2010</time>
+            <h2 class="timeline-entry__title">Spinelli Group Founded</h2>
+            <p class="timeline-entry__body">
+              Named after Altiero Spinelli, the Spinelli Group was founded in September 2010
+              by MEPs from multiple political families (Liberal, Green, Social Democrat)
+              committed to the goal of a federal European Union. Founding members included
+              Guy Verhofstadt (ALDE), Andrew Duff (ALDE), and Daniel Cohn-Bendit (Greens).
+              The group published
+              <em>A Fundamental Law of the European Union</em> (2013)
+              as a worked constitutional proposal.
+            </p>
+            <p class="timeline-entry__source">
+              Reference:
+              <a href="https://www.spinelligroup.eu/" target="_blank" rel="noopener">
+                The Spinelli Group — official site
+              </a>
+            </p>
+          </article>
+
+          <article class="timeline-entry" id="cofe-2022">
+            <time class="timeline-entry__date" datetime="2022-05-09">9 May 2022</time>
+            <h2 class="timeline-entry__title">Conference on the Future of Europe — Final Report</h2>
+            <p class="timeline-entry__body">
+              A year-long participatory exercise involving citizen panels, national parliaments,
+              and EU institutions delivered its final report on Europe Day 2022, containing
+              49 proposals and 326 measures. Many citizen panels explicitly recommended
+              treaty change to strengthen EU competences. The European Parliament voted in
+              June 2022 to convene an Article 48 Convention; the Council's subsequent
+              inaction became itself a point of democratic controversy.
+              <cite class="citation-ref">
+                <button class="citation-ref__trigger" data-cite-id="arc-cofe">7</button>
+                <div class="citation-popover" id="popover-arc-cofe" role="dialog" aria-modal="true" aria-label="Citation: Conference on Future of Europe"></div>
+              </cite>
+            </p>
+            <p class="timeline-entry__source">
+              Primary source:
+              <a href="https://futureu.europa.eu/uploads/decidim/attachment/file/23363/CoFoE_Final_Report_EN.pdf"
+                 target="_blank" rel="noopener">
+                CoFoE — Final Report (May 2022, PDF)
+              </a>
+            </p>
+          </article>
+
+        </div><!-- /.timeline -->
+
+        <!-- Pagination (JS-rendered) -->
+        <div class="pagination" aria-label="Timeline pagination" role="navigation"></div>
+
+      </div><!-- /.container -->
+    </section>
+
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="site-footer__inner">
+      <div>
+        <a class="site-footer__wordmark" href="/">Federal Vision</a>
+        <p class="site-footer__meta">
+          An independent editorial project. Not an EU institution.<br>
+          &copy; <time datetime="2024">2024</time> [OPERATOR NAME — see BUILD_NOTES.md]
+        </p>
+      </div>
+      <nav class="site-footer__nav" aria-label="Footer navigation">
+        <a href="/the-case.html">The Case</a>
+        <a href="/archive.html">Archive</a>
+        <a href="/data-room.html">Data Room</a>
+        <a href="/sources.html">Sources</a>
+        <a href="/colophon.html">Colophon</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { initNav } from './src/js/nav.js';
+    import { initCitations, registerCitations } from './src/js/citations.js';
+    import { initArchivePagination } from './src/js/archive-pagination.js';
+
+    registerCitations({
+      'arc-ventotene': {
+        num: 1,
+        author: 'Altiero Spinelli and Ernesto Rossi',
+        title: 'For a Free and United Europe: A Draft Manifesto (The Ventotene Manifesto)',
+        year: 1941,
+        publisher: 'CVCE.eu / European University Institute',
+        url: 'https://www.cvce.eu/en/obj/the_ventotene_manifesto_1941-en-5ada4b99-7445-492f-9fad-7ebeb5f2a8b4.html'
+      },
+      'arc-schuman': {
+        num: 2,
+        author: 'Robert Schuman',
+        title: 'Declaration of 9 May 1950',
+        year: 1950,
+        publisher: 'European Commission',
+        url: 'https://european-union.europa.eu/principles-countries-history/history-eu/1945-59/schuman-declaration-may-1950_en'
+      },
+      'arc-rome': {
+        num: 3,
+        author: 'European Communities',
+        title: 'Treaty Establishing the European Economic Community',
+        year: 1957,
+        publisher: 'EUR-Lex',
+        url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A11957E%2FTXT'
+      },
+      'arc-spinelli84': {
+        num: 4,
+        author: 'European Parliament (led by Altiero Spinelli)',
+        title: 'Draft Treaty Establishing the European Union',
+        year: 1984,
+        publisher: 'CVCE.eu / European University Institute',
+        url: 'https://www.cvce.eu/en/obj/draft_treaty_establishing_the_european_union_14_february_1984-en-747555ce-e674-4a72-9b6c-c74c31d2acf9.html'
+      },
+      'arc-maastricht': {
+        num: 5,
+        author: 'European Communities',
+        title: 'Treaty on European Union (Maastricht Treaty)',
+        year: 1992,
+        publisher: 'EUR-Lex',
+        url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A11992M%2FTXT'
+      },
+      'arc-lisbon': {
+        num: 6,
+        author: 'European Union',
+        title: 'Treaty of Lisbon',
+        year: 2007,
+        publisher: 'EUR-Lex',
+        url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A12007L%2FTXT'
+      },
+      'arc-cofe': {
+        num: 7,
+        author: 'Conference on the Future of Europe',
+        title: 'Final Report',
+        year: 2022,
+        publisher: 'European Parliament / Council / Commission',
+        url: 'https://futureu.europa.eu/uploads/decidim/attachment/file/23363/CoFoE_Final_Report_EN.pdf'
+      }
+    });
+
+    initNav();
+    initCitations();
+    // 4 entries per page on archive
+    initArchivePagination('.timeline-entry', 4);
+  </script>
+
+</body>
+</html>

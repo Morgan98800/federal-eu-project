@@ -1,33 +1,236 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-    <title>European Union · Official Federal Data & Policy Archive</title>
-    <meta name="description" content="Official European Union institutional portal featuring interactive Command Palette, Segmented Control views, Bento statistics grid, and a real geographic SVG map of Europe." />
-    <meta name="keywords" content="European Union, Federal Europe, EU Data, Member States, European Governance, EU Map" />
-    <meta name="theme-color" content="#003399" />
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[SITE TITLE] — A Federal Vision for Europe</title>
+  <meta name="description" content="[TAGLINE — operator-supplied]. An editorial project making the case for European federal union.">
+  <meta name="robots" content="index, follow">
 
-    <!-- Open Graph / Social Media Meta Tags -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://morgan98800.github.io/federal-eu-project/" />
-    <meta property="og:title" content="European Union · Official Federal Data & Policy Archive" />
-    <meta property="og:description" content="Explore official European Union demographic metrics, 100% real geographic vector mapping, and constitutional policy directives." />
-    <meta property="og:image" content="/vite.svg" />
+  <!-- Open Graph -->
+  <meta property="og:title" content="[SITE TITLE] — A Federal Vision for Europe">
+  <meta property="og:description" content="[TAGLINE — operator-supplied]">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://[DOMAIN — operator-supplied]/">
 
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="European Union · Official Federal Data & Policy Archive" />
-    <meta name="twitter:description" content="Explore official European Union demographic metrics, 100% real geographic vector mapping, and constitutional policy directives." />
+  <!-- Canonical -->
+  <link rel="canonical" href="https://[DOMAIN — operator-supplied]/">
 
-    <!-- Google Fonts: Newsreader (Warm Editorial Serif), Sora (Sans-Serif), JetBrains Mono -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+  <!-- Theme persistence — inlined to prevent FOUC -->
+  <script>
+    (function(){
+      var saved = localStorage.getItem('fve-theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (prefersDark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="./src/styles/tokens.css">
+  <link rel="stylesheet" href="./src/styles/typography.css">
+  <link rel="stylesheet" href="./src/styles/main.css">
+  <link rel="stylesheet" href="./src/styles/components.css">
+</head>
+<body>
+
+  <!-- Skip link for keyboard accessibility -->
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- ===== SITE HEADER ===== -->
+  <header class="site-header" role="banner">
+    <div class="site-header__inner">
+      <a class="site-header__wordmark" href="/" aria-label="[SITE TITLE] — Home">
+        <!-- [PLACEHOLDER — operator wordmark or typographic title] -->
+        Federal Vision
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <ul class="site-nav__list" role="list">
+          <li><a class="site-nav__link" href="/">Home</a></li>
+          <li><a class="site-nav__link" href="/the-case.html">The Case</a></li>
+          <li><a class="site-nav__link" href="/archive.html">Archive</a></li>
+          <li><a class="site-nav__link" href="/data-room.html">Data Room</a></li>
+          <li><a class="site-nav__link" href="/sources.html">Sources</a></li>
+          <li><a class="site-nav__link" href="/colophon.html">Colophon</a></li>
+        </ul>
+        <button class="dark-toggle" aria-label="Toggle dark mode" aria-pressed="false">Dark</button>
+        <button class="nav-toggle" aria-label="Open navigation menu">☰</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main id="main-content">
+
+    <!-- ===== HOME MASTHEAD ===== -->
+    <section class="page-masthead" aria-labelledby="home-title">
+      <div class="container">
+        <div class="page-masthead__overline">
+          <time datetime="2024">Est. 2024</time> &mdash; An independent editorial project
+        </div>
+        <h1 class="page-masthead__title" id="home-title">
+          <!-- [PLACEHOLDER — operator site title] -->
+          A Federal Vision<br>for Europe
+        </h1>
+        <p class="page-masthead__deck">
+          <!-- [PLACEHOLDER — operator one-paragraph thesis statement.
+               Do not invent this. See §7 of the build brief.
+               The following is structural scaffold only.] -->
+          The European Union has achieved remarkable things through intergovernmental
+          cooperation. But the challenges of the twenty-first century — climate, defence,
+          economic stability, and democratic legitimacy — require more than coordination.
+          They require a union capable of acting as one.
+        </p>
+        <p class="placeholder-banner">
+          Thesis statement — operator to supply final text. See BUILD_NOTES.md §1.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== LEAD MAP ===== -->
+    <section class="section" aria-labelledby="map-heading">
+      <div class="container">
+        <span class="section-label">The Union Today</span>
+        <h2 id="map-heading" style="font-size: var(--text-2xl); margin-bottom: var(--space-6);">
+          Twenty-seven member states. One political question.
+        </h2>
+        <figure class="map-figure" aria-label="Map of Europe showing the 27 EU member states">
+          <div class="map-wrapper" id="home-map" style="min-height: 380px;">
+            <!-- D3 map rendered by map.js -->
+            <noscript>
+              <p style="padding: 2rem; color: var(--text-secondary);">
+                An interactive map of Europe is displayed here, showing the 27 EU member states.
+                JavaScript is required to render the map.
+              </p>
+            </noscript>
+          </div>
+          <figcaption>
+            EU member states (highlighted) and neighbouring non-member countries.
+            Projection: Azimuthal Equal Area, approximating <abbr title="European Terrestrial Reference System 1989 / Lambert Azimuthal Equal Area">ETRS89-LAEA</abbr> (EPSG:3035).
+            Boundaries: <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a>, 110m, public domain.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===== ENTRY POINTS ===== -->
+    <section class="section" aria-labelledby="sections-heading">
+      <div class="container">
+        <h2 id="sections-heading" class="section-label" style="font-size: var(--text-xs);">
+          Contents
+        </h2>
+        <nav class="entry-grid" aria-label="Site sections">
+          <a class="entry-card" href="/the-case.html">
+            <span class="entry-card__num">01</span>
+            <span class="entry-card__title">The Case</span>
+            <span class="entry-card__excerpt">
+              The argument for a federal Europe — historical, economic, democratic, and security rationale in one continuous essay. With an "Objections &amp; Responses" subsection addressing the strongest counterarguments.
+            </span>
+            <span class="entry-card__arrow">&rarr;</span>
+          </a>
+          <a class="entry-card" href="/archive.html">
+            <span class="entry-card__num">02</span>
+            <span class="entry-card__title">Archive</span>
+            <span class="entry-card__excerpt">
+              A chronological, citation-backed timeline of European federalist thought and integration: from Ventotene (1941) and the Schuman Declaration (1950) to the Conference on the Future of Europe (2022).
+            </span>
+            <span class="entry-card__arrow">&rarr;</span>
+          </a>
+          <a class="entry-card" href="/data-room.html">
+            <span class="entry-card__num">03</span>
+            <span class="entry-card__title">Data Room</span>
+            <span class="entry-card__excerpt">
+              Real, sourced visualisations: Eurobarometer support over time, member-state GDP fragmentation, defence spending across the union. Every chart cites its dataset and vintage.
+            </span>
+            <span class="entry-card__arrow">&rarr;</span>
+          </a>
+          <a class="entry-card" href="/sources.html">
+            <span class="entry-card__num">04</span>
+            <span class="entry-card__title">Sources</span>
+            <span class="entry-card__excerpt">
+              A real bibliography: primary treaty texts from EUR-Lex, Eurostat and Eurobarometer datasets with direct URLs, and named scholarly works on comparative federalism and European integration.
+            </span>
+            <span class="entry-card__arrow">&rarr;</span>
+          </a>
+          <a class="entry-card" href="/colophon.html">
+            <span class="entry-card__num">05</span>
+            <span class="entry-card__title">Colophon</span>
+            <span class="entry-card__excerpt">
+              Who built this, methodology, typefaces and data sources used. A colophon is itself a signal of serious publication intent — most marketing sites skip it; archives and newspapers don't.
+            </span>
+            <span class="entry-card__arrow">&rarr;</span>
+          </a>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ===== SINGLE STAT HIGHLIGHT ===== -->
+    <section class="section" aria-labelledby="stat-heading" style="background: var(--paper-mid); border-top: var(--border-hairline); border-bottom: var(--border-hairline);">
+      <div class="container--narrow">
+        <div class="stat-block" aria-labelledby="stat-heading">
+          <span class="stat-block__number">62%</span>
+          <p class="stat-block__label" id="stat-heading">
+            of EU citizens in Spring 2024 said they were favourable towards
+            efforts to further unify EU member states politically.
+          </p>
+          <span class="stat-block__source">
+            Source: Standard Eurobarometer 101, Spring 2024.
+            <cite class="citation-ref">
+              <button class="citation-ref__trigger" data-cite-id="eb101">1</button>
+              <div class="citation-popover" id="popover-eb101" role="dialog" aria-modal="true" aria-label="Citation: Eurobarometer 101"></div>
+            </cite>
+          </span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== SITE FOOTER ===== -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="site-footer__inner">
+      <div>
+        <a class="site-footer__wordmark" href="/">Federal Vision</a>
+        <p class="site-footer__meta">
+          An independent editorial project. Not an EU institution.<br>
+          <!-- [PLACEHOLDER — operator legal/contact line] -->
+          &copy; <time datetime="2024">2024</time>
+          [SITE TITLE / OPERATOR NAME — see BUILD_NOTES.md]
+        </p>
+      </div>
+      <nav class="site-footer__nav" aria-label="Footer navigation">
+        <a href="/the-case.html">The Case</a>
+        <a href="/archive.html">Archive</a>
+        <a href="/data-room.html">Data Room</a>
+        <a href="/sources.html">Sources</a>
+        <a href="/colophon.html">Colophon</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script type="module">
+    import { initNav } from './src/js/nav.js';
+    import { initCitations, registerCitations } from './src/js/citations.js';
+    import { renderEuropeMap } from './src/js/map.js';
+
+    // Citation data for this page
+    registerCitations({
+      'eb101': {
+        num: 1,
+        author: 'European Commission',
+        title: 'Standard Eurobarometer 101: Spring 2024',
+        year: 2024,
+        publisher: 'European Commission / DG Communication',
+        url: 'https://europa.eu/eurobarometer/surveys/detail/3202'
+      }
+    });
+
+    initNav();
+    initCitations();
+
+    // Render the Europe map
+    renderEuropeMap('#home-map', { width: document.querySelector('#home-map').clientWidth });
+  </script>
+
+</body>
 </html>

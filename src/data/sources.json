@@ -1,0 +1,167 @@
+[
+  {
+    "id": "eurobarometer-standard-autumn-2023",
+    "type": "data",
+    "shortTitle": "Eurobarometer 100 — Autumn 2023",
+    "author": "European Commission",
+    "title": "Standard Eurobarometer 100: Autumn 2023",
+    "year": 2023,
+    "publisher": "European Commission / Directorate-General for Communication",
+    "url": "https://europa.eu/eurobarometer/surveys/detail/3052",
+    "notes": "Biannual survey of EU citizens' attitudes; includes time-series data on trust in EU institutions and support for EU-level decision-making."
+  },
+  {
+    "id": "eurobarometer-standard-spring-2024",
+    "type": "data",
+    "shortTitle": "Eurobarometer 101 — Spring 2024",
+    "author": "European Commission",
+    "title": "Standard Eurobarometer 101: Spring 2024",
+    "year": 2024,
+    "publisher": "European Commission / Directorate-General for Communication",
+    "url": "https://europa.eu/eurobarometer/surveys/detail/3202",
+    "notes": "Latest available wave at time of build. Data Room charts cite this vintage."
+  },
+  {
+    "id": "eurostat-gdp-2022",
+    "type": "data",
+    "shortTitle": "Eurostat — GDP at market prices, 2022",
+    "author": "Eurostat",
+    "title": "Gross domestic product (GDP) at market prices — nama_10_gdp",
+    "year": 2023,
+    "publisher": "Eurostat",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/nama_10_gdp/default/table?lang=en",
+    "notes": "Used for member-state GDP share visualisation in the Data Room."
+  },
+  {
+    "id": "sipri-military-2023",
+    "type": "data",
+    "shortTitle": "SIPRI Military Expenditure Database 2023",
+    "author": "Stockholm International Peace Research Institute",
+    "title": "SIPRI Military Expenditure Database",
+    "year": 2024,
+    "publisher": "SIPRI",
+    "url": "https://www.sipri.org/databases/milex",
+    "notes": "Annual defence-spending data by country used in the defence-fragmentation chart."
+  },
+  {
+    "id": "burgess-comparative-federalism",
+    "type": "scholarly",
+    "shortTitle": "Burgess — Comparative Federalism (2006)",
+    "author": "Michael Burgess",
+    "title": "Comparative Federalism: Theory and Practice",
+    "year": 2006,
+    "publisher": "Routledge",
+    "url": "https://www.routledge.com/Comparative-Federalism-Theory-and-Practice/Burgess/p/book/9780415364997",
+    "notes": "Standard comparative federalism text; chapter 8 addresses European federalism."
+  },
+  {
+    "id": "duff-federal-union",
+    "type": "scholarly",
+    "shortTitle": "Duff — On European Federalism (2011)",
+    "author": "Andrew Duff",
+    "title": "On European Federalism: What the Leaders Think",
+    "year": 2011,
+    "publisher": "European Policy Centre / Federal Trust",
+    "url": "https://www.epc.eu/en/Publications/On-European-Federalism~3caa5f",
+    "notes": "Policy paper by the Liberal MEP who co-drafted the Spinelli Group's Fundamental Law."
+  },
+  {
+    "id": "verhofstadt-united-states-europe",
+    "type": "scholarly",
+    "shortTitle": "Verhofstadt — The United States of Europe (2006)",
+    "author": "Guy Verhofstadt",
+    "title": "The United States of Europe",
+    "year": 2006,
+    "publisher": "Federal Trust for Education and Research",
+    "url": "https://www.federal-trust.co.uk/",
+    "notes": "Verhofstadt's case for a European federation, republished in updated editions."
+  },
+  {
+    "id": "delors-institute-renewing-eu",
+    "type": "policy",
+    "shortTitle": "Jacques Delors Institute — renewing the EU (2022)",
+    "author": "Jacques Delors Institute",
+    "title": "Renewing the European Union: Proposals for a New Architecture",
+    "year": 2022,
+    "publisher": "Institut Jacques Delors",
+    "url": "https://www.delorsinstitute.eu/",
+    "notes": "Think-tank founded by, and honouring the legacy of, Jacques Delors, the Commission president most associated with the Single Market and Maastricht."
+  },
+  {
+    "id": "bruegel-eu-foreign-policy",
+    "type": "policy",
+    "shortTitle": "Bruegel — EU Foreign and Security Policy (2023)",
+    "author": "Bruegel",
+    "title": "European foreign and security policy: A new EU competence?",
+    "year": 2023,
+    "publisher": "Bruegel",
+    "url": "https://www.bruegel.org/",
+    "notes": "Brussels-based economics think tank; regular publisher on EU institutional reform."
+  },
+  {
+    "id": "jcms-journal",
+    "type": "journal",
+    "shortTitle": "Journal of Common Market Studies",
+    "author": "Various",
+    "title": "Journal of Common Market Studies",
+    "year": 2024,
+    "publisher": "Wiley / University Association for Contemporary European Studies",
+    "url": "https://onlinelibrary.wiley.com/journal/14685965",
+    "notes": "Leading peer-reviewed journal for EU studies. Relevant special issues on federalism and institutional reform."
+  },
+  {
+    "id": "treaty-rome-eur-lex",
+    "type": "treaty",
+    "shortTitle": "Treaty of Rome (1957) — EUR-Lex",
+    "author": "European Communities",
+    "title": "Treaty Establishing the European Economic Community",
+    "year": 1957,
+    "publisher": "EUR-Lex",
+    "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A11957E%2FTXT",
+    "notes": "Consolidated text."
+  },
+  {
+    "id": "treaty-maastricht-eur-lex",
+    "type": "treaty",
+    "shortTitle": "Treaty on European Union (1992) — EUR-Lex",
+    "author": "European Communities",
+    "title": "Treaty on European Union (Maastricht Treaty)",
+    "year": 1992,
+    "publisher": "EUR-Lex",
+    "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A11992M%2FTXT",
+    "notes": "Original 1992 text. For consolidated version see EUR-Lex C 202/1."
+  },
+  {
+    "id": "treaty-lisbon-eur-lex",
+    "type": "treaty",
+    "shortTitle": "Treaty of Lisbon (2007) — EUR-Lex",
+    "author": "European Union",
+    "title": "Treaty of Lisbon",
+    "year": 2007,
+    "publisher": "EUR-Lex",
+    "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A12007L%2FTXT",
+    "notes": "Amending the TEU and TFEU; in force 1 December 2009."
+  },
+  {
+    "id": "ventotene-cvce",
+    "type": "primary",
+    "shortTitle": "Ventotene Manifesto (1941) — CVCE",
+    "author": "Altiero Spinelli and Ernesto Rossi",
+    "title": "For a Free and United Europe: A Draft Manifesto",
+    "year": 1941,
+    "publisher": "CVCE.eu / European University Institute",
+    "url": "https://www.cvce.eu/en/obj/the_ventotene_manifesto_1941-en-5ada4b99-7445-492f-9fad-7ebeb5f2a8b4.html",
+    "notes": "Archival scan and translation available at CVCE.eu."
+  },
+  {
+    "id": "schuman-declaration",
+    "type": "primary",
+    "shortTitle": "Schuman Declaration (1950)",
+    "author": "Robert Schuman",
+    "title": "Declaration of 9 May 1950",
+    "year": 1950,
+    "publisher": "European Commission",
+    "url": "https://european-union.europa.eu/principles-countries-history/history-eu/1945-59/schuman-declaration-may-1950_en",
+    "notes": "Original French and English translation."
+  }
+]

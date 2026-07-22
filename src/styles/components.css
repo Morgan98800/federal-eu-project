@@ -1,0 +1,807 @@
+/* ==========================================================================
+   COMPONENTS — Federal Vision for Europe
+   Citation popovers, hover-cards, accordion, breadcrumbs, pagination,
+   focus rings, timeline, data cards, stat highlights
+   ========================================================================== */
+
+/* ==========================================================================
+   1. CITATION SYSTEM
+   Superscript numerals → inline popover with author/title/year/link.
+   Keyboard accessible: Tab to focus, Enter/Space to open, Escape to close.
+   ========================================================================== */
+
+.citation-ref {
+  position:       relative;
+  display:        inline;
+}
+
+.citation-ref__trigger {
+  font-family:     var(--font-mono);
+  font-size:       0.65em;
+  font-weight:     500;
+  vertical-align:  super;
+  line-height:     1;
+  color:           var(--accent-bronze);
+  background:      none;
+  border:          none;
+  border-bottom:   1px solid var(--accent-bronze);
+  padding:         0 1px;
+  cursor:          pointer;
+  text-decoration: none;
+  transition:      color var(--transition-fast);
+}
+
+.citation-ref__trigger:hover,
+.citation-ref__trigger:focus-visible {
+  color: var(--ink-navy);
+}
+
+.citation-ref__trigger:focus-visible {
+  outline:        2px solid var(--accent-bronze);
+  outline-offset: 2px;
+  border-radius:  1px;
+}
+
+.citation-popover {
+  display:       none;
+  position:      absolute;
+  bottom:        calc(100% + var(--space-2));
+  left:          50%;
+  transform:     translateX(-50%);
+  z-index:       200;
+  min-width:     280px;
+  max-width:     380px;
+  background:    var(--paper);
+  border:        1px solid var(--rule-grey);
+  border-left:   3px solid var(--accent-bronze);
+  padding:       var(--space-4) var(--space-5);
+  box-shadow:    var(--shadow-sm);
+}
+
+.citation-popover.open {
+  display: block;
+}
+
+.citation-popover__num {
+  font-family:    var(--font-mono);
+  font-size:      var(--text-xs);
+  color:          var(--accent-bronze);
+  display:        block;
+  margin-bottom:  var(--space-2);
+}
+
+.citation-popover__title {
+  font-family:  var(--font-display);
+  font-size:    var(--text-sm);
+  font-weight:  600;
+  color:        var(--ink-navy);
+  line-height:  var(--leading-snug);
+  margin-bottom: var(--space-2);
+}
+
+.citation-popover__meta {
+  font-family: var(--font-body);
+  font-size:   var(--text-xs);
+  color:       var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+.citation-popover__link {
+  display:        block;
+  margin-top:     var(--space-3);
+  font-size:      var(--text-xs);
+  font-family:    var(--font-mono);
+  color:          var(--accent-bronze);
+  text-decoration: none;
+  word-break:     break-all;
+}
+
+.citation-popover__link:hover {
+  text-decoration: underline;
+}
+
+.citation-popover__link::after { content: none; }
+
+.citation-popover__close {
+  position:   absolute;
+  top:        var(--space-2);
+  right:      var(--space-3);
+  background: none;
+  border:     none;
+  font-size:  var(--text-base);
+  color:      var(--text-tertiary);
+  cursor:     pointer;
+  line-height: 1;
+  padding:    2px 4px;
+}
+
+.citation-popover__close:hover { color: var(--ink-navy); }
+.citation-popover__close:focus-visible {
+  outline:        2px solid var(--accent-bronze);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   2. HOVER CARD — inline glossary definitions
+   First mention of key terms (subsidiarity, Spinelli Group, etc.)
+   ========================================================================== */
+
+.hover-term {
+  position:       relative;
+  cursor:         help;
+  border-bottom:  1px dashed var(--rule-grey);
+  text-decoration: none;
+  color:          inherit;
+}
+
+.hover-term::after { content: none; }
+
+.hover-card {
+  display:     none;
+  position:    absolute;
+  bottom:      calc(100% + var(--space-3));
+  left:        0;
+  z-index:     150;
+  min-width:   240px;
+  max-width:   320px;
+  background:  var(--paper);
+  border:      1px solid var(--rule-grey);
+  padding:     var(--space-4);
+  box-shadow:  var(--shadow-sm);
+}
+
+.hover-term:hover .hover-card,
+.hover-term:focus-visible .hover-card {
+  display: block;
+}
+
+.hover-card__term {
+  font-family:   var(--font-body);
+  font-size:     var(--text-xs);
+  font-weight:   600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color:         var(--accent-bronze);
+  display:       block;
+  margin-bottom: var(--space-2);
+}
+
+.hover-card__def {
+  font-family: var(--font-body);
+  font-size:   var(--text-sm);
+  color:       var(--ink-navy);
+  line-height: var(--leading-relaxed);
+}
+
+/* ==========================================================================
+   3. ACCORDION / DISCLOSURE
+   Used for "Objections & Responses" and expandable footnote groups.
+   Uses native <details>/<summary>; JS only smooths animation.
+   ========================================================================== */
+
+.accordion {
+  border-top: var(--border-hairline);
+  margin-block: var(--space-8);
+}
+
+details.accordion-item {
+  border-bottom: var(--border-hairline);
+}
+
+summary.accordion-item__trigger {
+  display:          flex;
+  align-items:      center;
+  justify-content:  space-between;
+  padding-block:    var(--space-5);
+  cursor:           pointer;
+  list-style:       none;
+  font-family:      var(--font-body);
+  font-size:        var(--text-base);
+  font-weight:      500;
+  color:            var(--ink-navy);
+  user-select:      none;
+}
+
+summary.accordion-item__trigger::-webkit-details-marker { display: none; }
+
+summary.accordion-item__trigger::after {
+  content:    "+";
+  font-family: var(--font-mono);
+  font-size:   var(--text-lg);
+  color:       var(--accent-bronze);
+  transition:  transform var(--transition-base);
+  flex-shrink: 0;
+}
+
+details[open] summary.accordion-item__trigger::after {
+  transform: rotate(45deg);
+}
+
+summary.accordion-item__trigger:focus-visible {
+  outline:        2px solid var(--accent-bronze);
+  outline-offset: 2px;
+}
+
+.accordion-item__body {
+  padding-bottom: var(--space-6);
+  max-width:      var(--measure);
+}
+
+.accordion-item__body p {
+  font-size:   var(--text-base);
+  color:       var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+/* ==========================================================================
+   4. BREADCRUMBS — Archive section
+   ========================================================================== */
+
+.breadcrumb {
+  display:       flex;
+  align-items:   center;
+  gap:           var(--space-2);
+  font-family:   var(--font-mono);
+  font-size:     var(--text-xs);
+  color:         var(--text-tertiary);
+  margin-bottom: var(--space-6);
+}
+
+.breadcrumb a {
+  color:          var(--text-tertiary);
+  text-decoration: none;
+}
+
+.breadcrumb a::after { content: none; }
+
+.breadcrumb a:hover { color: var(--accent-bronze); }
+
+.breadcrumb__separator {
+  color: var(--rule-grey);
+  user-select: none;
+}
+
+.breadcrumb__current {
+  color: var(--ink-navy);
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   5. PAGINATION — Archive & Sources
+   ========================================================================== */
+
+.pagination {
+  display:       flex;
+  align-items:   center;
+  gap:           var(--space-2);
+  margin-top:    var(--space-12);
+  padding-top:   var(--space-8);
+  border-top:    var(--border-hairline);
+  font-family:   var(--font-mono);
+  font-size:     var(--text-sm);
+}
+
+.pagination__btn {
+  background:  none;
+  border:      1px solid var(--rule-grey);
+  padding:     var(--space-2) var(--space-4);
+  color:       var(--ink-navy);
+  cursor:      pointer;
+  font-family: var(--font-mono);
+  font-size:   var(--text-xs);
+  transition:  border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.pagination__btn:hover:not(:disabled) {
+  border-color: var(--ink-navy);
+}
+
+.pagination__btn:disabled {
+  opacity: 0.4;
+  cursor:  not-allowed;
+}
+
+.pagination__btn:focus-visible {
+  outline:        2px solid var(--accent-bronze);
+  outline-offset: 2px;
+}
+
+.pagination__pages {
+  display:     flex;
+  gap:         var(--space-1);
+  align-items: center;
+}
+
+.pagination__page {
+  width:       2rem;
+  height:      2rem;
+  display:     flex;
+  align-items: center;
+  justify-content: center;
+  border:      1px solid transparent;
+  background:  none;
+  font-family: var(--font-mono);
+  font-size:   var(--text-xs);
+  color:       var(--text-secondary);
+  cursor:      pointer;
+  transition:  all var(--transition-fast);
+}
+
+.pagination__page.active {
+  background:   var(--ink-navy);
+  color:        var(--paper);
+  border-color: var(--ink-navy);
+}
+
+.pagination__page:hover:not(.active) {
+  border-color: var(--rule-grey);
+  color:        var(--ink-navy);
+}
+
+.pagination__page:focus-visible {
+  outline:        2px solid var(--accent-bronze);
+  outline-offset: 2px;
+}
+
+.pagination__info {
+  margin-left: auto;
+  color:       var(--text-tertiary);
+  font-size:   var(--text-xs);
+}
+
+/* ==========================================================================
+   6. TIMELINE — Archive section
+   ========================================================================== */
+
+.timeline {
+  position:   relative;
+  padding-left: var(--space-8);
+}
+
+.timeline::before {
+  content:    "";
+  position:   absolute;
+  left:       0;
+  top:        0;
+  bottom:     0;
+  width:      1px;
+  background: var(--rule-grey);
+}
+
+.timeline-entry {
+  position:     relative;
+  padding-block: var(--space-8);
+  border-bottom: var(--border-hairline);
+}
+
+.timeline-entry::before {
+  content:    "";
+  position:   absolute;
+  left:       calc(var(--space-8) * -1 - 4px);
+  top:        var(--space-10);
+  width:      9px;
+  height:     9px;
+  border-radius: 50%;
+  background: var(--rule-grey);
+  border:     2px solid var(--paper);
+}
+
+.timeline-entry.featured::before {
+  background:  var(--accent-bronze);
+  width:       13px;
+  height:      13px;
+  left:        calc(var(--space-8) * -1 - 6px);
+}
+
+.timeline-entry__date {
+  font-family:    var(--font-mono);
+  font-size:      var(--text-xs);
+  font-weight:    500;
+  color:          var(--accent-bronze);
+  letter-spacing: var(--tracking-wide);
+  margin-bottom:  var(--space-2);
+  display:        block;
+}
+
+.timeline-entry__title {
+  font-family:   var(--font-display);
+  font-size:     var(--text-xl);
+  font-weight:   600;
+  color:         var(--ink-navy);
+  margin-bottom: var(--space-3);
+  line-height:   var(--leading-snug);
+}
+
+.timeline-entry__body {
+  font-size:   var(--text-base);
+  color:       var(--text-secondary);
+  line-height: var(--leading-relaxed);
+  max-width:   var(--measure);
+  margin-bottom: var(--space-4);
+}
+
+.timeline-entry__source {
+  font-family: var(--font-mono);
+  font-size:   var(--text-xs);
+  color:       var(--text-tertiary);
+}
+
+.timeline-entry__source a {
+  color:          var(--text-tertiary);
+  text-decoration: underline;
+  text-decoration-color: var(--rule-grey);
+}
+
+.timeline-entry__source a:hover {
+  color: var(--accent-bronze);
+}
+
+/* ==========================================================================
+   7. STAT HIGHLIGHT — single per-page statistic emphasis
+   ========================================================================== */
+
+.stat-block {
+  padding:      var(--space-8);
+  border-left:  4px solid var(--accent-bronze);
+  background:   var(--paper-mid);
+  margin-block: var(--space-10);
+  max-width:    36ch;
+}
+
+.stat-block__number {
+  font-family:   var(--font-display);
+  font-size:     clamp(var(--text-3xl), 6vw, var(--text-5xl));
+  font-weight:   700;
+  color:         var(--ink-navy);
+  line-height:   1;
+  display:       block;
+  margin-bottom: var(--space-2);
+}
+
+.stat-block__label {
+  font-family: var(--font-body);
+  font-size:   var(--text-sm);
+  color:       var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+.stat-block__source {
+  font-family: var(--font-mono);
+  font-size:   var(--text-xs);
+  color:       var(--text-tertiary);
+  margin-top:  var(--space-3);
+  display:     block;
+}
+
+/* ==========================================================================
+   8. HOME PAGE — Entry point cards (not bento, not carousel)
+   ========================================================================== */
+
+.entry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: var(--space-1);
+  margin-top: var(--space-12);
+  border: var(--border-hairline);
+}
+
+.entry-card {
+  padding:      var(--space-8);
+  border-right: var(--border-hairline);
+  text-decoration: none;
+  color:        inherit;
+  display:      flex;
+  flex-direction: column;
+  gap:          var(--space-4);
+  transition:   background var(--transition-fast);
+}
+
+.entry-card:last-child { border-right: none; }
+
+.entry-card:hover {
+  background: var(--paper-mid);
+}
+
+.entry-card:focus-visible {
+  outline:        2px solid var(--accent-bronze);
+  outline-offset: -2px;
+}
+
+.entry-card::after { content: none; }
+
+.entry-card__num {
+  font-family:    var(--font-mono);
+  font-size:      var(--text-xs);
+  color:          var(--accent-bronze);
+  letter-spacing: var(--tracking-widest);
+}
+
+.entry-card__title {
+  font-family: var(--font-display);
+  font-size:   var(--text-xl);
+  font-weight: 600;
+  color:       var(--ink-navy);
+  line-height: var(--leading-snug);
+}
+
+.entry-card__excerpt {
+  font-size:        var(--text-sm);
+  color:            var(--text-secondary);
+  line-height:      var(--leading-relaxed);
+  /* Line-clamp for excerpt previews (§9 of brief) */
+  display:          -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow:         hidden;
+}
+
+.entry-card__arrow {
+  font-family: var(--font-mono);
+  font-size:   var(--text-sm);
+  color:       var(--accent-bronze);
+  margin-top:  auto;
+}
+
+/* ==========================================================================
+   9. DATA ROOM — chart figure wrapper
+   ========================================================================== */
+
+.chart-figure {
+  margin-block: var(--space-12);
+}
+
+.chart-figure__heading {
+  font-family:   var(--font-body);
+  font-size:     var(--text-sm);
+  font-weight:   600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color:         var(--text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.chart-wrapper {
+  background:  var(--paper-mid);
+  border:      var(--border-hairline);
+  padding:     var(--space-6);
+  overflow-x:  auto;
+}
+
+.chart-figure figcaption {
+  margin-top:  var(--space-4);
+  padding-top: var(--space-3);
+  border-top:  var(--border-hairline);
+}
+
+/* ==========================================================================
+   10. BIBLIOGRAPHY / SOURCES — definition-list layout
+   ========================================================================== */
+
+.bibliography {
+  margin-block: var(--space-8);
+}
+
+.bib-entry {
+  display:       grid;
+  grid-template-columns: 3rem 1fr;
+  gap:           var(--space-4);
+  padding-block: var(--space-6);
+  border-bottom: var(--border-hairline);
+  align-items:   baseline;
+}
+
+.bib-entry__num {
+  font-family:    var(--font-mono);
+  font-size:      var(--text-xs);
+  color:          var(--accent-bronze);
+  font-weight:    500;
+  padding-top:    0.2em;
+}
+
+.bib-entry__content {
+  line-height: var(--leading-relaxed);
+}
+
+.bib-entry__author {
+  font-family: var(--font-body);
+  font-size:   var(--text-base);
+  font-weight: 500;
+  color:       var(--ink-navy);
+}
+
+.bib-entry__title {
+  font-family: var(--font-display);
+  font-size:   var(--text-base);
+  font-style:  italic;
+  color:       var(--ink-navy);
+}
+
+.bib-entry__meta {
+  font-family: var(--font-body);
+  font-size:   var(--text-sm);
+  color:       var(--text-secondary);
+}
+
+.bib-entry__url {
+  font-family: var(--font-mono);
+  font-size:   var(--text-xs);
+  color:       var(--text-tertiary);
+  word-break:  break-all;
+}
+
+/* Source type tags */
+.source-tag {
+  display:        inline-block;
+  font-family:    var(--font-mono);
+  font-size:      var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color:          var(--paper);
+  background:     var(--ink-navy);
+  padding:        1px var(--space-2);
+  border-radius:  var(--radius-sm);
+  margin-left:    var(--space-2);
+  vertical-align: middle;
+}
+
+.source-tag--treaty  { background: var(--ink-navy); }
+.source-tag--data    { background: var(--accent-bronze); color: var(--ink-navy); }
+.source-tag--scholarly { background: var(--text-secondary); }
+
+/* ==========================================================================
+   11. MAP FIGURE — static SVG atlas style
+   ========================================================================== */
+
+.map-figure {
+  margin-block: var(--space-10);
+}
+
+.map-wrapper {
+  background:   var(--paper-mid);
+  border:       var(--border-hairline);
+  overflow:     hidden;
+}
+
+.map-wrapper svg {
+  width:  100%;
+  height: auto;
+  display: block;
+}
+
+.map-wrapper svg path {
+  fill:         #C9C2B2; /* --rule-grey tone for land */
+  stroke:       var(--paper);
+  stroke-width: 0.5;
+  transition:   fill var(--transition-fast);
+}
+
+.map-wrapper svg path.eu-member {
+  fill: #8FA8C4; /* Muted blue-grey for EU members */
+}
+
+.map-wrapper svg path.highlighted {
+  fill: var(--accent-bronze);
+}
+
+/* ==========================================================================
+   12. CORRECTION / NEEDS-SOURCE INDICATOR
+   ========================================================================== */
+
+.needs-source {
+  background: rgba(140, 44, 51, 0.08);
+  border-left: 3px solid var(--signal-red);
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--signal-red);
+  margin-block: var(--space-4);
+  display: block;
+}
+
+/* ==========================================================================
+   13. PLACEHOLDER BANNER — visible in dev, hidden in production
+   ========================================================================== */
+
+.placeholder-banner {
+  background: rgba(140, 44, 51, 0.06);
+  border:     2px dashed var(--signal-red);
+  padding:    var(--space-4) var(--space-6);
+  margin-block: var(--space-6);
+  color:      var(--signal-red);
+  font-family: var(--font-mono);
+  font-size:  var(--text-sm);
+}
+
+.placeholder-banner::before {
+  content:        "PLACEHOLDER — ";
+  font-weight:    700;
+  letter-spacing: var(--tracking-wide);
+}
+
+/* ==========================================================================
+   14. TABLE — for data/treaty tables
+   ========================================================================== */
+
+.data-table {
+  width:         100%;
+  border-collapse: collapse;
+  font-size:     var(--text-sm);
+  margin-block:  var(--space-8);
+}
+
+.data-table th {
+  font-family:    var(--font-body);
+  font-size:      var(--text-xs);
+  font-weight:    600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color:          var(--text-secondary);
+  text-align:     left;
+  padding:        var(--space-3) var(--space-4);
+  border-bottom:  var(--border-rule);
+}
+
+.data-table td {
+  font-family:  var(--font-body);
+  padding:      var(--space-3) var(--space-4);
+  border-bottom: var(--border-hairline);
+  vertical-align: top;
+  line-height:  var(--leading-relaxed);
+}
+
+.data-table td:first-child {
+  font-family: var(--font-mono);
+  font-size:   var(--text-xs);
+  color:       var(--text-tertiary);
+  white-space: nowrap;
+}
+
+.data-table tr:last-child td { border-bottom: none; }
+
+/* ==========================================================================
+   15. FOCUS RING (global)
+   Bronze/ink — never removed, never the browser default blue.
+   ========================================================================== */
+
+:focus-visible {
+  outline:        2px solid var(--accent-bronze);
+  outline-offset: 3px;
+  border-radius:  var(--radius-sm);
+}
+
+/* Skip link */
+.skip-link {
+  position:   absolute;
+  top:        -100%;
+  left:       var(--space-4);
+  z-index:    1000;
+  background: var(--ink-navy);
+  color:      var(--paper);
+  padding:    var(--space-3) var(--space-6);
+  font-family: var(--font-body);
+  font-size:  var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: var(--space-4);
+}
+
+.skip-link::after { content: none; }
+
+@media (max-width: 48rem) {
+  .entry-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .entry-card {
+    border-right: none;
+    border-bottom: var(--border-hairline);
+  }
+
+  .bib-entry {
+    grid-template-columns: 2rem 1fr;
+    gap: var(--space-3);
+  }
+}

@@ -1,0 +1,77 @@
+/* ==========================================================================
+   DESIGN SYSTEM TOKENS — Federal Vision for Europe
+   §4.1 of the build brief
+   ==========================================================================
+   Palette is a deliberately de-saturated / aged descendant of the EU flag
+   palette. Do NOT use #003399 (Reflex Blue) or #FFCC00 (EU Yellow) directly.
+   This is an independent editorial project, not an EU institution.
+   ========================================================================== */
+
+:root {
+  /* --- Colour tokens --- */
+  --ink-navy:       #0B1F3A; /* Body text, headers, rules. Archival "ink." */
+  --accent-bronze:  #B9942F; /* Section marks, pull-quote glyph, single stat highlight per page. Evokes a state seal. */
+  --paper:          #F6F3EA; /* Page background. Warm archive-paper tone. */
+  --paper-mid:      #EDE9DC; /* Slightly deeper paper, for inset sections. */
+  --paper-dark:     #111417; /* Dark-mode background. Near-black, not pure black. */
+  --signal-red:     #8C2C33; /* Corrections, single flagged statistic, external-link marker. Used sparingly (<1% of page). */
+  --rule-grey:      #C9C2B2; /* Hairlines, table borders. */
+  --text-secondary: #4A5568; /* Secondary body text, captions. */
+  --text-tertiary:  #6B7280; /* Footnotes, timestamps, metadata. */
+
+  /* --- Spacing scale (8px base) --- */
+  --space-1:  0.25rem;  /* 4px  */
+  --space-2:  0.5rem;   /* 8px  */
+  --space-3:  0.75rem;  /* 12px */
+  --space-4:  1rem;     /* 16px */
+  --space-5:  1.25rem;  /* 20px */
+  --space-6:  1.5rem;   /* 24px */
+  --space-8:  2rem;     /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+
+  /* --- Border --- */
+  --border-hairline: 1px solid var(--rule-grey);
+  --border-rule:     2px solid var(--ink-navy);
+  --border-accent:   2px solid var(--accent-bronze);
+
+  /* --- Border radius (restrained — no rounded-everything) --- */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+
+  /* --- Shadows (minimal — archival, not elevated-card) --- */
+  --shadow-sm: 0 1px 3px rgba(11, 31, 58, 0.08);
+
+  /* --- Transitions --- */
+  --transition-fast: 120ms ease;
+  --transition-base: 200ms ease;
+
+  /* --- Layout --- */
+  --max-content:  72ch;   /* Reading measure cap */
+  --max-wide:     90rem;  /* Site max-width */
+  --header-height: 3rem;
+}
+
+/* Dark mode tokens — applied via @media or .dark class */
+[data-theme="dark"] {
+  --ink-navy:       #E8E4D9; /* Reversed: light text on dark */
+  --paper:          #111417;
+  --paper-mid:      #1A1E22;
+  --rule-grey:      #3A3830;
+  --text-secondary: #A09888;
+  --text-tertiary:  #6E6658;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink-navy:       #E8E4D9;
+    --paper:          #111417;
+    --paper-mid:      #1A1E22;
+    --rule-grey:      #3A3830;
+    --text-secondary: #A09888;
+    --text-tertiary:  #6E6658;
+  }
+}
