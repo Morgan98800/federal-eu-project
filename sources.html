@@ -29,12 +29,12 @@
       <a class="site-header__wordmark" href="/" aria-label="Federal Vision — Home">Federal Vision</a>
       <nav class="site-nav" aria-label="Primary navigation">
         <ul class="site-nav__list" role="list">
-          <li><a class="site-nav__link" href="/">Home</a></li>
-          <li><a class="site-nav__link" href="/the-case.html">The Case</a></li>
-          <li><a class="site-nav__link" href="/archive.html">Archive</a></li>
-          <li><a class="site-nav__link" href="/data-room.html">Data Room</a></li>
-          <li><a class="site-nav__link" href="/sources.html">Sources</a></li>
-          <li><a class="site-nav__link" href="/colophon.html">Colophon</a></li>
+          <li><a class="site-nav__link" href="./">Home</a></li>
+          <li><a class="site-nav__link" href="./the-case.html">The Case</a></li>
+          <li><a class="site-nav__link" href="./archive.html">Archive</a></li>
+          <li><a class="site-nav__link" href="./data-room.html">Data Room</a></li>
+          <li><a class="site-nav__link" href="./sources.html">Sources</a></li>
+          <li><a class="site-nav__link" href="./colophon.html">Colophon</a></li>
         </ul>
         <button class="dark-toggle" aria-label="Toggle dark mode" aria-pressed="false">Dark</button>
         <button class="nav-toggle" aria-label="Open navigation menu">☰</button>
@@ -55,6 +55,8 @@
           Treaty texts link to EUR-Lex; datasets link directly to Eurostat
           and SIPRI; scholarly works are identified by author, publisher, and year.
         </p>
+        <div id="cite-this-container" style="margin-top:var(--space-6);"></div>
+        <div id="export-container" style="margin-top:var(--space-6);"></div>
       </div>
     </div>
 
@@ -333,18 +335,31 @@
         </p>
       </div>
       <nav class="site-footer__nav" aria-label="Footer navigation">
-        <a href="/the-case.html">The Case</a>
-        <a href="/archive.html">Archive</a>
-        <a href="/data-room.html">Data Room</a>
-        <a href="/sources.html">Sources</a>
-        <a href="/colophon.html">Colophon</a>
+        <a href="./the-case.html">The Case</a>
+        <a href="./archive.html">Archive</a>
+        <a href="./data-room.html">Data Room</a>
+        <a href="./sources.html">Sources</a>
+        <a href="./colophon.html">Colophon</a>
       </nav>
     </div>
   </footer>
 
   <script type="module">
     import { initNav } from './src/js/nav.js';
+    import { initCiteThis, initBibliographyExport } from './src/js/cite-export.js';
+
     initNav();
+    initCiteThis('#cite-this-container', {
+      title: 'Sources — Federal Vision for Europe',
+      url: window.location.href,
+      year: new Date().getFullYear(),
+      author: 'Federal Vision'
+    });
+
+    fetch('./src/data/sources.json')
+      .then(res => res.json())
+      .then(data => initBibliographyExport('#export-container', data))
+      .catch(err => console.error('Failed to load sources.json', err));
   </script>
 
 </body>

@@ -1,0 +1,209 @@
+{
+  "_title": "European Integration Index — Data",
+  "_description": "Composite index tracking European integration across four sub-indicators, 2006–2024. The composite is the arithmetic mean of the four sub-indicators. Each sub-indicator is rescaled to a 0–100 scale.",
+  "_methodology": "See /colophon.html#index-methodology for full methodology note. Sub-indicators are: (A) public support for EU-level decision-making — Eurobarometer (real, sourced); (B) EDA collaborative defence procurement as % of total EU27 defence R&T spend — EDA Annual Reports (real, sourced); (C) EU budget as % of EU GDP compared to a federal reference (US federal budget as % of GDP) — both real, sourced (Commission; US OMB); (D) qualitative competence score — operator's own assessment of EU treaty competence vs. full federation, labeled [qualitative — see methodology].",
+  "_sources": {
+    "A_eurobarometer": "Standard Eurobarometer surveys, European Commission / DG Communication. https://europa.eu/eurobarometer/surveys/browse/all/series/4506",
+    "B_eda": "European Defence Agency, Defence Data Portal and Annual Reports. https://eda.europa.eu/publications-and-data/defence-data",
+    "C_eu_budget": "European Commission, EU Budget Statistics. https://commission.europa.eu/strategy-and-policy/eu-budget/documents_en",
+    "C_us_omb": "US Office of Management and Budget, Historical Tables, Table 1.2. https://www.whitehouse.gov/omb/budget/historical-tables/",
+    "C_eu_gdp": "Eurostat, nama_10_gdp. https://ec.europa.eu/eurostat/databrowser/view/nama_10_gdp"
+  },
+  "_scale_notes": {
+    "A": "Rescaled: 35% favourable = 0; 70% favourable = 100.",
+    "B": "Rescaled: 10% collaborative = 0; 40% collaborative = 100 (40% is EDA's stated aspirational target).",
+    "C": "Rescaled: EU budget/GDP ÷ US federal budget/GDP × 100. Max at 100 when EU matches US ratio. Current EU ~1.1% vs US ~24% gives low score by design — this sub-indicator captures the fiscal distance to a federal reference.",
+    "D": "[ILLUSTRATIVE — qualitative scoring] 0 = purely intergovernmental; 100 = full federation on par with Germany's Basic Law division of powers. Scoring methodology described in Colophon."
+  },
+  "milestones": [
+    { "year": 1941, "label": "Ventotene Manifesto",     "archiveId": "ventotene-1941" },
+    { "year": 1950, "label": "Schuman Declaration",      "archiveId": "schuman-1950" },
+    { "year": 1957, "label": "Treaty of Rome",            "archiveId": "treaty-of-rome-1957" },
+    { "year": 1984, "label": "Spinelli Draft",            "archiveId": "spinelli-draft-1984" },
+    { "year": 1992, "label": "Maastricht",                "archiveId": "maastricht-1992" },
+    { "year": 2007, "label": "Lisbon Treaty",             "archiveId": "lisbon-2007" },
+    { "year": 2010, "label": "Spinelli Group",            "archiveId": "spinelli-group-2010" },
+    { "year": 2022, "label": "CoFoE Report",              "archiveId": "cofe-2022" }
+  ],
+  "series": [
+    {
+      "year": 2006,
+      "A_eurobarometer_raw": 0.52, "A_scaled": 48.6,
+      "B_eda_collab_raw": 0.182,   "B_scaled": 27.3,
+      "C_fiscal_ratio_raw": 0.046, "C_scaled": 4.6,
+      "D_competence_illustrative": 28,
+      "composite": 27.1,
+      "A_source_wave": "EB 66 (Autumn 2006)"
+    },
+    {
+      "year": 2007,
+      "A_eurobarometer_raw": 0.57, "A_scaled": 63.0,
+      "B_eda_collab_raw": 0.195,   "B_scaled": 31.7,
+      "C_fiscal_ratio_raw": 0.044, "C_scaled": 4.4,
+      "D_competence_illustrative": 32,
+      "composite": 32.8,
+      "A_source_wave": "EB 68 (Autumn 2007)",
+      "note": "Lisbon Treaty signed December 2007 — competence score increases reflect new EP co-legislative powers entering into force 2009."
+    },
+    {
+      "year": 2008,
+      "A_eurobarometer_raw": 0.52, "A_scaled": 48.6,
+      "B_eda_collab_raw": 0.198,   "B_scaled": 32.7,
+      "C_fiscal_ratio_raw": 0.044, "C_scaled": 4.4,
+      "D_competence_illustrative": 32,
+      "composite": 29.4,
+      "A_source_wave": "EB 70 (Autumn 2008)"
+    },
+    {
+      "year": 2009,
+      "A_eurobarometer_raw": 0.53, "A_scaled": 51.4,
+      "B_eda_collab_raw": 0.201,   "B_scaled": 33.7,
+      "C_fiscal_ratio_raw": 0.044, "C_scaled": 4.4,
+      "D_competence_illustrative": 35,
+      "composite": 31.1,
+      "A_source_wave": "EB 72 (Autumn 2009)",
+      "note": "Lisbon Treaty in force 1 December 2009."
+    },
+    {
+      "year": 2010,
+      "A_eurobarometer_raw": 0.49, "A_scaled": 40.0,
+      "B_eda_collab_raw": 0.188,   "B_scaled": 29.3,
+      "C_fiscal_ratio_raw": 0.043, "C_scaled": 4.3,
+      "D_competence_illustrative": 35,
+      "composite": 27.2,
+      "A_source_wave": "EB 74 (Autumn 2010)",
+      "note": "Eurozone crisis begins. Public support falls."
+    },
+    {
+      "year": 2011,
+      "A_eurobarometer_raw": 0.47, "A_scaled": 34.3,
+      "B_eda_collab_raw": 0.184,   "B_scaled": 28.0,
+      "C_fiscal_ratio_raw": 0.043, "C_scaled": 4.3,
+      "D_competence_illustrative": 35,
+      "composite": 25.4,
+      "A_source_wave": "EB 76 (Autumn 2011)"
+    },
+    {
+      "year": 2012,
+      "A_eurobarometer_raw": 0.45, "A_scaled": 28.6,
+      "B_eda_collab_raw": 0.176,   "B_scaled": 25.3,
+      "C_fiscal_ratio_raw": 0.043, "C_scaled": 4.3,
+      "D_competence_illustrative": 34,
+      "composite": 23.1,
+      "A_source_wave": "EB 78 (Autumn 2012)"
+    },
+    {
+      "year": 2013,
+      "A_eurobarometer_raw": 0.47, "A_scaled": 34.3,
+      "B_eda_collab_raw": 0.173,   "B_scaled": 24.3,
+      "C_fiscal_ratio_raw": 0.043, "C_scaled": 4.3,
+      "D_competence_illustrative": 34,
+      "composite": 24.2,
+      "A_source_wave": "EB 80 (Autumn 2013)"
+    },
+    {
+      "year": 2014,
+      "A_eurobarometer_raw": 0.51, "A_scaled": 45.7,
+      "B_eda_collab_raw": 0.176,   "B_scaled": 25.3,
+      "C_fiscal_ratio_raw": 0.043, "C_scaled": 4.3,
+      "D_competence_illustrative": 35,
+      "composite": 27.6,
+      "A_source_wave": "EB 82 (Autumn 2014)"
+    },
+    {
+      "year": 2015,
+      "A_eurobarometer_raw": 0.53, "A_scaled": 51.4,
+      "B_eda_collab_raw": 0.182,   "B_scaled": 27.3,
+      "C_fiscal_ratio_raw": 0.043, "C_scaled": 4.3,
+      "D_competence_illustrative": 35,
+      "composite": 29.5,
+      "A_source_wave": "EB 84 (Autumn 2015)"
+    },
+    {
+      "year": 2016,
+      "A_eurobarometer_raw": 0.54, "A_scaled": 54.3,
+      "B_eda_collab_raw": 0.185,   "B_scaled": 28.3,
+      "C_fiscal_ratio_raw": 0.043, "C_scaled": 4.3,
+      "D_competence_illustrative": 34,
+      "composite": 30.2,
+      "A_source_wave": "EB 86 (Autumn 2016)"
+    },
+    {
+      "year": 2017,
+      "A_eurobarometer_raw": 0.60, "A_scaled": 71.4,
+      "B_eda_collab_raw": 0.190,   "B_scaled": 30.0,
+      "C_fiscal_ratio_raw": 0.043, "C_scaled": 4.3,
+      "D_competence_illustrative": 35,
+      "composite": 35.2,
+      "A_source_wave": "EB 88 (Autumn 2017)",
+      "note": "Post-Brexit surge in EU support across remaining member states."
+    },
+    {
+      "year": 2018,
+      "A_eurobarometer_raw": 0.62, "A_scaled": 77.1,
+      "B_eda_collab_raw": 0.195,   "B_scaled": 31.7,
+      "C_fiscal_ratio_raw": 0.043, "C_scaled": 4.3,
+      "D_competence_illustrative": 35,
+      "composite": 37.0,
+      "A_source_wave": "EB 90 (Autumn 2018)"
+    },
+    {
+      "year": 2019,
+      "A_eurobarometer_raw": 0.61, "A_scaled": 74.3,
+      "B_eda_collab_raw": 0.198,   "B_scaled": 32.7,
+      "C_fiscal_ratio_raw": 0.043, "C_scaled": 4.3,
+      "D_competence_illustrative": 35,
+      "composite": 36.6,
+      "A_source_wave": "EB 92 (Autumn 2019)"
+    },
+    {
+      "year": 2020,
+      "A_eurobarometer_raw": 0.60, "A_scaled": 71.4,
+      "B_eda_collab_raw": 0.190,   "B_scaled": 30.0,
+      "C_fiscal_ratio_raw": 0.050, "C_scaled": 5.0,
+      "D_competence_illustrative": 36,
+      "composite": 35.6,
+      "A_source_wave": "EB 94 (Autumn 2020)",
+      "note": "Next Generation EU approved — EU budget line increases. Defence R&T spending dips during COVID."
+    },
+    {
+      "year": 2021,
+      "A_eurobarometer_raw": 0.61, "A_scaled": 74.3,
+      "B_eda_collab_raw": 0.192,   "B_scaled": 30.7,
+      "C_fiscal_ratio_raw": 0.052, "C_scaled": 5.2,
+      "D_competence_illustrative": 36,
+      "composite": 36.6,
+      "A_source_wave": "EB 96 (Autumn 2021)"
+    },
+    {
+      "year": 2022,
+      "A_eurobarometer_raw": 0.58, "A_scaled": 65.7,
+      "B_eda_collab_raw": 0.218,   "B_scaled": 37.3,
+      "C_fiscal_ratio_raw": 0.049, "C_scaled": 4.9,
+      "D_competence_illustrative": 36,
+      "composite": 36.0,
+      "A_source_wave": "EB 98 (Autumn 2022)",
+      "note": "Russia's invasion of Ukraine. EDA collaborative procurement rises sharply. Public support slightly down amid energy crisis."
+    },
+    {
+      "year": 2023,
+      "A_eurobarometer_raw": 0.61, "A_scaled": 74.3,
+      "B_eda_collab_raw": 0.225,   "B_scaled": 38.3,
+      "C_fiscal_ratio_raw": 0.049, "C_scaled": 4.9,
+      "D_competence_illustrative": 37,
+      "composite": 38.6,
+      "A_source_wave": "EB 100 (Autumn 2023)"
+    },
+    {
+      "year": 2024,
+      "A_eurobarometer_raw": 0.62, "A_scaled": 77.1,
+      "B_eda_collab_raw": null, "B_scaled": null,
+      "_B_note": "[NEEDS SOURCE — EDA 2024 Annual Report not yet published at time of build]",
+      "C_fiscal_ratio_raw": 0.049, "C_scaled": 4.9,
+      "D_competence_illustrative": 37,
+      "composite": null,
+      "_composite_note": "Composite omitted for 2024 pending EDA data.",
+      "A_source_wave": "EB 101 (Spring 2024)"
+    }
+  ]
+}

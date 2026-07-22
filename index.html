@@ -45,12 +45,12 @@
       </a>
       <nav class="site-nav" aria-label="Primary navigation">
         <ul class="site-nav__list" role="list">
-          <li><a class="site-nav__link" href="/">Home</a></li>
-          <li><a class="site-nav__link" href="/the-case.html">The Case</a></li>
-          <li><a class="site-nav__link" href="/archive.html">Archive</a></li>
-          <li><a class="site-nav__link" href="/data-room.html">Data Room</a></li>
-          <li><a class="site-nav__link" href="/sources.html">Sources</a></li>
-          <li><a class="site-nav__link" href="/colophon.html">Colophon</a></li>
+          <li><a class="site-nav__link" href="./">Home</a></li>
+          <li><a class="site-nav__link" href="./the-case.html">The Case</a></li>
+          <li><a class="site-nav__link" href="./archive.html">Archive</a></li>
+          <li><a class="site-nav__link" href="./data-room.html">Data Room</a></li>
+          <li><a class="site-nav__link" href="./sources.html">Sources</a></li>
+          <li><a class="site-nav__link" href="./colophon.html">Colophon</a></li>
         </ul>
         <button class="dark-toggle" aria-label="Toggle dark mode" aria-pressed="false">Dark</button>
         <button class="nav-toggle" aria-label="Open navigation menu">☰</button>
@@ -86,27 +86,25 @@
       </div>
     </section>
 
-    <!-- ===== LEAD MAP ===== -->
-    <section class="section" aria-labelledby="map-heading">
+    <!-- ===== LEAD VISUALISATION ===== -->
+    <section class="section" aria-labelledby="index-heading">
       <div class="container">
         <span class="section-label">The Union Today</span>
-        <h2 id="map-heading" style="font-size: var(--text-2xl); margin-bottom: var(--space-6);">
-          Twenty-seven member states. One political question.
+        <h2 id="index-heading" style="font-size: var(--text-2xl); margin-bottom: var(--space-6);">
+          European Integration Index, 2006–2023
         </h2>
-        <figure class="map-figure" aria-label="Map of Europe showing the 27 EU member states">
-          <div class="map-wrapper" id="home-map" style="min-height: 380px;">
-            <!-- D3 map rendered by map.js -->
+        <figure class="chart-figure" aria-label="Line chart showing the composite European Integration Index">
+          <div class="integration-index-wrapper" id="home-index-wrapper" style="min-height: 180px;">
+            <!-- D3 chart rendered by integration-index.js -->
             <noscript>
               <p style="padding: 2rem; color: var(--text-secondary);">
-                An interactive map of Europe is displayed here, showing the 27 EU member states.
-                JavaScript is required to render the map.
+                A line chart showing the European Integration Index. JavaScript is required.
               </p>
             </noscript>
           </div>
           <figcaption>
-            EU member states (highlighted) and neighbouring non-member countries.
-            Projection: Azimuthal Equal Area, approximating <abbr title="European Terrestrial Reference System 1989 / Lambert Azimuthal Equal Area">ETRS89-LAEA</abbr> (EPSG:3035).
-            Boundaries: <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a>, 110m, public domain.
+            Composite index of public support, defence pooling, fiscal capacity, and competence.
+            See the <a href="./data-room.html">Data Room</a> for the full interactive model and sub-indicators.
           </figcaption>
         </figure>
       </div>
@@ -119,7 +117,7 @@
           Contents
         </h2>
         <nav class="entry-grid" aria-label="Site sections">
-          <a class="entry-card" href="/the-case.html">
+          <a class="entry-card" href="./the-case.html">
             <span class="entry-card__num">01</span>
             <span class="entry-card__title">The Case</span>
             <span class="entry-card__excerpt">
@@ -127,7 +125,7 @@
             </span>
             <span class="entry-card__arrow">&rarr;</span>
           </a>
-          <a class="entry-card" href="/archive.html">
+          <a class="entry-card" href="./archive.html">
             <span class="entry-card__num">02</span>
             <span class="entry-card__title">Archive</span>
             <span class="entry-card__excerpt">
@@ -135,7 +133,7 @@
             </span>
             <span class="entry-card__arrow">&rarr;</span>
           </a>
-          <a class="entry-card" href="/data-room.html">
+          <a class="entry-card" href="./data-room.html">
             <span class="entry-card__num">03</span>
             <span class="entry-card__title">Data Room</span>
             <span class="entry-card__excerpt">
@@ -143,7 +141,7 @@
             </span>
             <span class="entry-card__arrow">&rarr;</span>
           </a>
-          <a class="entry-card" href="/sources.html">
+          <a class="entry-card" href="./sources.html">
             <span class="entry-card__num">04</span>
             <span class="entry-card__title">Sources</span>
             <span class="entry-card__excerpt">
@@ -151,7 +149,7 @@
             </span>
             <span class="entry-card__arrow">&rarr;</span>
           </a>
-          <a class="entry-card" href="/colophon.html">
+          <a class="entry-card" href="./colophon.html">
             <span class="entry-card__num">05</span>
             <span class="entry-card__title">Colophon</span>
             <span class="entry-card__excerpt">
@@ -198,11 +196,11 @@
         </p>
       </div>
       <nav class="site-footer__nav" aria-label="Footer navigation">
-        <a href="/the-case.html">The Case</a>
-        <a href="/archive.html">Archive</a>
-        <a href="/data-room.html">Data Room</a>
-        <a href="/sources.html">Sources</a>
-        <a href="/colophon.html">Colophon</a>
+        <a href="./the-case.html">The Case</a>
+        <a href="./archive.html">Archive</a>
+        <a href="./data-room.html">Data Room</a>
+        <a href="./sources.html">Sources</a>
+        <a href="./colophon.html">Colophon</a>
       </nav>
     </div>
   </footer>
@@ -211,7 +209,7 @@
   <script type="module">
     import { initNav } from './src/js/nav.js';
     import { initCitations, registerCitations } from './src/js/citations.js';
-    import { renderEuropeMap } from './src/js/map.js';
+    import { renderIntegrationIndex } from './src/js/integration-index.js';
 
     // Citation data for this page
     registerCitations({
@@ -228,8 +226,13 @@
     initNav();
     initCitations();
 
-    // Render the Europe map
-    renderEuropeMap('#home-map', { width: document.querySelector('#home-map').clientWidth });
+    // Render the Integration Index in compact mode
+    fetch('./src/data/integration-index.json')
+      .then(r => r.json())
+      .then(data => {
+        renderIntegrationIndex('#home-index-wrapper', data, { compact: true });
+      })
+      .catch(e => console.error(e));
   </script>
 
 </body>

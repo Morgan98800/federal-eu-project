@@ -1,0 +1,88 @@
+{
+  "_title": "Scenario Slider Baseline Data",
+  "_description": "Real, sourced baseline figures for the scenario slider module. The user-adjustable delta is illustrative; the starting point is factual.",
+  "_sources": {
+    "eu_defence": "SIPRI Military Expenditure Database, 2022 data. https://www.sipri.org/databases/milex",
+    "eu_gdp": "Eurostat, nama_10_gdp, 2022. https://ec.europa.eu/eurostat/databrowser/view/nama_10_gdp",
+    "eu_budget": "European Commission, EU Budget 2022 in figures. https://commission.europa.eu/strategy-and-policy/eu-budget/documents_en",
+    "us_federal_budget": "US Office of Management and Budget, Historical Tables, Table 1.1 (2022 outturn). https://www.whitehouse.gov/omb/budget/historical-tables/",
+    "us_gdp": "US Bureau of Economic Analysis, GDP 2022. https://www.bea.gov/data/gdp/gross-domestic-product",
+    "nato_target": "NATO, Defence Expenditure of NATO Countries (2014–2022). https://www.nato.int/cps/en/natohq/news_197077.htm"
+  },
+  "year": 2022,
+  "baselines": {
+    "eu27_defence_spend_bn_eur": {
+      "value": 214,
+      "label": "EU27 combined defence expenditure, 2022",
+      "source": "SIPRI Military Expenditure Database, 2022",
+      "note": "Approximate sum of EU27 member-state defence budgets. Not an EU institutional budget line."
+    },
+    "eu27_gdp_bn_eur": {
+      "value": 14491,
+      "label": "EU27 GDP at market prices, 2022",
+      "source": "Eurostat nama_10_gdp, 2022"
+    },
+    "eu_budget_bn_eur": {
+      "value": 167.9,
+      "label": "EU27 budget commitments, 2022",
+      "source": "European Commission, EU Budget 2022 in figures"
+    },
+    "eu_budget_pct_gdp": {
+      "value": 1.16,
+      "label": "EU budget as % of EU27 GDP, 2022",
+      "source": "Calculated: €167.9bn ÷ €14,491bn",
+      "note": "Excludes Next Generation EU disbursements. Including NGEU grants: approx. 1.4%."
+    },
+    "us_federal_budget_pct_gdp": {
+      "value": 24.0,
+      "label": "US federal budget as % of US GDP, 2022",
+      "source": "US OMB Historical Tables 1.1; US BEA GDP 2022"
+    },
+    "eu_defence_pct_gdp": {
+      "value": 1.48,
+      "label": "EU27 combined defence spend as % of EU27 GDP, 2022",
+      "source": "Calculated: €214bn ÷ €14,491bn"
+    },
+    "nato_2pct_target_implied_bn_eur": {
+      "value": 289.8,
+      "label": "Implied EU27 defence budget if all members met NATO 2% target, 2022",
+      "source": "Calculated: 2% × €14,491bn",
+      "note": "Arithmetic projection — not a policy proposal or forecast. Labeled [illustrative] in the UI."
+    },
+    "eda_collab_pct": {
+      "value": 21.8,
+      "label": "EU collaborative defence procurement as % of total EU27 defence R&T, 2022",
+      "source": "European Defence Agency, Defence Data 2022. https://eda.europa.eu/publications-and-data/defence-data"
+    }
+  },
+  "sliders": {
+    "defence_pooling": {
+      "id": "slider-defence",
+      "label": "Defence procurement pooled at EU level",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 21.8,
+      "default_label": "Current EDA collaborative level, 2022",
+      "formula": "Implied common defence budget = (slider_value / 100) × EU27 total defence spend (€214bn, SIPRI 2022). Non-pooled remainder stays national. This is arithmetic, not a forecast.",
+      "output_label": "Implied pooled EU defence budget",
+      "output_unit": "bn EUR",
+      "reference": { "label": "US DoD budget (2022)", "value_bn_eur": 660, "source": "US OMB; converted at 2022 avg rate ~$1 = €0.95" }
+    },
+    "fiscal_transfer": {
+      "id": "slider-fiscal",
+      "label": "Common EU fiscal capacity as % of EU GDP",
+      "unit": "% of GDP",
+      "min": 0,
+      "max": 25,
+      "step": 0.1,
+      "default": 1.16,
+      "default_label": "Current EU budget, 2022",
+      "formula": "Implied EU fiscal capacity = (slider_value / 100) × EU27 GDP (€14,491bn, Eurostat 2022). The delta above 1.16% is new money beyond the current budget — labeled [illustrative]. The 1.16% baseline is real.",
+      "output_label": "Implied EU fiscal capacity",
+      "output_unit": "bn EUR",
+      "reference": { "label": "US federal budget as % of GDP (2022)", "value_pct": 24.0, "source": "US OMB Historical Tables 1.1" }
+    }
+  }
+}

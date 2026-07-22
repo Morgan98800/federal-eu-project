@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Data Room — [SITE TITLE]</title>
-  <meta name="description" content="Real, sourced visualisations: Eurobarometer support for EU integration over time, member-state GDP fragmentation, and defence spending across the union.">
+  <meta name="description" content="Five sourced visualisations making the case for European federal union: integration index, toggle map, competence matrix, scenario sliders, and primary-source documents.">
   <link rel="canonical" href="https://[DOMAIN]/data-room.html">
-
   <script>
     (function(){
       var saved = localStorage.getItem('fve-theme');
@@ -14,7 +13,6 @@
       document.documentElement.dataset.theme = saved || (prefersDark ? 'dark' : 'light');
     })();
   </script>
-
   <link rel="stylesheet" href="./src/styles/tokens.css">
   <link rel="stylesheet" href="./src/styles/typography.css">
   <link rel="stylesheet" href="./src/styles/main.css">
@@ -26,15 +24,15 @@
 
   <header class="site-header" role="banner">
     <div class="site-header__inner">
-      <a class="site-header__wordmark" href="/" aria-label="Federal Vision — Home">Federal Vision</a>
+      <a class="site-header__wordmark" href="./" aria-label="Federal Vision — Home">Federal Vision</a>
       <nav class="site-nav" aria-label="Primary navigation">
         <ul class="site-nav__list" role="list">
-          <li><a class="site-nav__link" href="/">Home</a></li>
-          <li><a class="site-nav__link" href="/the-case.html">The Case</a></li>
-          <li><a class="site-nav__link" href="/archive.html">Archive</a></li>
-          <li><a class="site-nav__link" href="/data-room.html">Data Room</a></li>
-          <li><a class="site-nav__link" href="/sources.html">Sources</a></li>
-          <li><a class="site-nav__link" href="/colophon.html">Colophon</a></li>
+          <li><a class="site-nav__link" href="./">Home</a></li>
+          <li><a class="site-nav__link" href="./the-case.html">The Case</a></li>
+          <li><a class="site-nav__link" href="./archive.html">Archive</a></li>
+          <li><a class="site-nav__link site-nav__link--active" href="./data-room.html" aria-current="page">Data Room</a></li>
+          <li><a class="site-nav__link" href="./sources.html">Sources</a></li>
+          <li><a class="site-nav__link" href="./colophon.html">Colophon</a></li>
         </ul>
         <button class="dark-toggle" aria-label="Toggle dark mode" aria-pressed="false">Dark</button>
         <button class="nav-toggle" aria-label="Open navigation menu">☰</button>
@@ -44,211 +42,335 @@
 
   <main id="main-content">
 
-    <div class="page-masthead">
+    <!-- ===== SLIM MASTHEAD ===== -->
+    <div class="page-masthead page-masthead--slim">
       <div class="container">
         <div class="page-masthead__overline">Data Room</div>
-        <h1 class="page-masthead__title" id="data-room-title">
-          The Numbers<br>Behind the Argument
-        </h1>
-        <p class="page-masthead__deck">
-          Three to four sourced visualisations. Every chart cites its dataset,
-          institution, and vintage. The data does not argue — it contextualises.
-        </p>
-        <p style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-tertiary); margin-top: var(--space-4);">
-          All data: Eurostat, Eurobarometer, SIPRI — links in each
-          <code>figcaption</code> and on the <a href="/sources.html">Sources</a> page.
+        <h1 class="page-masthead__title" id="data-room-title">Five visualisations.<br>Every figure sourced.</h1>
+        <nav aria-label="Data Room sections" style="margin-top: var(--space-6);">
+          <ol style="display:flex;flex-wrap:wrap;gap:var(--space-4);list-style:none;font-family:var(--font-mono);font-size:var(--text-xs);">
+            <li><a href="#integration-index">I. Integration Index</a></li>
+            <li><a href="#toggle-map">II. 27 States vs. One Bloc</a></li>
+            <li><a href="#competence-matrix">III. Competence Matrix</a></li>
+            <li><a href="#scenario-sliders">IV. Scenario Sliders</a></li>
+            <li><a href="#primary-sources">V. Primary Sources</a></li>
+          </ol>
+        </nav>
+        <p style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--text-tertiary);margin-top:var(--space-4);">
+          <mark class="illustrative-label">illustrative</mark> badges mark all non-sourced, user-adjustable, or qualitatively-scored figures. Every other figure links to its dataset and vintage.
         </p>
       </div>
     </div>
 
-    <div class="section">
+    <!-- ===================================================================
+         §10.1 — EUROPEAN INTEGRATION INDEX (flagship)
+         =================================================================== -->
+    <section class="section" id="integration-index" aria-labelledby="index-heading">
       <div class="container">
+        <span class="section-label">01</span>
+        <h2 id="index-heading" style="font-size:var(--text-2xl);margin-bottom:var(--space-2);">
+          European Integration Index, 2006–2023
+        </h2>
+        <p style="color:var(--text-secondary);max-width:66ch;margin-bottom:var(--space-6);">
+          A composite of four sub-indicators — public support (Eurobarometer), defence collaboration (EDA), fiscal capacity relative to a federal reference (Eurostat / US OMB), and a qualitative competence score. The composite is their arithmetic mean. Hover the chart to inspect individual years.
+        </p>
 
-        <!-- ===== CHART 1: Eurobarometer ===== -->
-        <figure class="chart-figure" aria-labelledby="eb-chart-title">
-          <p class="chart-figure__heading" id="eb-chart-title">Chart 1 — EU Integration Support, 1997–2024</p>
-          <div class="chart-wrapper" id="chart-eurobarometer" style="min-height: 380px;">
+        <figure class="chart-figure" aria-labelledby="index-fig-caption">
+          <div class="integration-index-wrapper" id="index-chart-wrapper" style="min-height:420px;">
             <noscript>
-              <p style="padding: 2rem; color: var(--text-secondary);">
-                A line chart showing Eurobarometer support for EU integration from 1997 to 2024
-                is displayed here. JavaScript is required to render the chart.
-              </p>
+              <p style="padding:2rem;color:var(--text-secondary);">A line chart showing the European Integration Index from 2006 to 2023, with four sub-indicators and a composite line. JavaScript is required.</p>
             </noscript>
           </div>
-          <figcaption>
-            Share of EU citizens responding "favourable" when asked about efforts to
-            further unify EU member states politically.
-            Source: Standard Eurobarometer surveys, waves EB 47–101 (1997–2024).
-            European Commission / Directorate-General for Communication.
-            <a href="https://europa.eu/eurobarometer/surveys/browse/all/series/4506"
-               target="_blank" rel="noopener">
-              Eurobarometer surveys archive
-            </a>.
+          <div class="index-legend" id="index-legend"></div>
+          <a class="index-methodology-link" href="./colophon.html#index-methodology">
+            Methodology note: how sub-indicators are defined, scored, and combined →
+          </a>
+          <figcaption id="index-fig-caption" style="margin-top:var(--space-4);">
+            <strong>Sources by sub-indicator:</strong>
+            (A) Standard Eurobarometer surveys, European Commission.
+            <a href="https://europa.eu/eurobarometer/surveys/browse/all/series/4506" target="_blank" rel="noopener">Eurobarometer archive</a>.
+            (B) EDA Defence Data Portal and Annual Reports.
+            <a href="https://eda.europa.eu/publications-and-data/defence-data" target="_blank" rel="noopener">eda.europa.eu</a>.
+            (C) EU budget: European Commission.
+            US reference: US OMB Historical Tables, Table 1.1.
+            (D) <mark class="illustrative-label">qualitative — see methodology</mark>
+            Operator's own scoring of TFEU competence categories.
             <br>
-            <em>Note: question wording has varied across waves — see individual survey
-            documentation for full methodological notes.</em>
+            Composite = arithmetic mean of four sub-indicators, each rescaled 0–100. Scale notes in methodology.
           </figcaption>
         </figure>
+      </div>
+    </section>
 
-        <hr>
+    <div style="border-top:var(--border-hairline);"></div>
 
-        <!-- ===== CHART 2: GDP Shares ===== -->
-        <figure class="chart-figure" aria-labelledby="gdp-chart-title">
-          <p class="chart-figure__heading" id="gdp-chart-title">Chart 2 — Member-State GDP as Share of EU27 Total, 2022</p>
-          <div class="chart-wrapper" id="chart-gdp" style="min-height: 340px;">
+    <!-- ===================================================================
+         §10.2 — TOGGLE MAP
+         =================================================================== -->
+    <section class="section" id="toggle-map" aria-labelledby="map-heading">
+      <div class="container">
+        <span class="section-label">02</span>
+        <h2 id="map-heading" style="font-size:var(--text-2xl);margin-bottom:var(--space-2);">
+          27 Member States vs. One Federal Bloc
+        </h2>
+        <p style="color:var(--text-secondary);max-width:66ch;margin-bottom:var(--space-6);">
+          One base map, one data layer. Switch between viewing the EU as 27 fragmented national figures and as a single aggregated value. The "EU as Federal Bloc" figure is real arithmetic on Eurostat / SIPRI data — it is not an existing EU institutional budget line.
+        </p>
+
+        <figure class="chart-figure" aria-labelledby="map-fig-caption">
+          <div id="toggle-map-container" style="min-height:420px;">
             <noscript>
-              <p style="padding: 2rem; color: var(--text-secondary);">
-                A bar chart showing the GDP share of the top 10 EU member states
-                as a proportion of the EU27 total is displayed here.
-                JavaScript is required to render the chart.
-              </p>
+              <p style="padding:2rem;color:var(--text-secondary);">An interactive map of Europe is displayed here. JavaScript is required.</p>
             </noscript>
           </div>
-          <figcaption>
-            GDP at market prices, current prices, million EUR, 2022.
-            Top 10 member states by GDP share; EU27 total approx. €14.5 trillion.
-            Source: Eurostat, dataset <code>nama_10_gdp</code>, extracted 2024.
-            <a href="https://ec.europa.eu/eurostat/databrowser/view/nama_10_gdp/default/table?lang=en"
-               target="_blank" rel="noopener">
-              Eurostat — nama_10_gdp
-            </a>.
-          </figcaption>
-        </figure>
-
-        <hr>
-
-        <!-- ===== CHART 3: Defence Spending ===== -->
-        <figure class="chart-figure" aria-labelledby="def-chart-title">
-          <p class="chart-figure__heading" id="def-chart-title">Chart 3 — Defence Spending as % of GDP, EU Member States, 2022</p>
-          <div class="chart-wrapper" id="chart-defence" style="min-height: 680px;">
-            <noscript>
-              <p style="padding: 2rem; color: var(--text-secondary);">
-                A dot plot showing defence spending as a percentage of GDP for all 27
-                EU member states is displayed here. JavaScript is required.
-              </p>
-            </noscript>
-          </div>
-          <figcaption>
-            Military expenditure as percentage of GDP, 2022. Bronze dots indicate
-            countries meeting or exceeding the NATO 2% target (shown as dashed vertical line).
-            Source: SIPRI Military Expenditure Database.
-            <a href="https://www.sipri.org/databases/milex" target="_blank" rel="noopener">
-              SIPRI — Military Expenditure Database
-            </a>.
-            <br>
-            <em>Note: SIPRI figures may differ from NATO's own assessments due to
-            methodological differences in what constitutes defence expenditure.</em>
-          </figcaption>
-        </figure>
-
-        <hr>
-
-        <!-- ===== CHART 4: EU Map with Data ===== -->
-        <figure class="chart-figure" aria-labelledby="map-chart-title">
-          <p class="chart-figure__heading" id="map-chart-title">Chart 4 — EU Member States: GDP Per Capita Variation</p>
-          <div class="chart-wrapper" id="chart-map" style="min-height: 420px;">
-            <noscript>
-              <p style="padding: 2rem; color: var(--text-secondary);">
-                A choropleth map of Europe showing GDP per capita by member state
-                is displayed here. JavaScript is required.
-              </p>
-            </noscript>
-          </div>
-          <figcaption>
-            GDP per capita (PPS — purchasing power standard) by member state,
-            EU27 = 100. Darker shading indicates higher relative GDP per capita.
-            Source: Eurostat, dataset <code>nama_10_pc</code>, 2022.
-            <a href="https://ec.europa.eu/eurostat/databrowser/view/nama_10_pc/default/table?lang=en"
-               target="_blank" rel="noopener">
-              Eurostat — nama_10_pc
-            </a>.
-            <br>
-            Projection: Azimuthal Equal Area, approximating ETRS89-LAEA (EPSG:3035).
+          <figcaption id="map-fig-caption" style="margin-top:var(--space-4);">
+            GDP and defence data: Eurostat <code>nama_10_gdp</code> and SIPRI Military Expenditure Database, 2022.
+            "EU as Federal Bloc" = arithmetic sum of member-state figures;
+            <mark class="illustrative-label">EU aggregate</mark> is not an existing EU institutional budget or revenue line.
             Boundaries: <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a>, 110m, public domain.
+            Projection: Azimuthal Equal Area (≈ EPSG:3035).
           </figcaption>
         </figure>
+      </div>
+    </section>
 
-      </div><!-- /.container -->
-    </div><!-- /.section -->
+    <div style="border-top:var(--border-hairline);"></div>
+
+    <!-- ===================================================================
+         §10.3 — COMPETENCE COMPARISON MATRIX
+         =================================================================== -->
+    <section class="section" id="competence-matrix" aria-labelledby="matrix-heading">
+      <div class="container">
+        <span class="section-label">03</span>
+        <h2 id="matrix-heading" style="font-size:var(--text-2xl);margin-bottom:var(--space-2);">
+          Competence Comparison Matrix
+        </h2>
+        <p style="color:var(--text-secondary);max-width:66ch;margin-bottom:var(--space-2);">
+          Three columns: <strong>EU Today</strong> (sourced to TFEU Articles 2–6, factual and citable), <strong>US Federal Reference</strong> (US Constitution / CRS, factual), and <strong>A Federal EU</strong> (operator's proposed allocation — <mark class="illustrative-label">placeholder</mark>). Eight policy domains.
+        </p>
+        <p style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--text-tertiary);margin-bottom:var(--space-6);">
+          Column A and B are sourced facts. Column C requires operator input — see BUILD_NOTES.md §10.3.
+        </p>
+
+        <figure aria-labelledby="matrix-fig-caption" style="overflow-x:auto;">
+          <table class="matrix-table" id="competence-matrix-table" aria-label="Competence comparison: EU today, US federal reference, proposed federal EU">
+            <thead>
+              <tr>
+                <th scope="col">Domain</th>
+                <th scope="col" class="col-sourced">EU Today<br><span style="font-weight:400;font-size:0.85em;">TFEU Articles 2–6</span></th>
+                <th scope="col" class="col-sourced">US Federal Reference<br><span style="font-weight:400;font-size:0.85em;">US Constitution / CRS</span></th>
+                <th scope="col" class="col-placeholder">A Federal EU <mark class="illustrative-label">placeholder</mark><br><span style="font-weight:400;font-size:0.85em;">Operator's proposal</span></th>
+              </tr>
+            </thead>
+            <tbody id="matrix-tbody">
+              <!-- Rendered by JS from competence-matrix.json -->
+              <tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--text-secondary);">Loading matrix data…</td></tr>
+            </tbody>
+          </table>
+          <figcaption id="matrix-fig-caption" style="margin-top:var(--space-4);">
+            Column A: Treaty on the Functioning of the European Union, Articles 2–6.
+            <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A12016E%2FTXT" target="_blank" rel="noopener">EUR-Lex — CELEX:12016E/TXT</a>.
+            Column B: US Constitution, Article I §8; Congressional Research Service,
+            <em>Federalism, State Sovereignty, and the Constitution</em> (2020).
+            Column C: <mark class="illustrative-label">placeholder</mark> — operator-supplied proposed allocation.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <div style="border-top:var(--border-hairline);"></div>
+
+    <!-- ===================================================================
+         §10.4 — SCENARIO SLIDERS
+         =================================================================== -->
+    <section class="section" id="scenario-sliders" aria-labelledby="sliders-heading">
+      <div class="container">
+        <span class="section-label">04</span>
+        <h2 id="sliders-heading" style="font-size:var(--text-2xl);margin-bottom:var(--space-2);">
+          Scenario Sliders
+        </h2>
+        <p style="color:var(--text-secondary);max-width:66ch;margin-bottom:var(--space-6);">
+          Two simple arithmetic models. Each slider's starting position is a real, sourced figure. Any value you drag it to above the baseline is <mark class="illustrative-label">illustrative</mark> — a projection, not a forecast. Expand the formula note under each slider to verify the arithmetic.
+        </p>
+
+        <div id="slider-section">
+          <!-- Rendered by scenario-slider.js -->
+          <p style="padding:2rem;color:var(--text-secondary);">Loading slider data…</p>
+        </div>
+      </div>
+    </section>
+
+    <div style="border-top:var(--border-hairline);"></div>
+
+    <!-- ===================================================================
+         §10.5 — PRIMARY-SOURCE VIEWER
+         =================================================================== -->
+    <section class="section" id="primary-sources" aria-labelledby="primary-heading">
+      <div class="container--narrow">
+        <span class="section-label">05</span>
+        <h2 id="primary-heading" style="font-size:var(--text-2xl);margin-bottom:var(--space-2);">
+          Primary Sources
+        </h2>
+        <p style="color:var(--text-secondary);max-width:66ch;margin-bottom:var(--space-6);">
+          Key documents embedded where reproduction rights are confirmed, linked out where they are not. Each document is sourced from its institutional archive — not a summary or paraphrase.
+        </p>
+
+        <!-- Ventotene Manifesto — CVCE.eu public access -->
+        <article class="primary-source-entry" id="ps-ventotene" style="margin-bottom:var(--space-10);">
+          <h3 style="font-size:var(--text-xl);margin-bottom:var(--space-2);">The Ventotene Manifesto (1941)</h3>
+          <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">
+            Altiero Spinelli and Ernesto Rossi. Written in internment on the island of Ventotene; circulated clandestinely through the Italian resistance. The founding document of European federalist thought.
+          </p>
+          <div class="placeholder-banner">
+            [REPRODUCTION RIGHTS — operator to confirm: CVCE.eu hosts the full text for public access under their terms of use. Confirm whether direct embedding is permitted before adding an iframe here. Link-out is provided below as fallback.]
+          </div>
+          <p>
+            Full text:
+            <a href="https://www.cvce.eu/en/obj/the_ventotene_manifesto_1941-en-5ada4b99-7445-492f-9fad-7ebeb5f2a8b4.html"
+               target="_blank" rel="noopener">
+              CVCE.eu — The Ventotene Manifesto (1941)
+            </a>
+          </p>
+        </article>
+
+        <!-- Schuman Declaration — European Commission public archive -->
+        <article class="primary-source-entry" id="ps-schuman" style="margin-bottom:var(--space-10);">
+          <h3 style="font-size:var(--text-xl);margin-bottom:var(--space-2);">The Schuman Declaration (9 May 1950)</h3>
+          <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">
+            Robert Schuman, French Foreign Minister. Read at the Quai d'Orsay on 9 May 1950. Drafted in large part by Jean Monnet. The Declaration proposed pooling French and German coal and steel production under a common High Authority — making war between the two countries "not merely unthinkable, but materially impossible."
+          </p>
+          <blockquote style="border-left:3px solid var(--accent-bronze);padding-left:var(--space-5);margin:var(--space-6) 0;color:var(--text-secondary);">
+            <p>"Europe will not be made all at once, or according to a single plan. It will be built through concrete achievements which first create a de facto solidarity."</p>
+            <footer style="font-family:var(--font-mono);font-size:var(--text-xs);margin-top:var(--space-3);">
+              — Robert Schuman, 9 May 1950.
+              Source: <a href="https://european-union.europa.eu/principles-countries-history/history-eu/1945-59/schuman-declaration-may-1950_en" target="_blank" rel="noopener">European Commission archive</a>.
+            </footer>
+          </blockquote>
+          <p>
+            Full text:
+            <a href="https://european-union.europa.eu/principles-countries-history/history-eu/1945-59/schuman-declaration-may-1950_en"
+               target="_blank" rel="noopener">
+              european-union.europa.eu — Schuman Declaration
+            </a>
+          </p>
+        </article>
+
+        <!-- Treaty of Rome — EUR-Lex -->
+        <article class="primary-source-entry" id="ps-rome" style="margin-bottom:var(--space-10);">
+          <h3 style="font-size:var(--text-xl);margin-bottom:var(--space-2);">Treaty of Rome (1957) — Preamble extract</h3>
+          <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">
+            The preamble of the Treaty establishing the European Economic Community committed the six founding states to "an ever closer union among the peoples of Europe" — language that has anchored federalist legal interpretation ever since.
+          </p>
+          <blockquote style="border-left:3px solid var(--accent-bronze);padding-left:var(--space-5);margin:var(--space-6) 0;color:var(--text-secondary);">
+            <p>"DETERMINED to lay the foundations of an ever closer union among the peoples of Europe, RESOLVED to ensure the economic and social progress of their countries by common action to eliminate the barriers which divide Europe…"</p>
+            <footer style="font-family:var(--font-mono);font-size:var(--text-xs);margin-top:var(--space-3);">
+              — Treaty Establishing the European Economic Community (1957), Preamble.
+              Source: <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A11957E%2FTXT" target="_blank" rel="noopener">EUR-Lex, CELEX:11957E/TXT</a>.
+            </footer>
+          </blockquote>
+          <p>
+            Full treaty text:
+            <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A11957E%2FTXT"
+               target="_blank" rel="noopener">
+              EUR-Lex — Treaty of Rome (1957)
+            </a>
+          </p>
+        </article>
+
+        <!-- Conference on the Future of Europe -->
+        <article class="primary-source-entry" id="ps-cofe" style="margin-bottom:var(--space-10);">
+          <h3 style="font-size:var(--text-xl);margin-bottom:var(--space-2);">Conference on the Future of Europe — Final Report (2022)</h3>
+          <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">
+            The Final Report of the Conference on the Future of Europe (9 May 2022) contains 49 proposals and 326 measures, many explicitly recommending treaty change. European Parliament voted in June 2022 to convene an Article 48 Convention; the Council declined.
+          </p>
+          <div class="placeholder-banner">
+            [REPRODUCTION RIGHTS — PDF embedding via &lt;iframe&gt; sourced directly from the futureu.europa.eu archive. Operator to confirm browser-level PDF embedding is acceptable in deployment environment before shipping. Link-out provided as fallback.]
+          </div>
+          <p>
+            Full report (PDF):
+            <a href="https://futureu.europa.eu/uploads/decidim/attachment/file/23363/CoFoE_Final_Report_EN.pdf"
+               target="_blank" rel="noopener">
+              CoFoE — Final Report, May 2022 (PDF)
+            </a>
+          </p>
+        </article>
+
+      </div>
+    </section>
 
   </main>
 
   <footer class="site-footer" role="contentinfo">
     <div class="site-footer__inner">
       <div>
-        <a class="site-footer__wordmark" href="/">Federal Vision</a>
+        <a class="site-footer__wordmark" href="./">Federal Vision</a>
         <p class="site-footer__meta">
           An independent editorial project. Not an EU institution.<br>
           &copy; <time datetime="2024">2024</time> [OPERATOR NAME — see BUILD_NOTES.md]
         </p>
       </div>
       <nav class="site-footer__nav" aria-label="Footer navigation">
-        <a href="/the-case.html">The Case</a>
-        <a href="/archive.html">Archive</a>
-        <a href="/data-room.html">Data Room</a>
-        <a href="/sources.html">Sources</a>
-        <a href="/colophon.html">Colophon</a>
+        <a href="./the-case.html">The Case</a>
+        <a href="./archive.html">Archive</a>
+        <a href="./data-room.html">Data Room</a>
+        <a href="./sources.html">Sources</a>
+        <a href="./colophon.html">Colophon</a>
       </nav>
     </div>
   </footer>
 
   <script type="module">
     import { initNav } from './src/js/nav.js';
-    import { renderEurobarometerChart } from './src/js/charts.js';
-    import { renderGDPChart } from './src/js/charts.js';
-    import { renderDefenceChart } from './src/js/charts.js';
-    import { renderDataMap } from './src/js/map.js';
+    import { renderIntegrationIndex, buildIndexLegend } from './src/js/integration-index.js';
+    import { renderToggleMap } from './src/js/toggle-map.js';
+    import { initScenarioSlider } from './src/js/scenario-slider.js';
 
     initNav();
 
-    // Load data and render charts
+    // Load all data in parallel
     Promise.all([
-      fetch('./src/data/eurobarometer.json').then(r => r.json()),
-      fetch('./src/data/gdp.json').then(r => r.json())
-    ]).then(([ebData, gdpData]) => {
-      renderEurobarometerChart('#chart-eurobarometer', ebData);
-      renderGDPChart('#chart-gdp', gdpData);
-      renderDefenceChart('#chart-defence', gdpData);
+      fetch('./src/data/integration-index.json').then(r => r.json()),
+      fetch('./src/data/gdp.json').then(r => r.json()),
+      fetch('./src/data/competence-matrix.json').then(r => r.json()),
+      fetch('./src/data/scenario-slider.json').then(r => r.json()),
+    ]).then(([indexData, gdpData, matrixData, sliderData]) => {
 
-      // GDP per capita data for map — approximate PPS figures (Eurostat, 2022)
-      // [NEEDS SOURCE: Replace with exact Eurostat nama_10_pc PPS values once extracted]
-      const gdpPcData = [
-        { code: 'LU', name: 'Luxembourg',   value: 258, unit: ' (EU=100)' },
-        { code: 'IE', name: 'Ireland',      value: 214, unit: ' (EU=100)' },
-        { code: 'DK', name: 'Denmark',      value: 135, unit: ' (EU=100)' },
-        { code: 'NL', name: 'Netherlands',  value: 133, unit: ' (EU=100)' },
-        { code: 'AT', name: 'Austria',      value: 130, unit: ' (EU=100)' },
-        { code: 'SE', name: 'Sweden',       value: 127, unit: ' (EU=100)' },
-        { code: 'BE', name: 'Belgium',      value: 121, unit: ' (EU=100)' },
-        { code: 'FI', name: 'Finland',      value: 116, unit: ' (EU=100)' },
-        { code: 'DE', name: 'Germany',      value: 123, unit: ' (EU=100)' },
-        { code: 'FR', name: 'France',       value: 107, unit: ' (EU=100)' },
-        { code: 'IT', name: 'Italy',        value:  95, unit: ' (EU=100)' },
-        { code: 'SI', name: 'Slovenia',     value:  93, unit: ' (EU=100)' },
-        { code: 'CZ', name: 'Czechia',      value:  93, unit: ' (EU=100)' },
-        { code: 'ES', name: 'Spain',        value:  88, unit: ' (EU=100)' },
-        { code: 'MT', name: 'Malta',        value:  97, unit: ' (EU=100)' },
-        { code: 'CY', name: 'Cyprus',       value:  82, unit: ' (EU=100)' },
-        { code: 'PT', name: 'Portugal',     value:  80, unit: ' (EU=100)' },
-        { code: 'EE', name: 'Estonia',      value:  87, unit: ' (EU=100)' },
-        { code: 'LT', name: 'Lithuania',    value:  86, unit: ' (EU=100)' },
-        { code: 'LV', name: 'Latvia',       value:  73, unit: ' (EU=100)' },
-        { code: 'SK', name: 'Slovakia',     value:  77, unit: ' (EU=100)' },
-        { code: 'PL', name: 'Poland',       value:  77, unit: ' (EU=100)' },
-        { code: 'HU', name: 'Hungary',      value:  73, unit: ' (EU=100)' },
-        { code: 'HR', name: 'Croatia',      value:  70, unit: ' (EU=100)' },
-        { code: 'GR', name: 'Greece',       value:  68, unit: ' (EU=100)' },
-        { code: 'RO', name: 'Romania',      value:  72, unit: ' (EU=100)' },
-        { code: 'BG', name: 'Bulgaria',     value:  59, unit: ' (EU=100)' },
-      ];
+      // §10.1 Integration Index
+      renderIntegrationIndex('#index-chart-wrapper', indexData, { height: 420 });
+      document.querySelector('#index-legend').innerHTML = buildIndexLegend();
 
-      renderDataMap('#chart-map', gdpPcData, {
-        ariaLabel: 'Choropleth map of Europe showing GDP per capita by EU member state, 2022',
-        title: 'GDP per capita (PPS, EU=100) by member state, 2022',
-        width: document.querySelector('#chart-map').clientWidth
-      });
+      // §10.2 Toggle Map
+      renderToggleMap('#toggle-map-container', gdpData);
+
+      // §10.3 Competence Matrix — render from JSON
+      const tbody = document.querySelector('#matrix-tbody');
+      if (tbody && matrixData?.rows) {
+        tbody.innerHTML = matrixData.rows.map(row => `
+          <tr>
+            <td>${row.domain}</td>
+            <td class="matrix-cell">
+              <span class="matrix-status matrix-status--${row.a.status}">${row.a.status.replace(/-/g,' ')}</span><br>
+              ${row.a.text}
+              <cite class="matrix-cite">${row.a.cite}</cite>
+            </td>
+            <td class="matrix-cell">
+              <span class="matrix-status matrix-status--${row.b.status}">${row.b.status}</span><br>
+              ${row.b.text}
+              <cite class="matrix-cite">${row.b.cite}</cite>
+            </td>
+            <td class="matrix-cell" style="color:var(--text-tertiary);">
+              <span class="matrix-status matrix-status--placeholder">placeholder</span><br>
+              ${row.c.text}
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      // §10.4 Scenario Sliders
+      initScenarioSlider('#slider-section', sliderData);
+
     }).catch(err => {
-      console.error('Failed to load chart data:', err);
+      console.error('Data Room: failed to load data', err);
     });
   </script>
 
