@@ -1157,3 +1157,24 @@ mark.illustrative-label,
   .toggle-map__controls { flex-direction: column; align-items: flex-start; }
 }
 
+
+
+/* Responsive adjustments for SVG charts */
+@media (max-width: 64rem) {
+  .toggle-map__svg-wrapper,
+  .integration-index-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .toggle-map__svg-wrapper svg,
+  .integration-index-wrapper svg {
+    min-width: 640px;
+  }
+}
+
+@media (max-width: 48rem) {
+  .index-legend {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+}

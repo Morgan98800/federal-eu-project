@@ -51,6 +51,11 @@ export function renderEurobarometerChart(containerSelector, data) {
   const height = totalHeight - margin.top - margin.bottom;
 
   container.innerHTML = '';
+  container.style.position = 'relative';
+  const tooltip = document.createElement('div');
+  tooltip.className = 'chart-tooltip';
+  tooltip.style.cssText = `display:none;position:absolute;pointer-events:none;background:var(--paper);border:1px solid var(--rule-grey);border-left:3px solid var(--accent-bronze);padding:0.4rem 0.6rem;font-family:${FONT_MONO};font-size:11px;color:${INK};z-index:10;white-space:nowrap;`;
+  container.appendChild(tooltip);
 
   const svg = d3.select(container)
     .append('svg')
@@ -113,16 +118,22 @@ export function renderEurobarometerChart(containerSelector, data) {
     .attr('stroke-width', 1.5)
     .attr('d', line);
 
-  // Data points
-  g.selectAll('.dot')
-    .data(series)
-    .join('circle')
-    .attr('class', 'dot')
-    .attr('cx', d => x(d.year))
-    .attr('cy', d => y(d.euFavourable))
-    .attr('r', 2.5)
+    .attr('r', 4)
     .attr('fill', INK)
-    .attr('stroke', 'none');
+    .attr('stroke', 'none')
+    .attr('tabindex', '0')
+    .style('cursor', 'pointer')
+    .on('mousemove focus', function(event, d) {
+      const datum = d || d3.select(this).datum();
+      const [ex, ey] = event.type === 'focus' 
+        ? [x(datum.year) + margin.left, y(datum.euFavourable) + margin.top] 
+        : d3.pointer(event, container);
+      tooltip.style.display = 'block';
+      tooltip.style.left = `${ex + 12}px`;
+      tooltip.style.top  = `${ey - 8}px`;
+      tooltip.innerHTML = `<strong>${datum.year}</strong><br>${Math.round(datum.euFavourable * 100)}% favourable`;
+    })
+    .on('mouseleave blur', () => { tooltip.style.display = 'none'; });
 
   // Accent: bronze dot on the most recent data point
   const latest = series[series.length - 1];
@@ -182,6 +193,11 @@ export function renderGDPChart(containerSelector, data) {
   const height = totalHeight - margin.top - margin.bottom;
 
   container.innerHTML = '';
+  container.style.position = 'relative';
+  const tooltip = document.createElement('div');
+  tooltip.className = 'chart-tooltip';
+  tooltip.style.cssText = `display:none;position:absolute;pointer-events:none;background:var(--paper);border:1px solid var(--rule-grey);border-left:3px solid var(--accent-bronze);padding:0.4rem 0.6rem;font-family:${FONT_MONO};font-size:11px;color:${INK};z-index:10;white-space:nowrap;`;
+  container.appendChild(tooltip);
 
   const svg = d3.select(container)
     .append('svg')
@@ -227,7 +243,20 @@ export function renderGDPChart(containerSelector, data) {
     .attr('width', d => x(+d.sharePct))
     .attr('height', y.bandwidth())
     .attr('fill', (d, i) => i === 0 ? BRONZE : INK)
-    .attr('opacity', (d, i) => 0.5 + (0.5 * (members.length - i) / members.length));
+    .attr('opacity', (d, i) => 0.5 + (0.5 * (members.length - i) / members.length))
+    .attr('tabindex', '0')
+    .style('cursor', 'pointer')
+    .on('mousemove focus', function(event, d) {
+      const datum = d || d3.select(this).datum();
+      const [ex, ey] = event.type === 'focus' 
+        ? [x(+datum.sharePct) / 2 + margin.left, y(datum.name) + y.bandwidth()/2 + margin.top] 
+        : d3.pointer(event, container);
+      tooltip.style.display = 'block';
+      tooltip.style.left = `${ex + 12}px`;
+      tooltip.style.top  = `${ey - 8}px`;
+      tooltip.innerHTML = `<strong>${datum.name}</strong><br>€${datum.gdpBn.toLocaleString()} bn (${datum.sharePct}%)`;
+    })
+    .on('mouseleave blur', () => { tooltip.style.display = 'none'; });
 
   // Value labels
   g.selectAll('.bar-label')
@@ -265,6 +294,11 @@ export function renderDefenceChart(containerSelector, data, natoTarget = 2.0) {
   const height = totalHeight - margin.top - margin.bottom;
 
   container.innerHTML = '';
+  container.style.position = 'relative';
+  const tooltip = document.createElement('div');
+  tooltip.className = 'chart-tooltip';
+  tooltip.style.cssText = `display:none;position:absolute;pointer-events:none;background:var(--paper);border:1px solid var(--rule-grey);border-left:3px solid var(--accent-bronze);padding:0.4rem 0.6rem;font-family:${FONT_MONO};font-size:11px;color:${INK};z-index:10;white-space:nowrap;`;
+  container.appendChild(tooltip);
 
   const svg = d3.select(container)
     .append('svg')
@@ -337,9 +371,23 @@ export function renderDefenceChart(containerSelector, data, natoTarget = 2.0) {
     .attr('class', 'dot')
     .attr('cx', d => x(d.defenceGdpPct))
     .attr('cy', d => y(d.name) + y.bandwidth() / 2)
-    .attr('r', 5)
+    .attr('r', 6)
     .attr('fill', d => d.defenceGdpPct >= natoTarget ? BRONZE : INK)
-    .attr('opacity', 0.85);
+    .attr('opacity', 0.85)
+    .attr('tabindex', '0')
+    .style('cursor', 'pointer')
+    .on('mousemove focus', function(event, d) {
+      const datum = d || d3.select(this).datum();
+      const [ex, ey] = event.type === 'focus' 
+        ? [x(datum.defenceGdpPct) + margin.left, y(datum.name) + y.bandwidth()/2 + margin.top] 
+        : d3.pointer(event, container);
+      tooltip.style.display = 'block';
+      tooltip.style.left = `${ex + 12}px`;
+      tooltip.style.top  = `${ey - 8}px`;
+      const spendBn = (datum.defenceGdpPct * datum.gdpBn / 100).toFixed(1);
+      tooltip.innerHTML = `<strong>${datum.name}</strong><br>${datum.defenceGdpPct}% of GDP<br>~€${spendBn} bn`;
+    })
+    .on('mouseleave blur', () => { tooltip.style.display = 'none'; });
 
   // Value labels
   g.selectAll('.dot-label')

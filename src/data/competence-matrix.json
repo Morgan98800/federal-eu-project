@@ -16,49 +16,49 @@
       "domain": "Currency / Monetary Policy",
       "a": { "status": "exclusive-partial", "text": "Exclusive EU competence for eurozone members (19/27 states). Non-euro states retain national monetary policy.", "cite": "TFEU Art. 3(1)(c), Art. 119–144" },
       "b": { "status": "federal",           "text": "Federal. Congress has exclusive power to coin money and regulate its value. Federal Reserve is a federal institution.", "cite": "US Const. Art. I §8 cl. 5" },
-      "c": { "status": "placeholder",       "text": "[PLACEHOLDER — operator's proposed allocation]" }
+      "c": { "status": "federal",           "text": "Federal. Exclusive federal competence over currency and monetary policy for all member states. The ECB operates as a full federal reserve." }
     },
     {
       "domain": "Defence / Armed Forces",
       "a": { "status": "intergovernmental", "text": "No EU army. Common Foreign and Security Policy (CFSP) and Permanent Structured Cooperation (PESCO) operate by unanimity — effectively intergovernmental. No common defence budget.", "cite": "TEU Art. 42–46; TFEU does not classify defence as shared competence" },
       "b": { "status": "federal",           "text": "Federal. Congress declares war, raises armies, and appropriates defence funds. President is Commander-in-Chief. States may not maintain warships.", "cite": "US Const. Art. I §8 cl. 11–16; Art. II §2" },
-      "c": { "status": "placeholder",       "text": "[PLACEHOLDER — operator's proposed allocation]" }
+      "c": { "status": "federal",           "text": "Federal. A unified European Armed Forces under federal command, funded by the federal budget. Member states may retain national guards for domestic emergencies." }
     },
     {
       "domain": "Foreign Policy",
       "a": { "status": "intergovernmental", "text": "CFSP operates by unanimity in the European Council and Council. No binding EU foreign policy without unanimous agreement. Member states retain independent foreign-policy capacity.", "cite": "TEU Art. 24; TFEU Art. 218" },
       "b": { "status": "federal",           "text": "Primarily federal. President conducts foreign affairs; Senate ratifies treaties. States may not enter treaties with foreign governments.", "cite": "US Const. Art. II §2; Art. I §10" },
-      "c": { "status": "placeholder",       "text": "[PLACEHOLDER — operator's proposed allocation]" }
+      "c": { "status": "federal",           "text": "Federal. The federal executive represents the Union internationally and negotiates all treaties. Member states cannot conduct independent foreign policy." }
     },
     {
       "domain": "Taxation",
       "a": { "status": "national",          "text": "No EU-level direct taxation. EU budget funded by 'own resources' (customs duties, VAT-based contribution, GNI-based contribution). Direct and indirect tax harmonisation requires unanimity.", "cite": "TFEU Art. 110–113; Council Decision 2020/2053 on own resources" },
       "b": { "status": "concurrent",        "text": "Concurrent. Federal government levies income, corporate, payroll, and excise taxes. States levy their own income, sales, and property taxes independently.", "cite": "US Const. Art. I §8 cl. 1; 16th Amendment" },
-      "c": { "status": "placeholder",       "text": "[PLACEHOLDER — operator's proposed allocation]" }
+      "c": { "status": "concurrent",        "text": "Concurrent. The federal government levies corporate and income taxes directly to fund the federal budget. States retain independent taxing powers." }
     },
     {
       "domain": "Internal Market / Trade",
       "a": { "status": "exclusive",         "text": "Exclusive EU competence. Common commercial policy and customs union are exclusive EU competences. Common market is regulated by EU institutions.", "cite": "TFEU Art. 3(1)(a)(b)(e); Art. 26–66" },
       "b": { "status": "federal",           "text": "Federal. Congress regulates commerce with foreign nations and among the states. States may not impose tariffs on interstate commerce.", "cite": "US Const. Art. I §8 cl. 3 (Commerce Clause)" },
-      "c": { "status": "placeholder",       "text": "[PLACEHOLDER — operator's proposed allocation]" }
+      "c": { "status": "exclusive",         "text": "Exclusive federal competence. A fully completed single market with unified commercial policy and no internal barriers." }
     },
     {
       "domain": "Climate / Environment",
       "a": { "status": "shared",            "text": "Shared competence. EU sets binding targets (e.g., EU Green Deal, Fit for 55 package); member states implement. EU Emissions Trading System is EU-level.", "cite": "TFEU Art. 4(2)(e); Art. 191–193" },
       "b": { "status": "concurrent",        "text": "Concurrent. Federal EPA sets standards; states may exceed federal minimums (California waiver model). Congress has not enacted binding federal climate legislation as of 2022.", "cite": "Clean Air Act §177; EPA authority under Massachusetts v. EPA (2007)" },
-      "c": { "status": "placeholder",       "text": "[PLACEHOLDER — operator's proposed allocation]" }
+      "c": { "status": "concurrent",        "text": "Concurrent. Federal government sets binding floor standards and carbon pricing. Member states may enact stricter environmental protections." }
     },
     {
       "domain": "Migration / Border Control",
       "a": { "status": "shared",            "text": "Shared competence. Schengen Area abolishes internal borders for participating states; external border managed by Frontex under EU mandate. Asylum rules partially harmonised (Dublin Regulation).", "cite": "TFEU Art. 4(2)(j); Art. 77–80; Reg. 2019/1896 (Frontex)" },
       "b": { "status": "federal",           "text": "Federal. Congress has plenary power over immigration and naturalisation. States cannot set immigration law, though they may limit benefits to non-citizens.", "cite": "US Const. Art. I §8 cl. 4; Arizona v. United States (2012)" },
-      "c": { "status": "placeholder",       "text": "[PLACEHOLDER — operator's proposed allocation]" }
+      "c": { "status": "federal",           "text": "Federal. Exclusive federal control over external borders, immigration, and asylum policy. Complete freedom of movement internally." }
     },
     {
       "domain": "Fiscal Policy / Budget",
       "a": { "status": "national",          "text": "No EU-level fiscal policy. EU budget is ~1% of EU GNI — insufficient to act as a macroeconomic stabiliser. SGP/TSCG constrain national deficits. Next Generation EU (€750bn, 2021–2026) is a temporary, one-off instrument.", "cite": "TFEU Art. 121; Reg. 1466/97 (SGP); Council Reg. 2020/2094 (NGEU)" },
       "b": { "status": "federal",           "text": "Federal government maintains a substantial fiscal capacity (~24% of GDP). Federal automatic stabilisers (unemployment insurance, Medicaid, food stamps) act counter-cyclically across states.", "cite": "US OMB Historical Tables 1.2 (2022 outturn)" },
-      "c": { "status": "placeholder",       "text": "[PLACEHOLDER — operator's proposed allocation]" }
+      "c": { "status": "federal",           "text": "Federal. A substantial federal budget (e.g., 10-15% of GDP) with borrowing capacity, capable of macroeconomic stabilisation and counter-cyclical investment." }
     }
   ]
 }

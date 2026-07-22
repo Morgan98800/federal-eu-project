@@ -1,16 +1,24 @@
-# React + Vite
+# Federal Vision for Europe
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An independent, data-driven editorial project making the argument for European federal union. This site visualizes the case through maps, economic comparisons, and tracked public opinion data.
 
-Currently, two official plugins are available:
+## Technology Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This is a static multi-page application built without heavy frameworks:
+- **Build Tool:** [Vite](https://vitejs.dev/)
+- **Logic:** Vanilla JavaScript (ES modules)
+- **Styling:** Vanilla CSS (custom properties/tokens)
+- **Data Visualization:** [D3.js](https://d3js.org/) and [TopoJSON Client](https://github.com/topojson/topojson-client)
 
-## React Compiler
+## Development
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The site requires no database or server-side rendering.
 
-## Expanding the ESLint configuration
+- Run locally: `npm run dev`
+- Build for production: `npm run build`
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Outstanding Content
+
+This codebase contains several `[PLACEHOLDER]` fields for final operator-supplied content (e.g., site title, legal footers, essay text).
+
+**Please see [`BUILD_NOTES.md`](./BUILD_NOTES.md) for the complete list of required content to finalize the site.**

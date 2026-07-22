@@ -179,7 +179,7 @@ main {
 
 /* --- Page masthead --- */
 .page-masthead {
-  padding-block: var(--space-16) var(--space-12);
+  padding-block: var(--space-10) var(--space-8);
   border-bottom: var(--border-rule);
 }
 
@@ -195,7 +195,7 @@ main {
 .page-masthead__title {
   font-size:   clamp(var(--text-3xl), 5vw, var(--text-5xl));
   max-width:   18ch;
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-4);
 }
 
 .page-masthead__deck {
@@ -317,8 +317,10 @@ main {
 
 /* --- Print styles --- */
 @media print {
-  .site-header, .site-footer, .dark-toggle, .nav-toggle { display: none; }
+  .site-header, .site-footer, .dark-toggle, .nav-toggle, .chart-tooltip { display: none !important; }
   body { background: white; color: black; font-size: 12pt; }
   a { color: inherit; text-decoration: underline; }
   a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.8em; }
+  svg { max-width: 100% !important; height: auto !important; page-break-inside: avoid; }
+  .toggle-map__svg-wrapper, .integration-index-wrapper { overflow: visible !important; }
 }

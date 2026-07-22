@@ -113,6 +113,34 @@ export function initBibliographyExport(containerSelector, sourcesData) {
   });
 }
 
+/**
+ * Wire a button to download a JSON array as CSV, optionally with a citation header.
+ * @param {string} buttonSelector
+ * @param {Array} dataArray
+ * @param {string} filename
+ * @param {object} sourceMeta
+ */
+export function initCSVExport(buttonSelector, dataArray, filename, sourceMeta) {
+  const btn = document.querySelector(buttonSelector);
+  if (!btn || !dataArray?.length) return;
+  
+  btn.addEventListener('click', () => {
+    const keys = Object.keys(dataArray[0]).filter(k => typeof dataArray[0][k] !== 'object');
+    const headerRow = keys.join(',');
+    const rows = dataArray.map(obj => keys.map(k => `"${String(obj[k] ?? '').replace(/"/g, '""')}"`).join(','));
+    
+    let csv = '';
+    if (sourceMeta) {
+      csv += `"# Dataset: ${sourceMeta.title || ''}"\n`;
+      csv += `"# Publisher: ${sourceMeta.publisher || ''}"\n`;
+      csv += `"# Year: ${sourceMeta.year || ''}"\n`;
+      csv += `"# URL: ${sourceMeta.url || ''}"\n\n`;
+    }
+    csv += headerRow + '\n' + rows.join('\n');
+    downloadText(csv, filename, 'text/csv');
+  });
+}
+
 // ============================================================
 // GENERATORS
 // ============================================================

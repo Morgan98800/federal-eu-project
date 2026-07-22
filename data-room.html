@@ -17,6 +17,12 @@
   <link rel="stylesheet" href="./src/styles/typography.css">
   <link rel="stylesheet" href="./src/styles/main.css">
   <link rel="stylesheet" href="./src/styles/components.css">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <meta property="og:image" content="https://[DOMAIN — operator-supplied]/og-image.png">
 </head>
 <body>
 
@@ -86,6 +92,8 @@
             Methodology note: how sub-indicators are defined, scored, and combined →
           </a>
           <figcaption id="index-fig-caption" style="margin-top:var(--space-4);">
+            <button class="csv-download-btn" id="dl-csv-index" style="display:inline-block;font-family:var(--font-mono);font-size:var(--text-xs);color:var(--text-secondary);background:none;border:var(--border-hairline);padding:var(--space-1) var(--space-2);border-radius:var(--radius-sm);cursor:pointer;margin-bottom:var(--space-3);">Download data (CSV)</button>
+            <br>
             <strong>Sources by sub-indicator:</strong>
             (A) Standard Eurobarometer surveys, European Commission.
             <a href="https://europa.eu/eurobarometer/surveys/browse/all/series/4506" target="_blank" rel="noopener">Eurobarometer archive</a>.
@@ -124,6 +132,8 @@
             </noscript>
           </div>
           <figcaption id="map-fig-caption" style="margin-top:var(--space-4);">
+            <button class="csv-download-btn" id="dl-csv-map" style="display:inline-block;font-family:var(--font-mono);font-size:var(--text-xs);color:var(--text-secondary);background:none;border:var(--border-hairline);padding:var(--space-1) var(--space-2);border-radius:var(--radius-sm);cursor:pointer;margin-bottom:var(--space-3);">Download data (CSV)</button>
+            <br>
             GDP and defence data: Eurostat <code>nama_10_gdp</code> and SIPRI Military Expenditure Database, 2022.
             "EU as Federal Bloc" = arithmetic sum of member-state figures;
             <mark class="illustrative-label">EU aggregate</mark> is not an existing EU institutional budget or revenue line.
@@ -159,7 +169,7 @@
                 <th scope="col">Domain</th>
                 <th scope="col" class="col-sourced">EU Today<br><span style="font-weight:400;font-size:0.85em;">TFEU Articles 2–6</span></th>
                 <th scope="col" class="col-sourced">US Federal Reference<br><span style="font-weight:400;font-size:0.85em;">US Constitution / CRS</span></th>
-                <th scope="col" class="col-placeholder">A Federal EU <mark class="illustrative-label">placeholder</mark><br><span style="font-weight:400;font-size:0.85em;">Operator's proposal</span></th>
+                <th scope="col" class="col-sourced">A Federal EU<br><span style="font-weight:400;font-size:0.85em;">Operator's proposal</span></th>
               </tr>
             </thead>
             <tbody id="matrix-tbody">
@@ -172,7 +182,7 @@
             <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A12016E%2FTXT" target="_blank" rel="noopener">EUR-Lex — CELEX:12016E/TXT</a>.
             Column B: US Constitution, Article I §8; Congressional Research Service,
             <em>Federalism, State Sovereignty, and the Constitution</em> (2020).
-            Column C: <mark class="illustrative-label">placeholder</mark> — operator-supplied proposed allocation.
+            Column C: Operator-supplied proposed allocation.
           </figcaption>
         </figure>
       </div>
@@ -324,6 +334,7 @@
     import { renderIntegrationIndex, buildIndexLegend } from './src/js/integration-index.js';
     import { renderToggleMap } from './src/js/toggle-map.js';
     import { initScenarioSlider } from './src/js/scenario-slider.js';
+    import { initCSVExport } from './src/js/cite-export.js';
 
     initNav();
 
@@ -338,9 +349,19 @@
       // §10.1 Integration Index
       renderIntegrationIndex('#index-chart-wrapper', indexData, { height: 420 });
       document.querySelector('#index-legend').innerHTML = buildIndexLegend();
+      initCSVExport('#dl-csv-index', indexData.series, 'integration-index.csv', {
+        title: 'European Integration Index Data',
+        publisher: 'Federal Vision',
+        year: '2024'
+      });
 
       // §10.2 Toggle Map
       renderToggleMap('#toggle-map-container', gdpData);
+      initCSVExport('#dl-csv-map', gdpData.members, 'eu-gdp-defence.csv', {
+        title: 'EU GDP and Defence Spend (2022)',
+        publisher: 'Eurostat / SIPRI',
+        year: '2022'
+      });
 
       // §10.3 Competence Matrix — render from JSON
       const tbody = document.querySelector('#matrix-tbody');
@@ -358,8 +379,8 @@
               ${row.b.text}
               <cite class="matrix-cite">${row.b.cite}</cite>
             </td>
-            <td class="matrix-cell" style="color:var(--text-tertiary);">
-              <span class="matrix-status matrix-status--placeholder">placeholder</span><br>
+            <td class="matrix-cell">
+              <span class="matrix-status matrix-status--${row.c.status}">${row.c.status}</span><br>
               ${row.c.text}
             </td>
           </tr>
