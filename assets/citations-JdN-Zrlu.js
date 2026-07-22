@@ -1,0 +1,10 @@
+const p={};function m(n){Object.assign(p,n)}function v(){const n=document.querySelectorAll(".citation-ref__trigger");if(!n.length)return;function e(){document.querySelectorAll(".citation-popover.open").forEach(t=>{t.classList.remove("open"),t.removeAttribute("aria-hidden")})}document.addEventListener("click",t=>{t.target.closest(".citation-ref")||e()}),document.addEventListener("keydown",t=>{if(t.key==="Escape"){const i=document.querySelector(".citation-popover.open");if(i){e();const o=i.previousElementSibling;o&&o.focus()}}}),n.forEach(t=>{const i=t.dataset.citeId,o=document.getElementById(`popover-${i}`);if(!o)return;const r=p[i];r&&(o.innerHTML=f(i,r));const a=o.querySelector(".citation-popover__close");a&&a.addEventListener("click",()=>{o.classList.remove("open"),t.focus()}),t.addEventListener("click",c=>{c.stopPropagation();const u=o.classList.contains("open");if(e(),!u){o.classList.add("open");const l=o.querySelector(".citation-popover__close");l&&l.focus(),d(o)}}),t.addEventListener("keydown",c=>{(c.key==="Enter"||c.key===" ")&&(c.preventDefault(),t.click())})})}function f(n,e){return`
+    <button class="citation-popover__close" aria-label="Close citation">&times;</button>
+    <span class="citation-popover__num">[${e.num||n.replace(/\D/g,"")}]</span>
+    <div class="citation-popover__title">${s(e.title)}</div>
+    <div class="citation-popover__meta">
+      ${s(e.author)}${e.year?` &mdash; ${e.year}`:""}
+      ${e.publisher?`<br><em>${s(e.publisher)}</em>`:""}
+    </div>
+    ${e.url?`<a class="citation-popover__link" href="${e.url}" target="_blank" rel="noopener noreferrer">${e.url}</a>`:""}
+  `.trim()}function d(n){n.style.left="50%",n.style.transform="translateX(-50%)";const e=n.getBoundingClientRect();if(e.left<8){const t=8-e.left;n.style.transform=`translateX(calc(-50% + ${t}px))`}else if(e.right>window.innerWidth-8){const t=e.right-(window.innerWidth-8);n.style.transform=`translateX(calc(-50% - ${t}px))`}}function s(n){return n?String(n).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"):""}export{v as i,m as r};
