@@ -1,0 +1,59 @@
+/* ==========================================================================
+   MOTION & ANIMATION
+   High-end, editorial-appropriate animations and micro-interactions
+   ========================================================================== */
+
+/* Respect user's reduced motion preferences */
+@media (prefers-reduced-motion: no-preference) {
+  
+  /* --- Base Reveal State (Hidden) --- */
+  .js-reveal {
+    opacity: 0;
+    /* Move slightly down */
+    transform: translateY(20px);
+    /* Butter-smooth ease-out */
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  /* --- Revealed State (Visible) --- */
+  .js-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* --- Modifiers --- */
+  
+  /* Slightly longer delay for structural elements (e.g., body text vs header) */
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  
+  /* Staggering for lists or grids */
+  .reveal-stagger-1 { transition-delay: 0.1s; }
+  .reveal-stagger-2 { transition-delay: 0.2s; }
+  .reveal-stagger-3 { transition-delay: 0.3s; }
+  .reveal-stagger-4 { transition-delay: 0.4s; }
+  .reveal-stagger-5 { transition-delay: 0.5s; }
+  .reveal-stagger-6 { transition-delay: 0.6s; }
+  
+  /* Fast reveal for smaller UI elements */
+  .reveal-fast {
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Slow reveal for large sections/hero */
+  .reveal-slow {
+    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+}
+
+/* If user prefers reduced motion, disable transitions but ensure elements are visible */
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

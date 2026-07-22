@@ -25,6 +25,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
   <link rel="apple-touch-icon" href="./apple-touch-icon.png">
   <meta property="og:image" content="https://morgan98800.github.io/federal-eu-project/og-image.png">
+  <link rel="stylesheet" href="./src/styles/motion.css">
 </head>
 <body>
 
@@ -55,12 +56,12 @@
       <!-- Masthead -->
       <div class="page-masthead">
         <div class="container">
-          <div class="page-masthead__overline">The Case</div>
-          <h1 class="page-masthead__title" id="case-title">
+          <div class="page-masthead__overline js-reveal reveal-fast">The Case</div>
+          <h1 class="page-masthead__title js-reveal reveal-delay-1" id="case-title">
             <!-- [PLACEHOLDER — operator essay title] -->
             Why Europe Must<br>Become a Federation
           </h1>
-          <p class="page-masthead__deck">
+          <p class="page-masthead__deck js-reveal reveal-delay-2 ">
             <!-- [PLACEHOLDER — operator deck / subtitle] -->
             The case is not sentimental. It follows from a clear-eyed reading of
             what coordination without authority has cost, and continues to cost,
@@ -103,9 +104,9 @@
           </p>
 
           <!-- ===== I. HISTORICAL ===== -->
-          <h2 id="historical">I. The Historical Argument</h2>
+          <h2 class="js-reveal" id="historical">I. The Historical Argument</h2>
 
-          <p>
+          <p class="js-reveal">
             The idea that a united Europe would permanently foreclose the possibility of
             major European war is as old as the post-war settlement itself.
             For a timeline of how this original federalist impulse evolved from the Ventotene Manifesto (1941)
@@ -114,9 +115,9 @@
           </p>
 
           <!-- ===== II. ECONOMIC ===== -->
-          <h2 id="economic">II. The Economic Argument</h2>
+          <h2 class="js-reveal" id="economic">II. The Economic Argument</h2>
 
-          <p>
+          <p class="js-reveal">
             The eurozone crisis demonstrated what happens when a monetary union operates without a fiscal union.
             A currency area of this size requires a central fiscal capacity to act as a macroeconomic stabiliser.
             To understand the current scale of the EU budget compared to a federal reference model, and
@@ -125,9 +126,9 @@
           </p>
 
           <!-- ===== III. DEMOCRATIC ===== -->
-          <h2 id="democratic">III. The Democratic Argument</h2>
+          <h2 class="js-reveal" id="democratic">III. The Democratic Argument</h2>
 
-          <p>
+          <p class="js-reveal">
             The EU's perceived democratic deficit is a consequence of its hybrid structure, not its supranationality.
             A federal settlement would transfer executive accountability to a legislature that is genuinely representative.
             To see how powers are currently distributed under the TFEU compared to a federal constitution, consult the
@@ -135,9 +136,9 @@
           </p>
 
           <!-- ===== IV. SECURITY ===== -->
-          <h2 id="security">IV. The Security Argument</h2>
+          <h2 class="js-reveal" id="security">IV. The Security Argument</h2>
 
-          <p>
+          <p class="js-reveal">
             EU member states collectively spend over €214 billion on defence — comparable to the US NATO contribution —
             but fragmented across twenty-seven separate procurement systems and command structures.
             To visualise the impact of pooling European defence procurement, see the <a href="./data-room.html#scenario-sliders">Scenario Sliders</a> and the <a href="./data-room.html#toggle-map">27 States vs. One Bloc Map</a>.
@@ -146,9 +147,9 @@
           <hr>
 
           <!-- ===== V. OBJECTIONS & RESPONSES ===== -->
-          <h2 id="objections">V. Objections &amp; Responses</h2>
+          <h2 class="js-reveal" id="objections">V. Objections &amp; Responses</h2>
 
-          <p>
+          <p class="js-reveal">
             What follows is a summary of the strongest objections to European federalism,
             and the responses they warrant. This section is here because a serious
             argument is made stronger, not weaker, by engaging with its critics honestly.
@@ -161,7 +162,7 @@
                 "A federation would mean the end of national sovereignty."
               </summary>
               <div class="accordion-item__body">
-                <p>
+                <p class="js-reveal">
                   All federation involves the pooling, not the elimination, of sovereignty.
                   Member states of the United States, Germany, Canada, and Switzerland
                   retain substantial autonomous powers — in culture, education, local
@@ -182,7 +183,7 @@
                 "European citizens don't want this — there's no demos."
               </summary>
               <div class="accordion-item__body">
-                <p>
+                <p class="js-reveal">
                   The "no demos" argument — that a European federation requires a shared
                   European political identity that does not yet exist — confuses cause
                   and effect. Political identity is partly a product of shared institutions:
@@ -204,7 +205,7 @@
                 "The EU already has a democratic deficit — federation would make it worse."
               </summary>
               <div class="accordion-item__body">
-                <p>
+                <p class="js-reveal">
                   This objection runs the argument backwards. The EU's democratic deficit
                   is a consequence of its current hybrid structure — in which executive
                   power rests with a Council of national governments operating largely
@@ -226,7 +227,7 @@
                 "Subsidiarity means decisions should stay national."
               </summary>
               <div class="accordion-item__body">
-                <p>
+                <p class="js-reveal">
                   The subsidiarity principle (Article 5(3) TEU) requires that the EU act
                   only where "the objectives of the proposed action cannot be sufficiently
                   achieved by the Member States." For defence, macroeconomic stability,
@@ -272,6 +273,8 @@
   </footer>
 
   <script type="module">
+    import { initMotionObserver } from "./src/js/motion.js";
+    initMotionObserver();
     import { initNav } from './src/js/nav.js';
     import { initCitations, registerCitations } from './src/js/citations.js';
     import { initAccordions } from './src/js/accordion.js';

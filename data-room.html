@@ -23,6 +23,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
   <link rel="apple-touch-icon" href="./apple-touch-icon.png">
   <meta property="og:image" content="https://morgan98800.github.io/federal-eu-project/og-image.png">
+  <link rel="stylesheet" href="./src/styles/motion.css">
 </head>
 <body>
 
@@ -51,9 +52,9 @@
     <!-- ===== SLIM MASTHEAD ===== -->
     <div class="page-masthead page-masthead--slim">
       <div class="container">
-        <div class="page-masthead__overline">Data Room</div>
-        <h1 class="page-masthead__title" id="data-room-title">The Data Room</h1>
-        <p class="page-masthead__deck" style="margin-top:var(--space-6); font-family:var(--font-body); font-size:var(--text-base); line-height:var(--leading-relaxed); color:var(--text-secondary); max-width:68ch;">
+        <div class="page-masthead__overline js-reveal reveal-fast">Data Room</div>
+        <h1 class="page-masthead__title js-reveal reveal-delay-1" id="data-room-title">The Data Room</h1>
+        <p class="page-masthead__deck js-reveal reveal-delay-2 " style="margin-top:var(--space-6); font-family:var(--font-body); font-size:var(--text-base); line-height:var(--leading-relaxed); color:var(--text-secondary); max-width:68ch;">
           The arguments for a federal Europe are measurable. This dashboard tracks the quantifiable limits of intergovernmentalism and the public mandate for integration.
         </p>
         <ul style="margin-top:var(--space-6); font-family:var(--font-body); font-size:var(--text-sm); line-height:var(--leading-relaxed); color:var(--text-secondary); max-width:68ch; padding-left:var(--space-4);">
@@ -82,14 +83,14 @@
     <section class="section" id="integration-index" aria-labelledby="index-heading">
       <div class="container">
         <span class="section-label">01</span>
-        <h2 id="index-heading" style="font-size:var(--text-2xl);margin-bottom:var(--space-2);">
+        <h2 class="js-reveal" id="index-heading" style="font-size:var(--text-2xl);margin-bottom:var(--space-2);">
           European Integration Index, 2006–2023
         </h2>
         <p style="color:var(--text-secondary);max-width:66ch;margin-bottom:var(--space-6);">
           A composite of four sub-indicators — public support (Eurobarometer), defence collaboration (EDA), fiscal capacity relative to a federal reference (Eurostat / US OMB), and a qualitative competence score. The composite is their arithmetic mean. Hover the chart to inspect individual years.
         </p>
 
-        <figure class="chart-figure" aria-labelledby="index-fig-caption">
+        <figure class="chart-figure js-reveal" aria-labelledby="index-fig-caption">
           <div class="integration-index-wrapper" id="index-chart-wrapper" style="min-height:420px;">
             <noscript>
               <p style="padding:2rem;color:var(--text-secondary);">A line chart showing the European Integration Index from 2006 to 2023, with four sub-indicators and a composite line. JavaScript is required.</p>
@@ -126,14 +127,14 @@
     <section class="section" id="toggle-map" aria-labelledby="map-heading">
       <div class="container">
         <span class="section-label">02</span>
-        <h2 id="map-heading" style="font-size:var(--text-2xl);margin-bottom:var(--space-2);">
+        <h2 class="js-reveal" id="map-heading" style="font-size:var(--text-2xl);margin-bottom:var(--space-2);">
           27 Member States vs. One Federal Bloc
         </h2>
         <p style="color:var(--text-secondary);max-width:66ch;margin-bottom:var(--space-6);">
           One base map, one data layer. Switch between viewing the EU as 27 fragmented national figures and as a single aggregated value. The "EU as Federal Bloc" figure is real arithmetic on Eurostat / SIPRI data — it is not an existing EU institutional budget line.
         </p>
 
-        <figure class="chart-figure" aria-labelledby="map-fig-caption">
+        <figure class="chart-figure js-reveal" aria-labelledby="map-fig-caption">
           <div id="toggle-map-container" style="min-height:420px;">
             <noscript>
               <p style="padding:2rem;color:var(--text-secondary);">An interactive map of Europe is displayed here. JavaScript is required.</p>
@@ -160,7 +161,7 @@
     <section class="section" id="competence-matrix" aria-labelledby="matrix-heading">
       <div class="container">
         <span class="section-label">03</span>
-        <h2 id="matrix-heading" style="font-size:var(--text-2xl);margin-bottom:var(--space-2);">
+        <h2 class="js-reveal" id="matrix-heading" style="font-size:var(--text-2xl);margin-bottom:var(--space-2);">
           Competence Comparison Matrix
         </h2>
         <p style="color:var(--text-secondary);max-width:66ch;margin-bottom:var(--space-2);">
@@ -204,7 +205,7 @@
     <section class="section" id="scenario-sliders" aria-labelledby="sliders-heading">
       <div class="container">
         <span class="section-label">04</span>
-        <h2 id="sliders-heading" style="font-size:var(--text-2xl);margin-bottom:var(--space-2);">
+        <h2 class="js-reveal" id="sliders-heading" style="font-size:var(--text-2xl);margin-bottom:var(--space-2);">
           Scenario Sliders
         </h2>
         <p style="color:var(--text-secondary);max-width:66ch;margin-bottom:var(--space-6);">
@@ -226,7 +227,7 @@
     <section class="section" id="primary-sources" aria-labelledby="primary-heading">
       <div class="container--narrow">
         <span class="section-label">05</span>
-        <h2 id="primary-heading" style="font-size:var(--text-2xl);margin-bottom:var(--space-2);">
+        <h2 class="js-reveal" id="primary-heading" style="font-size:var(--text-2xl);margin-bottom:var(--space-2);">
           Primary Sources
         </h2>
         <p style="color:var(--text-secondary);max-width:66ch;margin-bottom:var(--space-6);">
@@ -235,14 +236,14 @@
 
         <!-- Ventotene Manifesto — CVCE.eu public access -->
         <article class="primary-source-entry" id="ps-ventotene" style="margin-bottom:var(--space-10);">
-          <h3 style="font-size:var(--text-xl);margin-bottom:var(--space-2);">The Ventotene Manifesto (1941)</h3>
+          <h3 class="js-reveal" style="font-size:var(--text-xl);margin-bottom:var(--space-2);">The Ventotene Manifesto (1941)</h3>
           <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">
             Altiero Spinelli and Ernesto Rossi. Written in internment on the island of Ventotene; circulated clandestinely through the Italian resistance. The founding document of European federalist thought.
           </p>
           <div class="placeholder-banner">
             [REPRODUCTION RIGHTS — operator to confirm: CVCE.eu hosts the full text for public access under their terms of use. Confirm whether direct embedding is permitted before adding an iframe here. Link-out is provided below as fallback.]
           </div>
-          <p>
+          <p class="js-reveal">
             Full text:
             <a href="https://www.cvce.eu/en/obj/the_ventotene_manifesto_1941-en-5ada4b99-7445-492f-9fad-7ebeb5f2a8b4.html"
                target="_blank" rel="noopener">
@@ -253,18 +254,18 @@
 
         <!-- Schuman Declaration — European Commission public archive -->
         <article class="primary-source-entry" id="ps-schuman" style="margin-bottom:var(--space-10);">
-          <h3 style="font-size:var(--text-xl);margin-bottom:var(--space-2);">The Schuman Declaration (9 May 1950)</h3>
+          <h3 class="js-reveal" style="font-size:var(--text-xl);margin-bottom:var(--space-2);">The Schuman Declaration (9 May 1950)</h3>
           <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">
             Robert Schuman, French Foreign Minister. Read at the Quai d'Orsay on 9 May 1950. Drafted in large part by Jean Monnet. The Declaration proposed pooling French and German coal and steel production under a common High Authority — making war between the two countries "not merely unthinkable, but materially impossible."
           </p>
           <blockquote style="border-left:3px solid var(--accent-bronze);padding-left:var(--space-5);margin:var(--space-6) 0;color:var(--text-secondary);">
-            <p>"Europe will not be made all at once, or according to a single plan. It will be built through concrete achievements which first create a de facto solidarity."</p>
+            <p class="js-reveal">"Europe will not be made all at once, or according to a single plan. It will be built through concrete achievements which first create a de facto solidarity."</p>
             <footer style="font-family:var(--font-mono);font-size:var(--text-xs);margin-top:var(--space-3);">
               — Robert Schuman, 9 May 1950.
               Source: <a href="https://european-union.europa.eu/principles-countries-history/history-eu/1945-59/schuman-declaration-may-1950_en" target="_blank" rel="noopener">European Commission archive</a>.
             </footer>
           </blockquote>
-          <p>
+          <p class="js-reveal">
             Full text:
             <a href="https://european-union.europa.eu/principles-countries-history/history-eu/1945-59/schuman-declaration-may-1950_en"
                target="_blank" rel="noopener">
@@ -275,18 +276,18 @@
 
         <!-- Treaty of Rome — EUR-Lex -->
         <article class="primary-source-entry" id="ps-rome" style="margin-bottom:var(--space-10);">
-          <h3 style="font-size:var(--text-xl);margin-bottom:var(--space-2);">Treaty of Rome (1957) — Preamble extract</h3>
+          <h3 class="js-reveal" style="font-size:var(--text-xl);margin-bottom:var(--space-2);">Treaty of Rome (1957) — Preamble extract</h3>
           <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">
             The preamble of the Treaty establishing the European Economic Community committed the six founding states to "an ever closer union among the peoples of Europe" — language that has anchored federalist legal interpretation ever since.
           </p>
           <blockquote style="border-left:3px solid var(--accent-bronze);padding-left:var(--space-5);margin:var(--space-6) 0;color:var(--text-secondary);">
-            <p>"DETERMINED to lay the foundations of an ever closer union among the peoples of Europe, RESOLVED to ensure the economic and social progress of their countries by common action to eliminate the barriers which divide Europe…"</p>
+            <p class="js-reveal">"DETERMINED to lay the foundations of an ever closer union among the peoples of Europe, RESOLVED to ensure the economic and social progress of their countries by common action to eliminate the barriers which divide Europe…"</p>
             <footer style="font-family:var(--font-mono);font-size:var(--text-xs);margin-top:var(--space-3);">
               — Treaty Establishing the European Economic Community (1957), Preamble.
               Source: <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A11957E%2FTXT" target="_blank" rel="noopener">EUR-Lex, CELEX:11957E/TXT</a>.
             </footer>
           </blockquote>
-          <p>
+          <p class="js-reveal">
             Full treaty text:
             <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A11957E%2FTXT"
                target="_blank" rel="noopener">
@@ -297,14 +298,14 @@
 
         <!-- Conference on the Future of Europe -->
         <article class="primary-source-entry" id="ps-cofe" style="margin-bottom:var(--space-10);">
-          <h3 style="font-size:var(--text-xl);margin-bottom:var(--space-2);">Conference on the Future of Europe — Final Report (2022)</h3>
+          <h3 class="js-reveal" style="font-size:var(--text-xl);margin-bottom:var(--space-2);">Conference on the Future of Europe — Final Report (2022)</h3>
           <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">
             The Final Report of the Conference on the Future of Europe (9 May 2022) contains 49 proposals and 326 measures, many explicitly recommending treaty change. European Parliament voted in June 2022 to convene an Article 48 Convention; the Council declined.
           </p>
           <div class="placeholder-banner">
             [REPRODUCTION RIGHTS — PDF embedding via &lt;iframe&gt; sourced directly from the futureu.europa.eu archive. Operator to confirm browser-level PDF embedding is acceptable in deployment environment before shipping. Link-out provided as fallback.]
           </div>
-          <p>
+          <p class="js-reveal">
             Full report (PDF):
             <a href="https://futureu.europa.eu/uploads/decidim/attachment/file/23363/CoFoE_Final_Report_EN.pdf"
                target="_blank" rel="noopener">
@@ -338,6 +339,8 @@
   </footer>
 
   <script type="module">
+    import { initMotionObserver } from "./src/js/motion.js";
+    initMotionObserver();
     import { initNav } from './src/js/nav.js';
     import { renderIntegrationIndex, buildIndexLegend } from './src/js/integration-index.js';
     import { renderToggleMap } from './src/js/toggle-map.js';

@@ -36,6 +36,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
   <link rel="apple-touch-icon" href="./apple-touch-icon.png">
   <meta property="og:image" content="https://morgan98800.github.io/federal-eu-project/og-image.png">
+  <link rel="stylesheet" href="./src/styles/motion.css">
 </head>
 <body>
 
@@ -70,18 +71,18 @@
     <!-- ===== HOME MASTHEAD ===== -->
     <section class="page-masthead" aria-labelledby="home-title">
       <div class="container">
-        <div class="page-masthead__overline">
+        <div class="page-masthead__overline js-reveal reveal-fast">
           <time datetime="2024">Est. 2024</time> &mdash; An independent editorial project
         </div>
-        <h1 class="page-masthead__title" id="home-title">
+        <h1 class="page-masthead__title js-reveal reveal-delay-1" id="home-title">
           <!-- [PLACEHOLDER — operator site title] -->
           A Federal Vision<br>for Europe
         </h1>
-        <p class="page-masthead__deck">
+        <p class="page-masthead__deck js-reveal reveal-delay-2 ">
           To secure its political agency and economic model in a multipolar world, Europe must transition from a treaty-based confederation to a sovereign federal republic. This project outlines the structural mechanisms, historical basis, and democratic necessity of that union.
         </p>
         <div style="margin-top:var(--space-8); padding-top:var(--space-6); border-top:var(--border-hairline);">
-          <h2 style="font-family:var(--font-body); font-size:var(--text-xs); letter-spacing:var(--tracking-widest); text-transform:uppercase; color:var(--accent-bronze); margin-bottom:var(--space-4);">Sources informing this thesis</h2>
+          <h2 class="js-reveal" style="font-family:var(--font-body); font-size:var(--text-xs); letter-spacing:var(--tracking-widest); text-transform:uppercase; color:var(--accent-bronze); margin-bottom:var(--space-4);">Sources informing this thesis</h2>
           <ul style="font-family:var(--font-body); font-size:var(--text-sm); color:var(--text-secondary); line-height:var(--leading-relaxed); display:flex; flex-direction:column; gap:var(--space-3);">
             <li><strong>Sergio Fabbrini (2015), <em>Which European Union?</em>:</strong> Fabbrini argues that the EU's current intergovernmental framework is structurally inadequate for managing modern crises, advocating instead for a formal compound federal democracy to restore both efficiency and democratic legitimacy.</li>
             <li><strong>R. Daniel Kelemen (2004), <em>The Rules of Federalism</em>:</strong> Kelemen's comparative work demonstrates that the EU already functions as a federal system in its regulatory and legal structures, making the transition to a political federation the logical next step for securing its sovereignty.</li>
@@ -95,10 +96,10 @@
     <section class="section" aria-labelledby="index-heading">
       <div class="container">
         <span class="section-label">The Union Today</span>
-        <h2 id="index-heading" style="font-size: var(--text-2xl); margin-bottom: var(--space-6);">
+        <h2 class="js-reveal" id="index-heading" style="font-size: var(--text-2xl); margin-bottom: var(--space-6);">
           European Integration Index, 2006–2023
         </h2>
-        <figure class="chart-figure" aria-label="Line chart showing the composite European Integration Index">
+        <figure class="chart-figure js-reveal" aria-label="Line chart showing the composite European Integration Index">
           <div class="integration-index-wrapper" id="home-index-wrapper" style="min-height: 180px;">
             <!-- D3 chart rendered by integration-index.js -->
             <noscript>
@@ -118,7 +119,7 @@
     <!-- ===== ENTRY POINTS ===== -->
     <section class="section" aria-labelledby="sections-heading">
       <div class="container">
-        <h2 id="sections-heading" class="section-label" style="font-size: var(--text-xs);">
+        <h2 class="js-reveal" id="sections-heading" class="section-label" style="font-size: var(--text-xs);">
           Contents
         </h2>
         <nav class="entry-grid" aria-label="Site sections">
@@ -212,6 +213,8 @@
 
   <!-- ===== SCRIPTS ===== -->
   <script type="module">
+    import { initMotionObserver } from "./src/js/motion.js";
+    initMotionObserver();
     import { initNav } from './src/js/nav.js';
     import { initCitations, registerCitations } from './src/js/citations.js';
     import { renderIntegrationIndex } from './src/js/integration-index.js';

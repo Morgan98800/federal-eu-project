@@ -25,6 +25,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
   <link rel="apple-touch-icon" href="./apple-touch-icon.png">
   <meta property="og:image" content="https://morgan98800.github.io/federal-eu-project/og-image.png">
+  <link rel="stylesheet" href="./src/styles/motion.css">
 </head>
 <body>
 
@@ -52,24 +53,24 @@
 
     <div class="page-masthead">
       <div class="container">
-        <div class="page-masthead__overline">Sources</div>
-        <h1 class="page-masthead__title" id="sources-title">
+        <div class="page-masthead__overline js-reveal reveal-fast">Sources</div>
+        <h1 class="page-masthead__title js-reveal reveal-delay-1" id="sources-title">
           Sources &amp; Bibliography
         </h1>
-        <div class="page-masthead__deck" style="margin-top:var(--space-6); font-family:var(--font-body); font-size:var(--text-base); line-height:var(--leading-relaxed); color:var(--text-secondary); max-width:68ch;">
-          <h2 style="font-family:var(--font-body); font-size:var(--text-xs); letter-spacing:var(--tracking-widest); text-transform:uppercase; color:var(--accent-bronze); margin-bottom:var(--space-2);">Primary Texts &amp; Treaties</h2>
+        <div class="page-masthead__deck js-reveal reveal-delay-2 " style="margin-top:var(--space-6); font-family:var(--font-body); font-size:var(--text-base); line-height:var(--leading-relaxed); color:var(--text-secondary); max-width:68ch;">
+          <h2 class="js-reveal" style="font-family:var(--font-body); font-size:var(--text-xs); letter-spacing:var(--tracking-widest); text-transform:uppercase; color:var(--accent-bronze); margin-bottom:var(--space-2);">Primary Texts &amp; Treaties</h2>
           <ul style="font-size:var(--text-sm); margin-bottom:var(--space-6); padding-left:var(--space-4);">
             <li>Spinelli, A., &amp; Rossi, E. (1941). <em>The Ventotene Manifesto</em>.</li>
             <li>European Union. (1992). <em>Treaty on European Union (Maastricht Treaty)</em>. EUR-Lex.</li>
             <li>European Union. (2007). <em>Treaty of Lisbon</em>. EUR-Lex.</li>
           </ul>
-          <h2 style="font-family:var(--font-body); font-size:var(--text-xs); letter-spacing:var(--tracking-widest); text-transform:uppercase; color:var(--accent-bronze); margin-bottom:var(--space-2);">Data &amp; Statistics</h2>
+          <h2 class="js-reveal" style="font-family:var(--font-body); font-size:var(--text-xs); letter-spacing:var(--tracking-widest); text-transform:uppercase; color:var(--accent-bronze); margin-bottom:var(--space-2);">Data &amp; Statistics</h2>
           <ul style="font-size:var(--text-sm); margin-bottom:var(--space-6); padding-left:var(--space-4);">
             <li>European Commission. (2024). <em>Standard Eurobarometer 101</em>. Directorate-General for Communication.</li>
             <li>Eurostat. (2023). <em>General government gross debt</em>. European Commission.</li>
             <li>European Defence Agency. (2023). <em>Defence Data 2022</em>.</li>
           </ul>
-          <h2 style="font-family:var(--font-body); font-size:var(--text-xs); letter-spacing:var(--tracking-widest); text-transform:uppercase; color:var(--accent-bronze); margin-bottom:var(--space-2);">Academic Literature</h2>
+          <h2 class="js-reveal" style="font-family:var(--font-body); font-size:var(--text-xs); letter-spacing:var(--tracking-widest); text-transform:uppercase; color:var(--accent-bronze); margin-bottom:var(--space-2);">Academic Literature</h2>
           <ul style="font-size:var(--text-sm); padding-left:var(--space-4);">
             <li>Fabbrini, S. (2015). <em>Which European Union? Europe After the Euro Crisis</em>. Cambridge University Press.</li>
             <li>Kelemen, R. D. (2004). <em>The Rules of Federalism: Institutions and Regulatory Politics in the EU and Beyond</em>. Harvard University Press.</li>
@@ -84,7 +85,7 @@
       <div class="container--narrow">
 
         <!-- ===== PRIMARY TREATY TEXTS ===== -->
-        <h2 id="primary-heading" style="margin-bottom: var(--space-6);">
+        <h2 class="js-reveal" id="primary-heading" style="margin-bottom: var(--space-6);">
           Primary Treaty Texts
         </h2>
         <p style="color: var(--text-secondary); font-size: var(--text-sm); margin-bottom: var(--space-8);">
@@ -93,11 +94,11 @@
 
         <div class="bibliography" id="treaties" aria-label="Primary treaty texts">
 
-          <div class="bib-entry" id="src-ventotene">
+          <div class="bib-entry js-reveal" id="src-ventotene">
             <div class="bib-entry__num">1</div>
             <div class="bib-entry__content">
               <p class="bib-entry__author">Spinelli, Altiero and Rossi, Ernesto</p>
-              <p><span class="bib-entry__title">For a Free and United Europe: A Draft Manifesto</span>
+              <p class="js-reveal"><span class="bib-entry__title">For a Free and United Europe: A Draft Manifesto</span>
               <span class="source-tag source-tag--treaty">primary</span></p>
               <p class="bib-entry__meta">1941. CVCE.eu / European University Institute archive.</p>
               <p class="bib-entry__url">
@@ -109,11 +110,11 @@
             </div>
           </div>
 
-          <div class="bib-entry" id="src-schuman">
+          <div class="bib-entry js-reveal" id="src-schuman">
             <div class="bib-entry__num">2</div>
             <div class="bib-entry__content">
               <p class="bib-entry__author">Schuman, Robert</p>
-              <p><span class="bib-entry__title">Declaration of 9 May 1950</span>
+              <p class="js-reveal"><span class="bib-entry__title">Declaration of 9 May 1950</span>
               <span class="source-tag source-tag--treaty">primary</span></p>
               <p class="bib-entry__meta">1950. European Commission.</p>
               <p class="bib-entry__url">
@@ -125,11 +126,11 @@
             </div>
           </div>
 
-          <div class="bib-entry" id="src-rome">
+          <div class="bib-entry js-reveal" id="src-rome">
             <div class="bib-entry__num">3</div>
             <div class="bib-entry__content">
               <p class="bib-entry__author">European Communities</p>
-              <p><span class="bib-entry__title">Treaty Establishing the European Economic Community</span>
+              <p class="js-reveal"><span class="bib-entry__title">Treaty Establishing the European Economic Community</span>
               <span class="source-tag source-tag--treaty">treaty</span></p>
               <p class="bib-entry__meta">Signed 25 March 1957. EUR-Lex.</p>
               <p class="bib-entry__url">
@@ -141,11 +142,11 @@
             </div>
           </div>
 
-          <div class="bib-entry" id="src-spinelli84">
+          <div class="bib-entry js-reveal" id="src-spinelli84">
             <div class="bib-entry__num">4</div>
             <div class="bib-entry__content">
               <p class="bib-entry__author">European Parliament</p>
-              <p><span class="bib-entry__title">Draft Treaty Establishing the European Union</span>
+              <p class="js-reveal"><span class="bib-entry__title">Draft Treaty Establishing the European Union</span>
               <span class="source-tag source-tag--treaty">primary</span></p>
               <p class="bib-entry__meta">Adopted 14 February 1984. CVCE.eu / European University Institute.</p>
               <p class="bib-entry__url">
@@ -157,11 +158,11 @@
             </div>
           </div>
 
-          <div class="bib-entry" id="src-maastricht">
+          <div class="bib-entry js-reveal" id="src-maastricht">
             <div class="bib-entry__num">5</div>
             <div class="bib-entry__content">
               <p class="bib-entry__author">European Communities</p>
-              <p><span class="bib-entry__title">Treaty on European Union (Maastricht Treaty)</span>
+              <p class="js-reveal"><span class="bib-entry__title">Treaty on European Union (Maastricht Treaty)</span>
               <span class="source-tag source-tag--treaty">treaty</span></p>
               <p class="bib-entry__meta">Signed 7 February 1992. EUR-Lex.</p>
               <p class="bib-entry__url">
@@ -173,11 +174,11 @@
             </div>
           </div>
 
-          <div class="bib-entry" id="src-lisbon">
+          <div class="bib-entry js-reveal" id="src-lisbon">
             <div class="bib-entry__num">6</div>
             <div class="bib-entry__content">
               <p class="bib-entry__author">European Union</p>
-              <p><span class="bib-entry__title">Treaty of Lisbon</span>
+              <p class="js-reveal"><span class="bib-entry__title">Treaty of Lisbon</span>
               <span class="source-tag source-tag--treaty">treaty</span></p>
               <p class="bib-entry__meta">Signed 13 December 2007; in force 1 December 2009. EUR-Lex.</p>
               <p class="bib-entry__url">
@@ -194,15 +195,15 @@
         <hr>
 
         <!-- ===== STATISTICAL DATASETS ===== -->
-        <h2 id="datasets-heading" style="margin-bottom: var(--space-6);">Datasets</h2>
+        <h2 class="js-reveal" id="datasets-heading" style="margin-bottom: var(--space-6);">Datasets</h2>
 
         <div class="bibliography" id="datasets" aria-label="Statistical datasets">
 
-          <div class="bib-entry" id="src-eb101">
+          <div class="bib-entry js-reveal" id="src-eb101">
             <div class="bib-entry__num">7</div>
             <div class="bib-entry__content">
               <p class="bib-entry__author">European Commission, Directorate-General for Communication</p>
-              <p><span class="bib-entry__title">Standard Eurobarometer 101: Spring 2024</span>
+              <p class="js-reveal"><span class="bib-entry__title">Standard Eurobarometer 101: Spring 2024</span>
               <span class="source-tag source-tag--data">data</span></p>
               <p class="bib-entry__meta">2024. Biannual EU-wide survey of citizens' attitudes.</p>
               <p class="bib-entry__url">
@@ -214,11 +215,11 @@
             </div>
           </div>
 
-          <div class="bib-entry" id="src-eurostat-gdp">
+          <div class="bib-entry js-reveal" id="src-eurostat-gdp">
             <div class="bib-entry__num">8</div>
             <div class="bib-entry__content">
               <p class="bib-entry__author">Eurostat</p>
-              <p><span class="bib-entry__title">Gross domestic product at market prices — nama_10_gdp</span>
+              <p class="js-reveal"><span class="bib-entry__title">Gross domestic product at market prices — nama_10_gdp</span>
               <span class="source-tag source-tag--data">data</span></p>
               <p class="bib-entry__meta">Dataset vintage: 2022 (extracted 2024).</p>
               <p class="bib-entry__url">
@@ -230,11 +231,11 @@
             </div>
           </div>
 
-          <div class="bib-entry" id="src-sipri">
+          <div class="bib-entry js-reveal" id="src-sipri">
             <div class="bib-entry__num">9</div>
             <div class="bib-entry__content">
               <p class="bib-entry__author">Stockholm International Peace Research Institute</p>
-              <p><span class="bib-entry__title">SIPRI Military Expenditure Database</span>
+              <p class="js-reveal"><span class="bib-entry__title">SIPRI Military Expenditure Database</span>
               <span class="source-tag source-tag--data">data</span></p>
               <p class="bib-entry__meta">Annual publication. Data year: 2022.</p>
               <p class="bib-entry__url">
@@ -251,15 +252,15 @@
         <hr>
 
         <!-- ===== SCHOLARLY WORKS ===== -->
-        <h2 id="scholarly-heading" style="margin-bottom: var(--space-6);">Scholarly Works &amp; Policy Papers</h2>
+        <h2 class="js-reveal" id="scholarly-heading" style="margin-bottom: var(--space-6);">Scholarly Works &amp; Policy Papers</h2>
 
         <div class="bibliography" id="scholarly" aria-label="Scholarly works and policy papers">
 
-          <div class="bib-entry" id="src-burgess">
+          <div class="bib-entry js-reveal" id="src-burgess">
             <div class="bib-entry__num">10</div>
             <div class="bib-entry__content">
               <p class="bib-entry__author">Burgess, Michael</p>
-              <p><span class="bib-entry__title">Comparative Federalism: Theory and Practice</span>
+              <p class="js-reveal"><span class="bib-entry__title">Comparative Federalism: Theory and Practice</span>
               <span class="source-tag source-tag--scholarly">scholarly</span></p>
               <p class="bib-entry__meta">Routledge, 2006. ISBN 978-0415364997.</p>
               <p class="bib-entry__url">
@@ -271,11 +272,11 @@
             </div>
           </div>
 
-          <div class="bib-entry" id="src-duff">
+          <div class="bib-entry js-reveal" id="src-duff">
             <div class="bib-entry__num">11</div>
             <div class="bib-entry__content">
               <p class="bib-entry__author">Duff, Andrew</p>
-              <p><span class="bib-entry__title">On European Federalism: What the Leaders Think</span>
+              <p class="js-reveal"><span class="bib-entry__title">On European Federalism: What the Leaders Think</span>
               <span class="source-tag source-tag--scholarly">policy</span></p>
               <p class="bib-entry__meta">European Policy Centre / Federal Trust, 2011.</p>
               <p class="bib-entry__url">
@@ -287,11 +288,11 @@
             </div>
           </div>
 
-          <div class="bib-entry" id="src-verhofstadt">
+          <div class="bib-entry js-reveal" id="src-verhofstadt">
             <div class="bib-entry__num">12</div>
             <div class="bib-entry__content">
               <p class="bib-entry__author">Verhofstadt, Guy</p>
-              <p><span class="bib-entry__title">The United States of Europe</span>
+              <p class="js-reveal"><span class="bib-entry__title">The United States of Europe</span>
               <span class="source-tag source-tag--scholarly">scholarly</span></p>
               <p class="bib-entry__meta">Federal Trust for Education and Research, 2006.</p>
               <p class="bib-entry__url">
@@ -303,11 +304,11 @@
             </div>
           </div>
 
-          <div class="bib-entry" id="src-jcms">
+          <div class="bib-entry js-reveal" id="src-jcms">
             <div class="bib-entry__num">13</div>
             <div class="bib-entry__content">
               <p class="bib-entry__author">Various authors</p>
-              <p><span class="bib-entry__title">Journal of Common Market Studies</span>
+              <p class="js-reveal"><span class="bib-entry__title">Journal of Common Market Studies</span>
               <span class="source-tag source-tag--scholarly">journal</span></p>
               <p class="bib-entry__meta">
                 Wiley / University Association for Contemporary European Studies.
@@ -322,11 +323,11 @@
             </div>
           </div>
 
-          <div class="bib-entry" id="src-cofe">
+          <div class="bib-entry js-reveal" id="src-cofe">
             <div class="bib-entry__num">14</div>
             <div class="bib-entry__content">
               <p class="bib-entry__author">Conference on the Future of Europe</p>
-              <p><span class="bib-entry__title">Final Report</span>
+              <p class="js-reveal"><span class="bib-entry__title">Final Report</span>
               <span class="source-tag source-tag--treaty">primary</span></p>
               <p class="bib-entry__meta">European Parliament / Council / Commission, May 2022.</p>
               <p class="bib-entry__url">
@@ -365,6 +366,8 @@
   </footer>
 
   <script type="module">
+    import { initMotionObserver } from "./src/js/motion.js";
+    initMotionObserver();
     import { initNav } from './src/js/nav.js';
     import { initCiteThis, initBibliographyExport } from './src/js/cite-export.js';
 
