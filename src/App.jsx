@@ -1,7 +1,12 @@
 import { useState, useEffect, useMemo } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { EU_MEMBER_STATES, EU_INSTITUTIONS } from './euData'
 import { REAL_EU_MAP_PATHS, NON_EU_MAP_PATHS } from './euMapReal'
+import EUGlobe3D from './components/EUGlobe3D'
 import './App.css'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const StarIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
@@ -41,23 +46,70 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Scroll Entrance Observer
+  // GSAP Animations
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible')
-          }
-        })
-      },
-      { threshold: 0.1 }
-    )
+    const ctx = gsap.context(() => {
+      // Hero Entrance
+      gsap.from('.hero-content h1', {
+        opacity: 0,
+        y: 40,
+        duration: 1,
+        ease: 'power3.out'
+      })
 
-    const animateEls = document.querySelectorAll('.animate-entrance')
-    animateEls.forEach((el) => observer.observe(el))
+      gsap.from('.hero-content p', {
+        opacity: 0,
+        y: 30,
+        duration: 0.9,
+        delay: 0.2,
+        ease: 'power3.out'
+      })
 
-    return () => animateEls.forEach((el) => observer.unobserve(el))
+      gsap.from('.hero-buttons-row', {
+        opacity: 0,
+        y: 20,
+        duration: 0.8,
+        delay: 0.4,
+        ease: 'power3.out'
+      })
+
+      gsap.from('.stat-item', {
+        opacity: 0,
+        scale: 0.9,
+        duration: 0.7,
+        delay: 0.6,
+        stagger: 0.15,
+        ease: 'back.out(1.4)'
+      })
+
+      // Policy Cards Staggered ScrollTrigger
+      gsap.from('.policy-card', {
+        scrollTrigger: {
+          trigger: '#policies',
+          start: 'top 80%',
+          toggleActions: 'play none none reverse'
+        },
+        opacity: 0,
+        y: 50,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: 'power2.out'
+      })
+
+      // Map Section Entrance
+      gsap.from('#map-section', {
+        scrollTrigger: {
+          trigger: '#map-section',
+          start: 'top 85%'
+        },
+        opacity: 0,
+        y: 40,
+        duration: 0.9,
+        ease: 'power2.out'
+      })
+    })
+
+    return () => ctx.revert()
   }, [])
 
   const selectedCountry = useMemo(() => {
@@ -124,10 +176,10 @@ function App() {
         </div>
       </nav>
 
-      {/* Hero Header */}
+      {/* Hero Header with 3D Globe */}
       <header className="hero-header" id="vision">
         <div className="hero-grid">
-          <div className="hero-content animate-entrance">
+          <div className="hero-content">
             <h1>One People.<br /><span className="gradient-text">One Future.</span></h1>
             <p>The European Union is more than a market. It is a community of destiny. We advocate for a true Federal Europe: sovereign, social, and sustainable.</p>
             <div className="hero-buttons-row">
@@ -152,25 +204,13 @@ function App() {
           </div>
 
           <div className="hero-visual">
-            <div className="floating-circle c1"></div>
-            <div className="floating-circle c2"></div>
-            <div className="floating-circle c3"></div>
-            <svg width="400" height="400" viewBox="0 0 400 400" fill="none" style={{ position: 'relative', zIndex: 2 }}>
-              <circle cx="200" cy="200" r="180" stroke="url(#grad1)" strokeWidth="2" strokeDasharray="20 20" opacity="0.3"/>
-              <circle cx="200" cy="200" r="140" stroke="url(#grad1)" strokeWidth="2" opacity="0.5"/>
-              <defs>
-                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style={{ stopColor: '#003399' }}/>
-                  <stop offset="100%" style={{ stopColor: '#5E2A96' }}/>
-                </linearGradient>
-              </defs>
-            </svg>
+            <EUGlobe3D />
           </div>
         </div>
       </header>
 
       {/* Interactive Real Geographic Map Section */}
-      <section id="map-section" className="animate-entrance">
+      <section id="map-section">
         <div className="map-header">
           <h2>The Federation</h2>
           <p>Explore the 27 member states. Click on any country shape to view its profile within the union.</p>
@@ -219,7 +259,7 @@ function App() {
 
           <div className="info-panel">
             {selectedCountry ? (
-              <div className="animate-entrance">
+              <div>
                 <h3>{selectedCountry.flag} {selectedCountry.name}</h3>
                 <span className="capital">{selectedCountry.capital} (Capital)</span>
                 
@@ -258,7 +298,7 @@ function App() {
       </section>
 
       {/* Member Directory Grid */}
-      <section className="members-section animate-entrance">
+      <section className="members-section">
         <div className="directory-header">
           <div>
             <h2 style={{ fontSize: '2.25rem' }}>Member States Directory (27)</h2>
@@ -293,7 +333,7 @@ function App() {
       </section>
 
       {/* Policy Pillars (Volt Europa Style) */}
-      <section id="policies" className="policies-section animate-entrance">
+      <section id="policies" className="policies-section">
         <div className="section-head">
           <h2>Six Pillars of Change</h2>
           <p>Inspired by the Volt Europa movement, our roadmap addresses the biggest challenges of our time with pan-European solutions.</p>
@@ -301,7 +341,7 @@ function App() {
 
         <div className="policy-grid">
           {policyPillars.map((pillar, idx) => (
-            <div key={idx} className="policy-card animate-entrance">
+            <div key={idx} className="policy-card">
               <div className="card-icon">{pillar.icon}</div>
               <h3>{pillar.title}</h3>
               <p>{pillar.desc}</p>
