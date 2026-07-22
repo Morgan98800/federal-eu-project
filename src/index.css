@@ -1,39 +1,31 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  /* Palette */
-  --deep-blue: #020c1b;
-  --eu-blue: #003399;
-  --eu-blue-light: #0044cc;
+  /* Official EU Colors */
+  --eu-blue: #003399; /* Pantone Reflex Blue */
+  --eu-blue-hover: #002266;
   --eu-gold: #FFCC00;
-  --eu-gold-dim: #cfaa00;
-  --volt-purple: #5E2A96;
-  --volt-pink: #D92B6C;
-  --slate: #8892b0;
-  --light-slate: #a8b2d1;
-  --white: #e6f1ff;
-  --glass: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  --eu-gold-text: #D97706;
   
-  /* Gradients */
-  --grad-hero: radial-gradient(circle at 50% 0%, #1a4dbf 0%, var(--deep-blue) 80%);
-  --grad-gold: linear-gradient(135deg, var(--eu-gold) 0%, #fff 100%);
-  --grad-card: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
-  --grad-border: linear-gradient(90deg, var(--eu-gold), var(--volt-purple), var(--eu-blue-light));
-
-  /* Spacing & Layout */
-  --container: 1200px;
-  --header-h: 80px;
-  --radius: 16px;
+  --bg-main: #FFFFFF;
+  --bg-alt: #F8FAFC;
+  --bg-subtle: #F1F5F9;
   
-  /* Shadows */
-  --shadow-glow: 0 0 40px rgba(0, 51, 153, 0.4);
-  --shadow-neon: 0 0 25px rgba(255, 204, 0, 0.35);
-  --shadow-card: 0 10px 30px -10px rgba(2, 12, 27, 0.7);
+  --text-main: #0F172A;
+  --text-muted: #475569;
+  --text-subtle: #64748B;
 
-  --font-serif: 'Playfair Display', serif;
-  --font-sans: 'Plus Jakarta Sans', sans-serif;
+  --border-light: #E2E8F0;
+  --border-strong: #003399;
+
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-sans: 'Sora', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+
+  --max-width: 1240px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
 }
 
 * {
@@ -48,132 +40,136 @@ html {
 }
 
 body {
-  background-color: var(--deep-blue);
-  color: var(--light-slate);
+  background-color: var(--bg-main);
+  color: var(--text-main);
   font-family: var(--font-sans);
-  line-height: 1.7;
-  overflow-x: hidden;
+  line-height: 1.65;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4 {
   font-family: var(--font-serif);
-  color: var(--white);
-  line-height: 1.2;
   font-weight: 700;
+  color: var(--eu-blue);
+  line-height: 1.2;
 }
 
-h1 { font-size: clamp(3rem, 6vw, 5.5rem); letter-spacing: -1px; }
-h2 { font-size: clamp(2.25rem, 4.5vw, 3.5rem); }
-h3 { font-size: 1.75rem; }
+h1 { font-size: clamp(2.5rem, 5.2vw, 4.25rem); letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.85rem, 3.8vw, 3rem); letter-spacing: -0.01em; }
+h3 { font-size: 1.4rem; }
+h4 { font-size: 1.1rem; }
 
 p {
-  color: var(--slate);
-  line-height: 1.7;
+  color: var(--text-muted);
+  line-height: 1.65;
 }
 
 a {
+  color: var(--eu-blue);
   text-decoration: none;
-  color: inherit;
-  transition: all 0.3s ease;
+  transition: opacity 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.85;
+}
+
+/* Button UI Components */
+button, .btn {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--eu-blue);
+  background: transparent;
+  color: var(--eu-blue);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+button.primary, .btn.primary {
+  background: var(--eu-blue);
+  color: #FFFFFF;
+  border-color: var(--eu-blue);
+}
+
+button.primary:hover, .btn.primary:hover {
+  background: var(--eu-blue-hover);
+  border-color: var(--eu-blue-hover);
+}
+
+button.secondary, .btn.secondary {
+  background: #FFFFFF;
+  color: var(--text-main);
+  border-color: var(--border-light);
+}
+
+button.secondary:hover, .btn.secondary:hover {
+  background: var(--bg-alt);
+  border-color: var(--eu-blue);
+  color: var(--eu-blue);
 }
 
 .container {
-  max-width: var(--container);
+  max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 2rem;
 }
 
-.text-gold {
-  color: var(--eu-gold);
-  font-style: italic;
-}
-
-.text-white {
-  color: var(--white);
-}
-
-.eyebrow {
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--eu-gold);
-  margin-bottom: 1.5rem;
-  display: inline-flex;
+/* NameThatUI Pattern: Breadcrumbs */
+.breadcrumb-nav {
+  display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-weight: 700;
-}
-
-/* Magic UI: Shimmer Text */
-.text-shimmer {
-  background: linear-gradient(90deg, var(--eu-gold) 0%, #ffffff 50%, var(--eu-gold) 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 4s linear infinite;
-}
-
-@keyframes shimmer {
-  to { background-position: 200% center; }
-}
-
-/* Magic UI: Glowing Border Button (Shimmer Button) */
-.btn-shimmer {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.95rem 2.5rem;
-  border-radius: 50px;
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: var(--deep-blue);
-  background: var(--eu-gold);
-  border: none;
-  cursor: pointer;
-  overflow: hidden;
-  box-shadow: 0 0 25px rgba(255, 204, 0, 0.3);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.btn-shimmer::before {
-  content: '';
-  position: absolute;
-  top: -50%; left: -50%; width: 200%; height: 200%;
-  background: conic-gradient(transparent, rgba(255, 255, 255, 0.8), transparent 30%);
-  animation: rotate-conic 4s linear infinite;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.btn-shimmer span {
-  position: relative;
-  z-index: 2;
-}
-
-.btn-shimmer:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 0 35px rgba(255, 204, 0, 0.6);
-}
-
-@keyframes rotate-conic {
-  100% { transform: rotate(360deg); }
-}
-
-/* UIverse Badge Pill */
-.badge-glow {
-  padding: 0.35rem 1rem;
-  border-radius: 30px;
-  background: rgba(255, 204, 0, 0.1);
-  border: 1px solid rgba(255, 204, 0, 0.3);
-  color: var(--eu-gold);
   font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  color: var(--text-subtle);
+  margin-bottom: 1rem;
+}
+
+.breadcrumb-nav a {
+  color: var(--text-subtle);
+}
+
+.breadcrumb-nav a:hover {
+  color: var(--eu-blue);
+}
+
+.breadcrumb-separator {
+  color: var(--border-light);
+}
+
+/* NameThatUI Pattern: Command Palette Trigger Badge */
+.command-trigger-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  backdrop-filter: blur(10px);
+  gap: 0.6rem;
+  padding: 0.4rem 0.9rem;
+  background: var(--bg-alt);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.command-trigger-badge:hover {
+  border-color: var(--eu-blue);
+  color: var(--eu-blue);
+  background: #FFFFFF;
+}
+
+.command-trigger-badge kbd {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
