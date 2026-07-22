@@ -29,6 +29,10 @@
 </head>
 <body>
 
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="reading-progress"></div>
+  </div>
+
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <header class="site-header" role="banner">
@@ -117,8 +121,10 @@
           <!-- ===== II. ECONOMIC ===== -->
           <h2 class="js-reveal" id="economic">II. The Economic Argument</h2>
 
-          <p class="js-reveal">
+          <aside class="pull-quote pull-quote--offset js-reveal reveal-fast">
             The eurozone crisis demonstrated what happens when a monetary union operates without a fiscal union.
+          </aside>
+          <p class="js-reveal">
             A currency area of this size requires a central fiscal capacity to act as a macroeconomic stabiliser.
             To understand the current scale of the EU budget compared to a federal reference model, and
             to adjust a hypothetical common fiscal transfer, see the <a href="./data-room.html#scenario-sliders">Scenario Sliders</a>
@@ -326,6 +332,17 @@
     initCitations();
     initAccordions();
   </script>
+
+
+    <script>
+      window.addEventListener('scroll', () => {
+        const doc = document.documentElement;
+        const scroll = doc.scrollTop || document.body.scrollTop;
+        const height = doc.scrollHeight - doc.clientHeight;
+        const scrolled = (scroll / height) * 100;
+        document.getElementById('reading-progress').style.width = scrolled + '%';
+      });
+    </script>
 
 </body>
 </html>

@@ -1178,3 +1178,169 @@ mark.illustrative-label,
     gap: var(--space-2);
   }
 }
+
+
+/* ==========================================================================
+   INTERACTIVE & EDITORIAL COMPONENTS
+   (Progress Bar, Accordion, Pull Quotes, Hover Lift)
+   ========================================================================== */
+
+/* --- Reading Progress Bar --- */
+.progress-bar-container {
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: transparent;
+  z-index: 99;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--accent-bronze);
+  width: 0%;
+  transition: width 0.1s ease-out;
+}
+
+/* --- Pull Quotes --- */
+.pull-quote {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  line-height: var(--leading-snug);
+  color: var(--ink-navy);
+  margin-block: var(--space-10);
+  padding-left: var(--space-6);
+  border-left: 4px solid var(--accent-bronze);
+  max-width: var(--measure);
+}
+
+@media (min-width: 64rem) {
+  .pull-quote--offset {
+    width: 130%;
+    max-width: none;
+    margin-left: calc(var(--space-12) * -1);
+  }
+}
+
+/* --- Simple CSS Accordion --- */
+.accordion {
+  border-top: var(--border-hairline);
+  margin-block: var(--space-8);
+  max-width: 68ch;
+}
+
+.accordion-item {
+  border-bottom: var(--border-hairline);
+}
+
+.accordion-item__trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-block: var(--space-4);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  cursor: pointer;
+  list-style: none; /* hide default marker */
+}
+
+.accordion-item__trigger::-webkit-details-marker {
+  display: none;
+}
+
+.accordion-item__trigger:hover {
+  color: var(--accent-bronze);
+}
+
+.accordion__icon {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  transition: transform var(--transition-fast);
+}
+
+details[open] .accordion__icon {
+  transform: rotate(45deg);
+}
+
+.accordion-item__body {
+  padding-bottom: var(--space-6);
+  color: var(--text-secondary);
+}
+
+/* --- Hover Lift Utility --- */
+.hover-lift {
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* If user prefers reduced motion, disable transitions but ensure elements are visible */
+@media (prefers-reduced-motion: reduce) {
+  .hover-lift {
+    transition: none;
+  }
+  .hover-lift:hover {
+    transform: none;
+  }
+}
+
+
+/* --- Horizontal Timeline on Desktop --- */
+@media (min-width: 64rem) {
+  .timeline {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-left: 0;
+    padding-top: var(--space-10);
+    padding-bottom: var(--space-10);
+    gap: var(--space-8);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--rule-grey) transparent;
+  }
+  
+  .timeline::-webkit-scrollbar {
+    height: 6px;
+  }
+  .timeline::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .timeline::-webkit-scrollbar-thumb {
+    background-color: var(--rule-grey);
+    border-radius: var(--radius-sm);
+  }
+  
+  .timeline::before {
+    top: calc(var(--space-10) + 12px);
+    left: 0;
+    right: 0;
+    width: auto;
+    bottom: auto;
+    height: 1px;
+  }
+  
+  .timeline-entry {
+    flex: 0 0 320px;
+    padding-block: var(--space-8) 0;
+    border-bottom: none;
+    border-right: var(--border-hairline);
+    padding-right: var(--space-8);
+    scroll-snap-align: start;
+  }
+  
+  .timeline-entry::before {
+    left: 0;
+    top: calc(var(--space-8) * -1 + 8px);
+  }
+  
+  .timeline-entry.featured::before {
+    left: -2px;
+    top: calc(var(--space-8) * -1 + 6px);
+  }
+}
