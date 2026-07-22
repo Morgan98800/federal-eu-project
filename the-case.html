@@ -21,12 +21,16 @@
   <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
   <link rel="apple-touch-icon" href="./apple-touch-icon.png">
   <meta property="og:image" content="https://morgan98800.github.io/federal-eu-project/og-image.png">
-  <script type="module" crossorigin src="/federal-eu-project/assets/theCase-DRZlxkec.js"></script>
-  <link rel="modulepreload" crossorigin href="/federal-eu-project/assets/nav-DG_LoV_p.js">
+  <script type="module" crossorigin src="/federal-eu-project/assets/theCase-Cj6m17as.js"></script>
+  <link rel="modulepreload" crossorigin href="/federal-eu-project/assets/nav-odgmzzD5.js">
   <link rel="modulepreload" crossorigin href="/federal-eu-project/assets/citations-JdN-Zrlu.js">
-  <link rel="stylesheet" crossorigin href="/federal-eu-project/assets/nav-Bgx9HR4_.css">
+  <link rel="stylesheet" crossorigin href="/federal-eu-project/assets/nav-BPsTZglO.css">
 </head>
 <body>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="reading-progress"></div>
+  </div>
 
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
@@ -116,8 +120,10 @@
           <!-- ===== II. ECONOMIC ===== -->
           <h2 class="js-reveal" id="economic">II. The Economic Argument</h2>
 
-          <p class="js-reveal">
+          <aside class="pull-quote pull-quote--offset js-reveal reveal-fast">
             The eurozone crisis demonstrated what happens when a monetary union operates without a fiscal union.
+          </aside>
+          <p class="js-reveal">
             A currency area of this size requires a central fiscal capacity to act as a macroeconomic stabiliser.
             To understand the current scale of the EU budget compared to a federal reference model, and
             to adjust a hypothetical common fiscal transfer, see the <a href="./data-room.html#scenario-sliders">Scenario Sliders</a>
@@ -271,6 +277,17 @@
     </div>
   </footer>
 
+
+
+    <script>
+      window.addEventListener('scroll', () => {
+        const doc = document.documentElement;
+        const scroll = doc.scrollTop || document.body.scrollTop;
+        const height = doc.scrollHeight - doc.clientHeight;
+        const scrolled = (scroll / height) * 100;
+        document.getElementById('reading-progress').style.width = scrolled + '%';
+      });
+    </script>
 
 </body>
 </html>
