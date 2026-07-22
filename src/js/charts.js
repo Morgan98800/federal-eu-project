@@ -20,7 +20,7 @@ const GREY  = '#C9C2B2';
 const SECONDARY = '#4A5568';
 
 const FONT_MONO = "'IBM Plex Mono', monospace";
-const FONT_BODY = "'IBM Plex Sans', sans-serif";
+const FONT_BODY = "'Public Sans', sans-serif";
 
 /** Shared axis styling helper */
 function styleAxis(axisGroup, options = {}) {

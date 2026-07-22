@@ -22,7 +22,7 @@ const RED     = '#8C2C33';
 const PAPER   = '#F6F3EA';
 const SEC     = '#4A5568';
 const FONT_MONO = "'IBM Plex Mono', monospace";
-const FONT_BODY = "'IBM Plex Sans', sans-serif";
+const FONT_BODY = "'Public Sans', sans-serif";
 
 const SERIES = [
   { key: 'A_scaled',              label: 'Public Support (Eurobarometer)',   color: INK,    dash: null,  illustrative: false },
