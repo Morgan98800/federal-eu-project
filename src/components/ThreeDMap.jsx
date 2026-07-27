@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 // Real GeoJSON Border Data (Low-res, Natural Earth)
@@ -32,7 +32,7 @@ const GEO = {
 
 const FOUNDING = new Set(["FRA","DEU","ITA","NLD","BEL","LUX"]);
 
-// Micro-states: Correct location for Malta and Cyprus in real geographic coordinates
+// Micro-states: Real geographic coordinates (Malta & Cyprus in East Med)
 const MICRO = {
   MLT:{name:"Malta", lon:14.42, lat:35.9, pop:"0.53M", cap:"Valletta"},
   CYP:{name:"Cyprus", lon:33.2, lat:35.1, pop:"0.92M", cap:"Nicosia"}
@@ -54,9 +54,11 @@ const CAPITALS = {
   EST:{c:"Tallinn",pop:"1.4M"}
 };
 
-// STANDARD MAP PROJECTION:
-// West -> -X (Left), East -> +X (Right)
-// North -> -Z (Top/Up), South -> +Z (Bottom/Down)
+// STANDARD MAP PROJECTION CORRECTED:
+// Higher latitudes (North) -> positive 2D Y -> negative 3D Z (Top of screen)
+// Lower latitudes (South) -> negative 2D Y -> positive 3D Z (Bottom of screen)
+// Higher longitudes (East) -> positive 2D X -> positive 3D X (Right of screen)
+// Lower longitudes (West) -> negative 2D X -> negative 3D X (Left of screen)
 const LON0 = 12, LAT0 = 50, SCALE = 1.75;
 
 function proj(lon, lat){
@@ -64,7 +66,7 @@ function proj(lon, lat){
   const rad = lat * Math.PI/180, rad0 = LAT0 * Math.PI/180;
   const my = Math.log(Math.tan(Math.PI/4 + rad/2));
   const my0 = Math.log(Math.tan(Math.PI/4 + rad0/2));
-  const z = -(my - my0) * (180/Math.PI) * SCALE;
+  const z = (my - my0) * (180/Math.PI) * SCALE;
   return { x, z };
 }
 
@@ -99,11 +101,8 @@ function makeStar5(outer, inner){
 const ThreeDMap = () => {
   const mountRef = useRef(null);
   const tooltipRef = useRef(null);
-  const [flagVisible, setFlagVisible] = useState(true);
 
   const refs = useRef({
-    flagOn: true,
-    flagGroup: null,
     camera: null,
     renderer: null,
     scene: null
@@ -125,8 +124,8 @@ const ThreeDMap = () => {
     const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 800);
     refs.current.camera = camera;
 
-    // FIXED MAP VIEW: Standard geographic perspective looking down at Europe (North up)
-    camera.position.set(0, 115, 60);
+    // FIXED GEOGRAPHIC MAP VIEW: Looking straight down at Europe (North = Top, South = Bottom)
+    camera.position.set(0, 125, 45);
     camera.lookAt(0, 0, -10);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -155,7 +154,7 @@ const ThreeDMap = () => {
     rim.position.set(50, 40, -60);
     scene.add(rim);
 
-    // Sea
+    // Sea Plane
     const sea = new THREE.Mesh(
       new THREE.PlaneGeometry(700, 700),
       new THREE.MeshStandardMaterial({ color: 0x0a2260, roughness: 0.45, metalness: 0.3 })
@@ -167,7 +166,7 @@ const ThreeDMap = () => {
     grid.position.y = -0.45; grid.material.opacity = 0.35; grid.material.transparent = true;
     scene.add(grid);
 
-    // Pickables for Raycasting (Hover state inspection)
+    // Pickables for Hover Inspection
     const pickables = [];
     const stateGroup = new THREE.Group();
     scene.add(stateGroup);
@@ -211,7 +210,7 @@ const ThreeDMap = () => {
       stateGroup.add(group);
     });
 
-    // Build Micro-states (Malta, Cyprus correctly located)
+    // Build Micro-states (Malta, Cyprus in South-East Mediterranean)
     Object.entries(MICRO).forEach(([iso, m]) => {
       const p = proj(m.lon, m.lat);
       const g = new THREE.Group();
@@ -285,19 +284,19 @@ const ThreeDMap = () => {
     beam.position.set(bx.x, 25, bx.z);
     scene.add(beam);
 
-    // EU Flag 12-Star Emblem
+    // EU 12-STAR ORBITING EMBLEM IN TOP RIGHT SCENE
     const flagGroup = new THREE.Group();
-    const FR = 26;
+    const FR = 14;
     for (let i=0; i<12; i++) {
       const a = i/12 * Math.PI*2 - Math.PI/2;
-      const star = makeStar5(1.6, 0.68);
-      star.position.set(Math.cos(a)*FR, 34, Math.sin(a)*FR);
+      const star = makeStar5(1.2, 0.5);
+      star.position.set(Math.cos(a)*FR, 0, Math.sin(a)*FR);
       flagGroup.add(star);
     }
-    flagGroup.position.set(bx.x, 0, bx.z);
-    flagGroup.visible = true;
+    // Positioned in top-right of 3D map viewport
+    flagGroup.position.set(38, 18, -32);
+    flagGroup.rotation.x = Math.PI/4;
     scene.add(flagGroup);
-    refs.current.flagGroup = flagGroup;
 
     // Hover Raycasting
     const ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
@@ -364,8 +363,9 @@ const ThreeDMap = () => {
       ringStars.rotation.y = t * 0.4;
       ringStars.children.forEach((s, i) => s.rotation.y = t * 1.5 + i);
 
-      flagGroup.rotation.y = t * 0.12;
-      flagGroup.children.forEach((s, i) => s.rotation.y = t * 0.6 + i);
+      // Top-Right Orbiting Stars Animation
+      flagGroup.rotation.y = t * 0.3;
+      flagGroup.children.forEach((s, i) => s.rotation.y = t * 0.8 + i);
 
       beam.material.opacity = 0.05 + Math.sin(t * 1.5) * 0.025;
       plat.material.emissiveIntensity = 0.2 + Math.sin(t * 2) * 0.08;
@@ -383,15 +383,6 @@ const ThreeDMap = () => {
       }
     };
   }, []);
-
-  const handleToggleFlag = () => {
-    const next = !flagVisible;
-    setFlagVisible(next);
-    refs.current.flagOn = next;
-    if (refs.current.flagGroup) {
-      refs.current.flagGroup.visible = next;
-    }
-  };
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '580px', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid rgba(255,212,71,0.25)', background: '#071845' }}>
@@ -420,23 +411,6 @@ const ThreeDMap = () => {
         <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--paper)', fontWeight: 600, margin: 0 }}>
           The United States of <em style={{ fontStyle: 'italic', color: '#ffd447' }}>Europe</em>
         </h3>
-      </div>
-
-      {/* Top Right Flag Logo Badge */}
-      <div style={{ position: 'absolute', top: '20px', right: '20px', zIndex: 10 }}>
-        <button
-          onClick={handleToggleFlag}
-          title="Toggle 12-Star Flag Crown"
-          style={{
-            fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase',
-            background: flagVisible ? '#ffd447' : 'rgba(7,24,69,0.8)', border: '1px solid #ffd447',
-            color: flagVisible ? '#071845' : '#ffd447', padding: '8px 14px', borderRadius: '20px', cursor: 'pointer',
-            display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 4px 14px rgba(0,0,0,0.3)', transition: 'all 0.2s ease'
-          }}
-        >
-          <span style={{ fontSize: '14px', lineHeight: 1 }}>★</span>
-          <span>{flagVisible ? 'EU Emblem Active' : 'Show EU Emblem'}</span>
-        </button>
       </div>
 
       {/* Subtle Hint */}
