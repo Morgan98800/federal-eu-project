@@ -26,9 +26,6 @@ const TheCase = () => {
             what coordination without authority has cost, and continues to cost,
             the people of Europe.
           </p>
-          <p className="placeholder-banner">
-            Essay title and deck — operator to supply final text. See BUILD_NOTES.md §2.
-          </p>
           {/*  */}
           <nav aria-label="Essay sections" style={{ marginTop: 'var(--space-8)' }}>
             <ol style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)', listStyle: 'none', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)' }}>
@@ -50,15 +47,13 @@ const TheCase = () => {
           <p className="lead-paragraph">
             {/*  */}
             Europe has spent eighty years building institutions that are strong enough to
-            bind their members to a common market, a common currency for nineteen of them,
-            and a growing body of common law — and yet remain institutionally incapable of
+            bind their members to a common market, a common currency, and a growing body of common law—and yet remain institutionally incapable of
             making a binding foreign-policy decision, raising a common defence budget, or
-            setting a fiscal policy commensurate with a currency area of its size.
-            The argument that follows is that this is not a design flaw to be patched;
-            it is the predictable consequence of a structure that was never completed.
-          </p>
-          <p className="placeholder-banner">
-            Opening paragraph — operator to supply. Current text is structural scaffold only.
+            setting a fiscal policy commensurate with a currency area of its size. 
+            The rise of Eurosceptic parties and illiberal rhetoric across the continent are symptoms of a paradigm shift. 
+            When citizens find the democratic process slow or unequal, they may pivot toward authoritarian models that promise efficacy at the expense of liberty.
+            The argument that follows is that this inefficiency is not a design flaw to be patched;
+            it is the predictable consequence of a structure that was never completed. A structural reform toward a genuine federal union is necessary to ensure efficiency without sacrificing the rule of law and democratic values we cherish.
           </p>
 
           {/*  */}
@@ -91,17 +86,20 @@ const TheCase = () => {
           <p className="js-reveal">
             The EU's perceived democratic deficit is a consequence of its hybrid structure, not its supranationality.
             A federal settlement would transfer executive accountability to a legislature that is genuinely representative.
+            Drawing on lessons from both comparative federalism and diverse political cultures—where policymakers must grasp differing perspectives to build consensus—a formal European federation would clearly delineate the allocation of competence between Brussels and member states. 
+            This protects the autonomy of peoples while allowing the Union to act decisively. 
             To see how powers are currently distributed under the TFEU compared to a federal constitution, consult the
-            <a href="/">Competence Matrix</a>.
+            <Link to="/data-room">Competence Matrix</Link>.
           </p>
 
           {/*  */}
           <h2 className="js-reveal" id="security">IV. The Security Argument</h2>
 
           <p className="js-reveal">
-            EU member states collectively spend over €214 billion on defence — comparable to the US NATO contribution —
-            but fragmented across twenty-seven separate procurement systems and command structures.
-            To visualise the impact of pooling European defence procurement, see the <a href="/">Scenario Sliders</a> and the <a href="/">27 States vs. One Bloc Map</a>.
+            The realignment of global powers demonstrates that Europe needs unity against actors whose goal is to undermine democratic norms. 
+            Yet, EU member states collectively spend over €214 billion on defence—comparable to the US NATO contribution—but fragmented across twenty-seven separate procurement systems and command structures.
+            Working on a unified European security framework would allow the EU to better project power abroad, thus addressing our current shortcomings regarding strategic autonomy in both trade and defense.
+            To visualise the impact of pooling European defence procurement, see the <Link to="/data-room">Scenario Sliders</Link> and the <Link to="/data-room">27 States vs. One Bloc Map</Link>.
           </p>
 
           <hr />
@@ -132,9 +130,6 @@ const TheCase = () => {
                   existing acquis) but whether the sharing is adequately governed and
                   democratically accountable. As things stand, it is neither.
                 </p>
-                <p className="placeholder-banner">
-                  This objection text is structural scaffold. Operator to supply full response.
-                </p>
               </div>
             </details>
 
@@ -153,9 +148,6 @@ const TheCase = () => {
                   in every wave since the late 1990s.
                   <cite className="citation-ref"><button className="citation-ref__trigger" data-cite-id="eb101-obj">5</button><div className="citation-popover" id="popover-eb101-obj" role="dialog" aria-modal="true" aria-label="Citation 5: Eurobarometer"></div></cite>
                   The question is whether political leadership is willing to make the argument.
-                </p>
-                <p className="placeholder-banner">
-                  This objection text is structural scaffold. Operator to supply full response.
                 </p>
               </div>
             </details>
@@ -176,9 +168,6 @@ const TheCase = () => {
                   inherent to supranationality; it is inherent to the specific,
                   unfinished form the EU currently takes.
                 </p>
-                <p className="placeholder-banner">
-                  This objection text is structural scaffold. Operator to supply full response.
-                </p>
               </div>
             </details>
 
@@ -197,9 +186,6 @@ const TheCase = () => {
                   action at the level most capable of achieving the objective.
                   In many of the domains where the EU acts most inadequately,
                   subsidiarity is an argument for, not against, federal competence.
-                </p>
-                <p className="placeholder-banner">
-                  This objection text is structural scaffold. Operator to supply full response.
                 </p>
               </div>
             </details>
