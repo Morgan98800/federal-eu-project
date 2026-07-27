@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import ShaderHero from '../components/ShaderHero';
+import ThreeDMap from '../components/ThreeDMap';
 import { renderIntegrationIndex } from '../js/integration-index';
 
 const Home = () => {
@@ -20,6 +21,7 @@ const Home = () => {
 
   return (
     <div className="home-page">
+      {/* Masthead */}
       <section className="page-masthead" aria-labelledby="hero-title" style={{ position: 'relative', overflow: 'hidden' }}>
         <ShaderHero />
         <div className="container" style={{ position: 'relative', zIndex: 1, paddingBlock: 'var(--space-20)' }}>
@@ -34,6 +36,23 @@ const Home = () => {
         </div>
       </section>
 
+      {/* 3D Map Showcase Section */}
+      <section className="section" aria-labelledby="map-3d-heading" style={{ background: 'var(--paper-mid)', borderBottom: 'var(--border-hairline)', paddingTop: 'var(--space-12)' }}>
+        <div className="container">
+          <span className="section-label">Interactive Cartography</span>
+          <h2 className="js-reveal" id="map-3d-heading" style={{ fontSize: 'var(--text-2xl)', marginBottom: 'var(--space-2)' }}>
+            The United States of Europe — 3D Speculative Map
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', maxWidth: '68ch', marginBottom: 'var(--space-6)', lineHeight: 'var(--leading-relaxed)' }}>
+            An interactive 3D vision of a sovereign European federation: 26 states with real extruded boundaries, island beacons, and a federal district in Brussels. Drag to orbit, scroll to zoom, or fly the flag.
+          </p>
+          <div className="js-reveal" style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
+            <ThreeDMap />
+          </div>
+        </div>
+      </section>
+
+      {/* European Integration Index Section */}
       <section className="section" aria-labelledby="index-heading">
         <div className="container">
           <span className="section-label">The Union Today</span>
@@ -51,7 +70,8 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="section" aria-labelledby="sections-heading">
+      {/* Entry Points Grid */}
+      <section className="section" aria-labelledby="sections-heading" style={{ borderTop: 'var(--border-hairline)' }}>
         <div className="container">
           <h2 className="js-reveal section-label" id="sections-heading" style={{ fontSize: 'var(--text-xs)' }}>
             Contents
