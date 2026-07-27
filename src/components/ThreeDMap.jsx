@@ -120,13 +120,13 @@ const ThreeDMap = () => {
 
   const zoomIn = () => {
     if (!refs.current.controls) return;
-    refs.current.controls.dollyIn(1.25);
+    refs.current.controls.dollyOut(1.25);
     refs.current.controls.update();
   };
 
   const zoomOut = () => {
     if (!refs.current.controls) return;
-    refs.current.controls.dollyOut(1.25);
+    refs.current.controls.dollyIn(1.25);
     refs.current.controls.update();
   };
 
