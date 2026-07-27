@@ -54,11 +54,9 @@ const CAPITALS = {
   EST:{c:"Tallinn",pop:"1.4M"}
 };
 
-// STANDARD MAP PROJECTION CORRECTED:
-// Higher latitudes (North) -> positive 2D Y -> negative 3D Z (Top of screen)
-// Lower latitudes (South) -> negative 2D Y -> positive 3D Z (Bottom of screen)
-// Higher longitudes (East) -> positive 2D X -> positive 3D X (Right of screen)
-// Lower longitudes (West) -> negative 2D X -> negative 3D X (Left of screen)
+// STANDARD MAP PROJECTION:
+// North -> -Z (Top), South -> +Z (Bottom)
+// East -> +X (Right), West -> -X (Left)
 const LON0 = 12, LAT0 = 50, SCALE = 1.75;
 
 function proj(lon, lat){
@@ -81,21 +79,6 @@ function ringToShape(ring){
     else shape.lineTo(pr.x, pr.z);
   });
   return shape;
-}
-
-function makeStar5(outer, inner){
-  const s = new THREE.Shape();
-  for(let i=0; i<10; i++){
-    const r = i%2===0 ? outer : inner;
-    const ang = i/10*Math.PI*2 - Math.PI/2;
-    const x = Math.cos(ang)*r, y = Math.sin(ang)*r;
-    if(i===0) s.moveTo(x,y); else s.lineTo(x,y);
-  }
-  s.closePath();
-  const geo = new THREE.ExtrudeGeometry(s, { depth:0.3, bevelEnabled:true, bevelThickness:0.1, bevelSize:0.1, bevelSegments:1 });
-  geo.center();
-  geo.rotateX(-Math.PI/2);
-  return new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color:0xffd447, emissive:0xffd447, emissiveIntensity:0.6, roughness:0.3, metalness:0.4 }));
 }
 
 const ThreeDMap = () => {
@@ -284,20 +267,6 @@ const ThreeDMap = () => {
     beam.position.set(bx.x, 25, bx.z);
     scene.add(beam);
 
-    // EU 12-STAR ORBITING EMBLEM IN TOP RIGHT SCENE
-    const flagGroup = new THREE.Group();
-    const FR = 14;
-    for (let i=0; i<12; i++) {
-      const a = i/12 * Math.PI*2 - Math.PI/2;
-      const star = makeStar5(1.2, 0.5);
-      star.position.set(Math.cos(a)*FR, 0, Math.sin(a)*FR);
-      flagGroup.add(star);
-    }
-    // Positioned in top-right of 3D map viewport
-    flagGroup.position.set(38, 18, -32);
-    flagGroup.rotation.x = Math.PI/4;
-    scene.add(flagGroup);
-
     // Hover Raycasting
     const ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
     let hovered = null;
@@ -363,10 +332,6 @@ const ThreeDMap = () => {
       ringStars.rotation.y = t * 0.4;
       ringStars.children.forEach((s, i) => s.rotation.y = t * 1.5 + i);
 
-      // Top-Right Orbiting Stars Animation
-      flagGroup.rotation.y = t * 0.3;
-      flagGroup.children.forEach((s, i) => s.rotation.y = t * 0.8 + i);
-
       beam.material.opacity = 0.05 + Math.sin(t * 1.5) * 0.025;
       plat.material.emissiveIntensity = 0.2 + Math.sin(t * 2) * 0.08;
 
@@ -411,6 +376,29 @@ const ThreeDMap = () => {
         <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--paper)', fontWeight: 600, margin: 0 }}>
           The United States of <em style={{ fontStyle: 'italic', color: '#ffd447' }}>Europe</em>
         </h3>
+      </div>
+
+      {/* Top Right Revolving 12-Star Emblem (Positioned directly in top-right corner of map box) */}
+      <div style={{
+        position: 'absolute', top: '24px', right: '28px', pointerEvents: 'none', zIndex: 10,
+        display: 'flex', flexDirection: 'column', alignItems: 'center'
+      }}>
+        <svg width="56" height="56" viewBox="0 0 100 100" style={{ animation: 'euStarSpin 12s linear infinite' }}>
+          <style>{`@keyframes euStarSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+          {Array.from({ length: 12 }).map((_, i) => {
+            const angle = (i / 12) * Math.PI * 2 - Math.PI / 2;
+            const cx = 50 + Math.cos(angle) * 36;
+            const cy = 50 + Math.sin(angle) * 36;
+            return (
+              <polygon
+                key={i}
+                points="0,-5 1.5,-1.5 5,0 1.5,1.5 0,5 -1.5,1.5 -5,0 -1.5,-1.5"
+                transform={`translate(${cx}, ${cy})`}
+                fill="#ffd447"
+              />
+            );
+          })}
+        </svg>
       </div>
 
       {/* Subtle Hint */}
