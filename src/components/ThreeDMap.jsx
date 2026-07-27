@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-// Real GeoJSON Border Data (Low-res, Natural Earth) - 26 Sovereign Federal Member States
-const GEO = {
+// 26 Sovereign Federal Member States (Highlighted in EU Blue & Gold)
+const GEO_FED = {
   FRA:{name:"France",coords:[[[9.560016,42.152492],[9.229752,41.380007],[8.775723,41.583612],[8.544213,42.256517],[8.746009,42.628122],[9.390001,43.009985],[9.560016,42.152492]],[[3.588184,50.378992],[4.286023,49.907497],[4.799222,49.985373],[5.674052,49.529484],[5.897759,49.442667],[6.18632,49.463803],[6.65823,49.201958],[8.099279,49.017784],[7.593676,48.333019],[7.466759,47.620582],[7.192202,47.449766],[6.736571,47.541801],[6.768714,47.287708],[6.037389,46.725779],[6.022609,46.27299],[6.5001,46.429673],[6.843593,45.991147],[6.802355,45.70858],[7.096652,45.333099],[6.749955,45.028518],[7.007562,44.254767],[7.549596,44.127901],[7.435185,43.693845],[6.529245,43.128892],[4.556963,43.399651],[3.100411,43.075201],[2.985999,42.473015],[1.826793,42.343385],[0.701591,42.795734],[0.338047,42.579546],[-1.502771,43.034014],[-1.901351,43.422802],[-1.384225,44.02261],[-1.193798,46.014918],[-2.225724,47.064363],[-2.963276,47.570327],[-4.491555,47.954954],[-4.59235,48.68416],[-3.295814,48.901692],[-1.616511,48.644421],[-1.933494,49.776342],[-0.989469,49.347376],[1.338761,50.127173],[1.639001,50.946606],[2.513573,51.148506],[2.658422,50.796848],[3.123252,50.780363],[3.588184,50.378992]]]},
   DEU:{name:"Germany",coords:[[[9.921906,54.983104],[9.93958,54.596642],[10.950112,54.363607],[10.939467,54.008693],[11.956252,54.196486],[12.51844,54.470371],[13.647467,54.075511],[14.119686,53.757029],[14.353315,53.248171],[14.074521,52.981263],[14.4376,52.62485],[14.685026,52.089947],[14.607098,51.745188],[15.016996,51.106674],[14.570718,51.002339],[14.307013,51.117268],[14.056228,50.926918],[13.338132,50.733234],[12.966837,50.484076],[12.240111,50.266338],[12.415191,49.969121],[12.521024,49.547415],[13.031329,49.307068],[13.595946,48.877172],[13.243357,48.416115],[12.884103,48.289146],[13.025851,47.637584],[12.932627,47.467646],[12.62076,47.672388],[12.141357,47.703083],[11.426414,47.523766],[10.544504,47.566399],[10.402084,47.302488],[9.896068,47.580197],[9.594226,47.525058],[8.522612,47.830828],[8.317301,47.61358],[7.466759,47.620582],[7.593676,48.333019],[8.099279,49.017784],[6.65823,49.201958],[6.18632,49.463803],[6.242751,49.902226],[6.043073,50.128052],[6.156658,50.803721],[5.988658,51.851616],[6.589397,51.852029],[6.84287,52.22844],[7.092053,53.144043],[6.90514,53.482162],[7.100425,53.693932],[7.936239,53.748296],[8.121706,53.527792],[8.800734,54.020786],[8.572118,54.395646],[8.526229,54.962744],[9.282049,54.830865],[9.921906,54.983104]]]},
   ITA:{name:"Italy",coords:[[[15.520376,38.231155],[15.160243,37.444046],[15.309898,37.134219],[15.099988,36.619987],[14.335229,36.996631],[13.826733,37.104531],[12.431004,37.61295],[12.570944,38.126381],[13.741156,38.034966],[14.761249,38.143874],[15.520376,38.231155]],[[9.210012,41.209991],[9.809975,40.500009],[9.669519,39.177376],[9.214818,39.240473],[8.806936,38.906618],[8.428302,39.171847],[8.388253,40.378311],[8.159998,40.950007],[8.709991,40.899984],[9.210012,41.209991]],[[12.376485,46.767559],[13.806475,46.509306],[13.69811,46.016778],[13.93763,45.591016],[13.141606,45.736692],[12.328581,45.381778],[12.383875,44.885374],[12.261453,44.600482],[12.589237,44.091366],[13.526906,43.587727],[14.029821,42.761008],[15.14257,41.95514],[15.926191,41.961315],[16.169897,41.740295],[15.889346,41.541082],[16.785002,41.179606],[17.519169,40.877143],[18.376687,40.355625],[18.480247,40.168866],[18.293385,39.810774],[17.73838,40.277671],[16.869596,40.442235],[16.448743,39.795401],[17.17149,39.4247],[17.052841,38.902871],[16.635088,38.843572],[16.100961,37.985899],[15.684087,37.908849],[15.687963,38.214593],[15.891981,38.750942],[16.109332,38.964547],[15.718814,39.544072],[15.413613,40.048357],[14.998496,40.172949],[14.703268,40.60455],[14.060672,40.786348],[13.627985,41.188287],[12.888082,41.25309],[12.106683,41.704535],[11.191906,42.355425],[10.511948,42.931463],[10.200029,43.920007],[9.702488,44.036279],[8.888946,44.366336],[8.428561,44.231228],[7.850767,43.767148],[7.435185,43.693845],[7.549596,44.127901],[7.007562,44.254767],[6.749955,45.028518],[7.096652,45.333099],[6.802355,45.70858],[6.843593,45.991147],[7.273851,45.776948],[7.755992,45.82449],[8.31663,46.163642],[8.489952,46.005151],[8.966306,46.036932],[9.182882,46.440215],[9.922837,46.314899],[10.363378,46.483571],[10.442701,46.893546],[11.048556,46.751359],[11.164828,46.941579],[12.153088,47.115393],[12.376485,46.767559]]]},
@@ -31,6 +31,18 @@ const GEO = {
   CYP:{name:"Cyprus",coords:[[[32.2686,35.1325],[32.4418,34.7249],[33.1500,34.5714],[33.7225,34.9723],[34.5813,35.7050],[33.9000,35.4000],[33.3000,35.1800],[32.7000,35.1500],[32.2686,35.1325]]]}
 };
 
+// Surrounding Non-Federal Geographic Neighbor Regions (Dark Muted Slate Neutral)
+const GEO_NEIGHBORS = {
+  GBR:{name:"United Kingdom",coords:[[[-5.7, 50.0], [-1.5, 50.8], [1.7, 52.5], [-0.1, 53.5], [-3.1, 58.6], [-5.0, 56.5], [-4.5, 54.0], [-5.7, 50.0]]]},
+  NOR:{name:"Norway",coords:[[[5.0, 60.0], [5.5, 62.0], [10.0, 63.5], [16.0, 69.0], [30.0, 70.5], [29.0, 69.0], [21.0, 69.0], [12.0, 64.0], [10.0, 59.0], [5.0, 60.0]]]},
+  CHE:{name:"Switzerland",coords:[[[6.0, 46.2], [6.8, 47.5], [9.6, 47.5], [10.4, 46.5], [8.9, 46.0], [6.0, 46.2]]]},
+  TUR:{name:"Turkey",coords:[[[26.0, 40.5], [29.0, 41.2], [35.0, 42.0], [44.0, 41.0], [44.0, 37.0], [36.0, 36.5], [32.5, 36.0], [27.3, 37.0], [26.0, 40.5]]]},
+  UKR:{name:"Ukraine",coords:[[[22.2, 48.4], [24.0, 50.7], [33.0, 52.4], [40.2, 49.3], [37.5, 47.0], [35.0, 46.0], [33.5, 44.5], [30.0, 46.5], [28.2, 45.4], [22.2, 48.4]]]},
+  BLR:{name:"Belarus",coords:[[[23.5, 52.0], [23.8, 53.5], [30.0, 55.1], [32.7, 53.4], [30.5, 51.3], [23.5, 52.0]]]},
+  BAL:{name:"Western Balkans",coords:[[[19.0, 42.0], [19.5, 45.0], [22.5, 44.0], [23.0, 41.5], [21.0, 40.8], [19.5, 41.0], [19.0, 42.0]]]},
+  AFR:{name:"North Africa",coords:[[[-10.0, 35.0], [-2.0, 35.2], [8.0, 37.5], [11.0, 37.0], [11.5, 33.0], [25.0, 31.5], [34.0, 31.2], [34.0, 28.0], [-10.0, 28.0], [-10.0, 35.0]]]}
+};
+
 const FOUNDING = new Set(["FRA","DEU","ITA","NLD","BEL","LUX"]);
 
 // Micro-states (Malta)
@@ -54,12 +66,6 @@ const CAPITALS = {
   EST:{c:"Tallinn",pop:"1.4M"}, CYP:{c:"Nicosia",pop:"0.92M"}
 };
 
-// STANDARD MERCATOR PROJECTION:
-// LON0 = 12, LAT0 = 50.
-// lat > LAT0 (North) -> my > my0 -> z is POSITIVE.
-// ExtrudeGeometry + rotateX(-Math.PI/2) transforms 2D Y (z) to 3D Z = - 2D Y = NEGATIVE (Away from camera / TOP of screen / NORTH)!
-// lat < LAT0 (South) -> my < my0 -> z is NEGATIVE.
-// ExtrudeGeometry + rotateX(-Math.PI/2) transforms 2D Y (z) to 3D Z = - 2D Y = POSITIVE (Towards camera / BOTTOM of screen / SOUTH)!
 const LON0 = 12, LAT0 = 50, SCALE = 1.75;
 
 function proj(lon, lat){
@@ -71,8 +77,6 @@ function proj(lon, lat){
   return { x, z };
 }
 
-// 3D Z converter for direct objects (Brussels, Beams, Micro-states):
-// Converts proj.z into 3D Z: 3D Z = - proj.z
 function get3DPos(lon, lat) {
   const p = proj(lon, lat);
   return { x: p.x, z: -p.z };
@@ -80,6 +84,7 @@ function get3DPos(lon, lat) {
 
 const F_COLOR = 0x2f57c9;
 const L_COLOR = 0x6d8fe8;
+const NEIGHBOR_COLOR = 0x142345;
 
 function ringToShape(ring){
   const shape = new THREE.Shape();
@@ -111,17 +116,15 @@ const ThreeDMap = () => {
     // Scene setup
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x071845);
-    scene.fog = new THREE.Fog(0x071845, 100, 260);
+    scene.fog = new THREE.Fog(0x071845, 120, 320);
     refs.current.scene = scene;
 
-    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 800);
+    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 900);
     refs.current.camera = camera;
 
-    // FIXED GEOGRAPHIC MAP VIEW:
-    // North (Scandinavia) = Top of screen (-Z)
-    // South (Italy/Greece/Spain/Cyprus) = Bottom of screen (+Z)
-    camera.position.set(0, 125, 45);
-    camera.lookAt(0, 0, -10);
+    // WIDE GEOGRAPHIC CAMERA FRAME: Encompasses all 26 Federal States + Cyprus + Mediterranean + Surrounding Neighbors
+    camera.position.set(0, 165, 75);
+    camera.lookAt(0, -6, -12);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
@@ -140,8 +143,8 @@ const ThreeDMap = () => {
     sun.castShadow = true;
     sun.shadow.mapSize.set(2048, 2048);
     sun.shadow.camera.near = 10; sun.shadow.camera.far = 360;
-    sun.shadow.camera.left = -130; sun.shadow.camera.right = 130;
-    sun.shadow.camera.top = 130; sun.shadow.camera.bottom = -130;
+    sun.shadow.camera.left = -150; sun.shadow.camera.right = 150;
+    sun.shadow.camera.top = 150; sun.shadow.camera.bottom = -150;
     sun.shadow.bias = -0.0004;
     scene.add(sun);
 
@@ -151,27 +154,61 @@ const ThreeDMap = () => {
 
     // Sea Plane
     const sea = new THREE.Mesh(
-      new THREE.PlaneGeometry(700, 700),
+      new THREE.PlaneGeometry(800, 800),
       new THREE.MeshStandardMaterial({ color: 0x0a2260, roughness: 0.45, metalness: 0.3 })
     );
     sea.rotation.x = -Math.PI/2; sea.position.y = -0.5; sea.receiveShadow = true;
     scene.add(sea);
 
-    const grid = new THREE.GridHelper(480, 60, 0x1c47a8, 0x123170);
+    const grid = new THREE.GridHelper(520, 65, 0x1c47a8, 0x123170);
     grid.position.y = -0.45; grid.material.opacity = 0.35; grid.material.transparent = true;
     scene.add(grid);
 
-    // Pickables for Hover Inspection
     const pickables = [];
     const stateGroup = new THREE.Group();
     scene.add(stateGroup);
 
-    // Build Countries (Includes Cyprus as extruded 3D state in SE Med)
-    Object.entries(GEO).forEach(([iso, data]) => {
+    // 1. BUILD SURROUNDING GEOGRAPHIC NEIGHBORS (Subtle, Flat Neutral Terrain)
+    Object.entries(GEO_NEIGHBORS).forEach(([iso, data]) => {
+      const group = new THREE.Group();
+      group.userData = { iso, name: data.name, isNeighbor: true };
+
+      const mat = new THREE.MeshStandardMaterial({
+        color: NEIGHBOR_COLOR,
+        roughness: 0.85, metalness: 0.05,
+        emissive: 0x071845, emissiveIntensity: 0.05
+      });
+
+      data.coords.forEach(ring => {
+        if (ring.length < 3) return;
+        const shape = ringToShape(ring);
+        const geo = new THREE.ExtrudeGeometry(shape, {
+          depth: 0.8, bevelEnabled: false
+        });
+        geo.rotateX(-Math.PI/2);
+        geo.computeVertexNormals();
+
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.receiveShadow = true;
+        mesh.userData = group.userData;
+        group.add(mesh);
+        pickables.push(mesh);
+
+        const edges = new THREE.EdgesGeometry(geo);
+        const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x0d1830, transparent: true, opacity: 0.4 }));
+        group.add(line);
+      });
+
+      group.userData.material = mat;
+      stateGroup.add(group);
+    });
+
+    // 2. BUILD 26 FEDERAL MEMBER STATES (High Relief 3D, Highlighted EU Blue & Gold Emissive)
+    Object.entries(GEO_FED).forEach(([iso, data]) => {
       const founding = FOUNDING.has(iso);
       const depth = founding ? 3.0 : 2.3;
       const group = new THREE.Group();
-      group.userData = { iso, name: data.name, founding };
+      group.userData = { iso, name: data.name, founding, isFederal: true };
 
       const mat = new THREE.MeshStandardMaterial({
         color: founding ? F_COLOR : L_COLOR,
@@ -205,11 +242,11 @@ const ThreeDMap = () => {
       stateGroup.add(group);
     });
 
-    // Build Micro-states (Malta in Mediterranean)
+    // 3. BUILD MICRO-STATES (Malta)
     Object.entries(MICRO).forEach(([iso, m]) => {
       const pos3d = get3DPos(m.lon, m.lat);
       const g = new THREE.Group();
-      g.userData = { iso, name: m.name, founding: false, capital: { c: m.cap, pop: m.pop } };
+      g.userData = { iso, name: m.name, founding: false, isFederal: true, capital: { c: m.cap, pop: m.pop } };
 
       const island = new THREE.Mesh(
         new THREE.CylinderGeometry(1.1, 1.4, 2.2, 20),
@@ -306,27 +343,26 @@ const ThreeDMap = () => {
         if (hovered !== ud) {
           if (hovered) setEmissive(hovered, 0x071845, 0.15);
           hovered = ud;
-          setEmissive(ud, 0xffd447, 0.5);
+          setEmissive(ud, ud.isFederal ? 0xffd447 : 0x223355, ud.isFederal ? 0.5 : 0.2);
         }
         const cap = ud.capital;
         const tt = tooltipRef.current;
         if (tt) {
-          tt.innerHTML = `<div style="font-weight:700;font-size:14px;color:#ffd447;margin-bottom:2px;">${ud.name}</div><div style="font-size:12px;color:var(--text-secondary);line-height:1.4;">${cap ? `Capital: <strong>${cap.c}</strong> &middot; Pop. ${cap.pop}<br>` : ''}${ud.founding ? 'Founding member state' : 'Accession state'}</div>`;
+          if (ud.isFederal) {
+            tt.innerHTML = `<div style="font-weight:700;font-size:14px;color:#ffd447;margin-bottom:2px;">${ud.name}</div><div style="font-size:12px;color:#f4f1e8;line-height:1.4;">${cap ? `Capital: <strong>${cap.c}</strong> &middot; Pop. ${cap.pop}<br>` : ''}${ud.founding ? 'Founding Federal State' : 'Federal Accession State'}</div>`;
+          } else {
+            tt.innerHTML = `<div style="font-weight:700;font-size:13px;color:#94a3b8;margin-bottom:2px;">${ud.name}</div><div style="font-size:11px;color:#64748b;">Non-federal neighboring territory</div>`;
+          }
           tt.style.opacity = '1';
 
-          // SMART TOOLTIP POSITIONING: Flip vertically if near bottom, flip horizontally if near right
           const ttHeight = tt.offsetHeight || 75;
           const ttWidth = tt.offsetWidth || 180;
 
           let leftPos = mouseX + 16;
           let topPos = mouseY + 16;
 
-          if (mouseY > height - ttHeight - 25) {
-            topPos = mouseY - ttHeight - 12;
-          }
-          if (mouseX > width - ttWidth - 25) {
-            leftPos = mouseX - ttWidth - 12;
-          }
+          if (mouseY > height - ttHeight - 25) topPos = mouseY - ttHeight - 12;
+          if (mouseX > width - ttWidth - 25) leftPos = mouseX - ttWidth - 12;
 
           tt.style.left = `${Math.max(10, leftPos)}px`;
           tt.style.top = `${Math.max(10, topPos)}px`;
@@ -383,7 +419,7 @@ const ThreeDMap = () => {
     <div style={{ position: 'relative', width: '100%', height: '580px', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid rgba(255,212,71,0.25)', background: '#071845' }}>
       <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
 
-      {/* Tooltip Overlay - High Z-Index & Smart Overflow Safety */}
+      {/* Tooltip Overlay */}
       <div
         ref={tooltipRef}
         style={{
@@ -396,13 +432,13 @@ const ThreeDMap = () => {
         }}
       />
 
-      {/* Top Left Title & Hint Overlay */}
+      {/* Top Left Title & Subtitle Overlay */}
       <div style={{
         position: 'absolute', top: 0, left: 0, padding: '24px 28px', pointerEvents: 'none',
         background: 'linear-gradient(180deg, rgba(7,24,69,0.9) 0%, rgba(7,24,69,0) 100%)'
       }}>
         <div style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', fontSize: '11px', color: '#ffd447', fontWeight: 700, marginBottom: '4px' }}>
-          Interactive Cartography &middot; Hover state for details
+          Interactive Cartography &middot; Highlighted Sovereign European Federation
         </div>
         <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--paper)', fontWeight: 600, margin: 0 }}>
           The United States of <em style={{ fontStyle: 'italic', color: '#ffd447' }}>Europe</em>
