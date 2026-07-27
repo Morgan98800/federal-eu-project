@@ -106,6 +106,7 @@ const ThreeDMap = () => {
   const mountRef = useRef(null);
   const tooltipRef = useRef(null);
   const [theme, setTheme] = useState('night'); // 'night' or 'day'
+  const [autoRotate, setAutoRotate] = useState(true);
   
   const refs = useRef({
     scene: null, camera: null, renderer: null, controls: null,
@@ -148,6 +149,25 @@ const ThreeDMap = () => {
     refs.current.controls.update();
   };
 
+  const zoomIn = () => {
+    if (!refs.current.controls) return;
+    refs.current.controls.dollyIn(1.25);
+    refs.current.controls.update();
+  };
+
+  const zoomOut = () => {
+    if (!refs.current.controls) return;
+    refs.current.controls.dollyOut(1.25);
+    refs.current.controls.update();
+  };
+
+  const toggleAutoRotate = () => {
+    if (!refs.current.controls) return;
+    const nextState = !refs.current.controls.autoRotate;
+    refs.current.controls.autoRotate = nextState;
+    setAutoRotate(nextState);
+  };
+
   useEffect(() => {
     const container = mountRef.current;
     if (!container) return;
@@ -156,7 +176,7 @@ const ThreeDMap = () => {
     const height = container.clientHeight || 650;
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x1a2c5e, 120, 320); // Warm horizon haze fog
+    scene.fog = new THREE.Fog(0x1a2c5e, 120, 320);
     refs.current.scene = scene;
 
     const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 950);
@@ -182,7 +202,7 @@ const ThreeDMap = () => {
     controls.maxDistance = 400;
     refs.current.controls = controls;
 
-    // --- 2) SKY + HORIZON ---
+    // --- SKY + HORIZON ---
     const skyGeo = new THREE.SphereGeometry(600, 32, 16);
     const skyMat = new THREE.ShaderMaterial({
       uniforms: {
@@ -212,8 +232,8 @@ const ThreeDMap = () => {
     scene.add(new THREE.Mesh(skyGeo, skyMat));
     refs.current.skyMat = skyMat;
 
-    // --- 4) LIGHTING & DEPTH CUES ---
-    const amb = new THREE.AmbientLight(0xabc0e8, 0.3); // Lowered intensity (~25%)
+    // --- LIGHTING ---
+    const amb = new THREE.AmbientLight(0xabc0e8, 0.3);
     scene.add(amb);
     refs.current.amb = amb;
 
@@ -228,12 +248,12 @@ const ThreeDMap = () => {
     scene.add(sun);
     refs.current.sun = sun;
 
-    const rim = new THREE.DirectionalLight(0xffcf6a, 0.5); // Warm gold rim light low on horizon
+    const rim = new THREE.DirectionalLight(0xffcf6a, 0.5);
     rim.position.set(60, 18, -80);
     scene.add(rim);
     refs.current.rim = rim;
 
-    // --- 1) ANIMATED OCEAN ---
+    // --- ANIMATED OCEAN ---
     const seaGeo = new THREE.PlaneGeometry(900, 900, 200, 200);
     const seaMat = new THREE.ShaderMaterial({
       uniforms: {
@@ -276,7 +296,7 @@ const ThreeDMap = () => {
     scene.add(sea);
     refs.current.seaMat = seaMat;
 
-    // --- 6) BRUSSELS OCEAN REFLECTION GLOW ---
+    // --- BRUSSELS OCEAN REFLECTION GLOW ---
     const bPos = get3DPos(4.35, 50.85);
     const reflGeo = new THREE.PlaneGeometry(16, 16);
     const reflMat = new THREE.MeshBasicMaterial({
@@ -295,7 +315,7 @@ const ThreeDMap = () => {
     const stateGroup = new THREE.Group();
     scene.add(stateGroup);
 
-    // --- 3) FEDERATION UNITY OUTLINE & HALO ---
+    // --- FEDERATION UNITY OUTLINE & HALO ---
     const fedEdgeCounts = {}, fedEdgePoints = {};
     const processFedEdges = (data) => {
       data.coords.forEach(ring => {
@@ -369,7 +389,7 @@ const ThreeDMap = () => {
         if (ring.length < 3) return;
         const shape = ringToShape(ring);
         
-        // Ground Halo Footprint (Scale ~1.04 on XZ, y=0.02)
+        // Ground Halo Footprint
         const haloGeo = new THREE.ShapeGeometry(shape); 
         haloGeo.rotateX(-Math.PI/2);
         const haloMesh = new THREE.Mesh(haloGeo, footprintMat); 
@@ -390,7 +410,7 @@ const ThreeDMap = () => {
         group.add(new THREE.LineSegments(edgesGeo, new THREE.LineBasicMaterial({ color: 0xffd447, transparent: true, opacity: 0.85 })));
       });
 
-      // Capital Marker (Flush on surface, not in pickables)
+      // Capital Marker
       if (CAPITALS[iso] && CAPITALS[iso].lon) {
         const p3 = get3DPos(CAPITALS[iso].lon, CAPITALS[iso].lat);
         const dotMesh = new THREE.Mesh(capitalDotGeo, capitalDotMat);
@@ -549,6 +569,27 @@ const ThreeDMap = () => {
     };
   }, []);
 
+  const buttonStyle = (active = false) => ({
+    padding: '8px 12px',
+    background: active ? 'linear-gradient(135deg, #2b56d8 0%, #1e40af 100%)' : 'rgba(15, 23, 42, 0.6)',
+    color: active ? '#ffffff' : '#cbd5e1',
+    border: '1px solid',
+    borderColor: active ? '#60a5fa' : 'rgba(255, 255, 255, 0.15)',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    fontFamily: 'var(--font-mono, monospace)',
+    fontSize: '11px',
+    fontWeight: 600,
+    textTransform: 'uppercase',
+    letterSpacing: '0.05em',
+    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: active ? '0 0 12px rgba(96, 165, 250, 0.35)' : 'none',
+    userSelect: 'none'
+  });
+
   return (
     <div style={{ position: 'relative', width: '100%', height: '650px', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid rgba(255,212,71,0.35)', background: '#071845', paddingBottom: '52px' }}>
       <div ref={mountRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
@@ -563,9 +604,10 @@ const ThreeDMap = () => {
         }}
       />
 
+      {/* Title Header Overlay */}
       <div style={{
         position: 'absolute', top: '16px', left: '16px', padding: '16px 22px', pointerEvents: 'none',
-        background: 'rgba(7, 24, 69, 0.88)', backdropFilter: 'blur(12px)', borderRadius: '8px',
+        background: 'rgba(7, 24, 69, 0.88)', backdropFilter: 'blur(16px)', borderRadius: '8px',
         border: '1px solid rgba(255, 212, 71, 0.35)', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)'
       }}>
         <div style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', fontSize: '10px', color: '#ffd447', fontWeight: 700, marginBottom: '4px' }}>
@@ -579,9 +621,10 @@ const ThreeDMap = () => {
         </div>
       </div>
 
+      {/* Legend Overlay */}
       <div style={{
         position: 'absolute', bottom: '68px', left: '16px', padding: '12px 16px', pointerEvents: 'none',
-        background: 'rgba(7, 24, 69, 0.88)', backdropFilter: 'blur(12px)', borderRadius: '8px',
+        background: 'rgba(7, 24, 69, 0.88)', backdropFilter: 'blur(16px)', borderRadius: '8px',
         border: '1px solid rgba(255, 212, 71, 0.25)', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)', fontFamily: 'var(--font-body)', fontSize: '11px'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
@@ -602,13 +645,24 @@ const ThreeDMap = () => {
         </div>
       </div>
 
-      <div style={{ position: 'absolute', bottom: '68px', right: '16px', zIndex: 100, display: 'flex', gap: '8px', background: 'rgba(7, 24, 69, 0.88)', padding: '8px', borderRadius: '8px', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,212,71,0.25)' }}>
-        <button onClick={() => setTheme('night')} style={{ padding: '8px 12px', background: theme==='night' ? '#2b56d8' : 'transparent', color: '#fff', border: '1px solid', borderColor: theme==='night' ? '#4874f2' : 'transparent', borderRadius: '4px', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '11px', textTransform: 'uppercase', transition: 'all 0.2s' }}>Night</button>
-        <button onClick={() => setTheme('day')} style={{ padding: '8px 12px', background: theme==='day' ? '#ffd447' : 'transparent', color: theme==='day' ? '#000' : '#fff', border: '1px solid', borderColor: theme==='day' ? '#ffd447' : 'transparent', borderRadius: '4px', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '11px', textTransform: 'uppercase', transition: 'all 0.2s' }}>Daylight</button>
-        <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)', margin: '0 4px' }} />
-        <button onClick={resetCamera} style={{ padding: '8px 12px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '4px', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '11px', textTransform: 'uppercase', transition: 'all 0.2s' }}>Reset Cam</button>
+      {/* Interactive Controls Bar */}
+      <div style={{
+        position: 'absolute', bottom: '68px', right: '16px', zIndex: 100, display: 'flex', gap: '6px',
+        background: 'rgba(7, 24, 69, 0.88)', padding: '8px', borderRadius: '8px', backdropFilter: 'blur(16px)',
+        border: '1px solid rgba(255,212,71,0.25)', boxShadow: '0 8px 24px rgba(0,0,0,0.4)'
+      }}>
+        <button onClick={() => setTheme('night')} style={buttonStyle(theme === 'night')} title="Switch to Night View">Night</button>
+        <button onClick={() => setTheme('day')} style={buttonStyle(theme === 'day')} title="Switch to Daylight View">Daylight</button>
+        
+        <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)', margin: '0 3px' }} />
+        
+        <button onClick={zoomIn} style={buttonStyle(false)} title="Zoom In">+</button>
+        <button onClick={zoomOut} style={buttonStyle(false)} title="Zoom Out">&minus;</button>
+        <button onClick={toggleAutoRotate} style={buttonStyle(autoRotate)} title="Toggle Slow Orbit Rotation">{autoRotate ? 'Orbit On' : 'Orbit Off'}</button>
+        <button onClick={resetCamera} style={buttonStyle(false)} title="Reset Camera View">Reset Cam</button>
       </div>
 
+      {/* EU Flag 12-Star Rotating Emblem */}
       <div style={{ position: 'absolute', top: '20px', right: '24px', pointerEvents: 'none', zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <svg width="56" height="56" viewBox="0 0 100 100" style={{ animation: 'euStarSpin 12s linear infinite' }}>
           <style>{`@keyframes euStarSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
