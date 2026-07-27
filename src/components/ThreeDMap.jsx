@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 // 26 Sovereign Federal EU Member States
 const GEO_FED = {
@@ -31,7 +32,6 @@ const GEO_FED = {
   CYP:{name:"Cyprus",coords:[[[32.2686,35.1325],[32.4418,34.7249],[33.1500,34.5714],[33.7225,34.9723],[34.5813,35.7050],[33.9000,35.4000],[33.3000,35.1800],[32.7000,35.1500],[32.2686,35.1325]]]}
 };
 
-// Surrounding Non-EU Sovereign Nations (Individual Sovereign GeoJSON Outlines in Muted Slate)
 const GEO_NEIGHBORS = {
   GBR:{name:"United Kingdom",coords:[[[-5.6,50.0],[-4.1,50.3],[-1.4,50.7],[0.8,51.1],[1.4,52.0],[1.7,52.7],[0.2,53.4],[-0.1,54.0],[-2.0,55.0],[-1.8,55.8],[-3.0,58.6],[-4.5,58.5],[-5.8,56.5],[-4.7,55.8],[-3.5,54.6],[-3.1,53.3],[-4.2,53.3],[-4.8,52.0],[-5.3,51.8],[-4.2,51.1],[-5.6,50.0]]]},
   NOR:{name:"Norway",coords:[[[5.2,59.2],[5.9,62.0],[10.0,63.5],[14.2,67.5],[21.0,70.0],[30.0,70.5],[28.5,69.9],[24.0,68.8],[21.0,69.1],[16.1,68.0],[15.1,66.2],[13.6,64.8],[12.0,64.1],[11.9,63.1],[11.9,61.8],[12.6,61.3],[12.3,60.1],[11.5,59.4],[11.0,58.9],[9.3,58.6],[7.1,58.0],[5.2,59.2]]]},
@@ -56,25 +56,24 @@ const GEO_NEIGHBORS = {
 
 const FOUNDING = new Set(["FRA","DEU","ITA","NLD","BEL","LUX"]);
 
-// Micro-states (Malta)
 const MICRO = {
   MLT:{name:"Malta", lon:14.42, lat:35.9, pop:"0.53M", cap:"Valletta"}
 };
 
 const CAPITALS = {
-  FRA:{c:"Paris",pop:"68M"}, DEU:{c:"Berlin",pop:"84M"},
-  ITA:{c:"Rome",pop:"59M"}, ESP:{c:"Madrid",pop:"48M"},
-  PRT:{c:"Lisbon",pop:"10M"}, NLD:{c:"Amsterdam",pop:"18M"},
-  BEL:{c:"Brussels",pop:"12M"}, LUX:{c:"Luxembourg",pop:"0.65M"},
-  POL:{c:"Warsaw",pop:"37M"}, AUT:{c:"Vienna",pop:"9M"},
-  CZE:{c:"Prague",pop:"10.7M"}, SVK:{c:"Bratislava",pop:"5.4M"},
-  HUN:{c:"Budapest",pop:"9.6M"}, ROU:{c:"Bucharest",pop:"19M"},
-  BGR:{c:"Sofia",pop:"6.4M"}, HRV:{c:"Zagreb",pop:"3.9M"},
-  SVN:{c:"Ljubljana",pop:"2.1M"}, DNK:{c:"Copenhagen",pop:"5.9M"},
-  SWE:{c:"Stockholm",pop:"10.5M"}, FIN:{c:"Helsinki",pop:"5.5M"},
-  IRL:{c:"Dublin",pop:"5.1M"}, GRC:{c:"Athens",pop:"10.4M"},
-  LTU:{c:"Vilnius",pop:"2.8M"}, LVA:{c:"Riga",pop:"1.9M"},
-  EST:{c:"Tallinn",pop:"1.4M"}, CYP:{c:"Nicosia",pop:"0.92M"}
+  FRA:{c:"Paris",pop:"68M",lon:2.35,lat:48.85}, DEU:{c:"Berlin",pop:"84M",lon:13.4,lat:52.52},
+  ITA:{c:"Rome",pop:"59M",lon:12.49,lat:41.9}, ESP:{c:"Madrid",pop:"48M",lon:-3.7,lat:40.41},
+  PRT:{c:"Lisbon",pop:"10M",lon:-9.13,lat:38.72}, NLD:{c:"Amsterdam",pop:"18M",lon:4.9,lat:52.36},
+  BEL:{c:"Brussels",pop:"12M",lon:4.35,lat:50.85}, LUX:{c:"Luxembourg",pop:"0.65M",lon:6.13,lat:49.61},
+  POL:{c:"Warsaw",pop:"37M",lon:21.01,lat:52.22}, AUT:{c:"Vienna",pop:"9M",lon:16.37,lat:48.2},
+  CZE:{c:"Prague",pop:"10.7M",lon:14.43,lat:50.07}, SVK:{c:"Bratislava",pop:"5.4M",lon:17.1,lat:48.14},
+  HUN:{c:"Budapest",pop:"9.6M",lon:19.04,lat:47.49}, ROU:{c:"Bucharest",pop:"19M",lon:26.1,lat:44.42},
+  BGR:{c:"Sofia",pop:"6.4M",lon:23.32,lat:42.69}, HRV:{c:"Zagreb",pop:"3.9M",lon:15.98,lat:45.81},
+  SVN:{c:"Ljubljana",pop:"2.1M",lon:14.5,lat:46.05}, DNK:{c:"Copenhagen",pop:"5.9M",lon:12.56,lat:55.67},
+  SWE:{c:"Stockholm",pop:"10.5M",lon:18.06,lat:59.32}, FIN:{c:"Helsinki",pop:"5.5M",lon:24.93,lat:60.16},
+  IRL:{c:"Dublin",pop:"5.1M",lon:-6.26,lat:53.34}, GRC:{c:"Athens",pop:"10.4M",lon:23.72,lat:37.98},
+  LTU:{c:"Vilnius",pop:"2.8M",lon:25.27,lat:54.68}, LVA:{c:"Riga",pop:"1.9M",lon:24.1,lat:56.94},
+  EST:{c:"Tallinn",pop:"1.4M",lon:24.75,lat:59.43}, CYP:{c:"Nicosia",pop:"0.92M",lon:33.36,lat:35.18}
 };
 
 const LON0 = 12, LAT0 = 50, SCALE = 1.75;
@@ -93,10 +92,6 @@ function get3DPos(lon, lat) {
   return { x: p.x, z: -p.z };
 }
 
-const F_COLOR = 0x2b56d8;
-const L_COLOR = 0x4874f2;
-const NEIGHBOR_COLOR = 0x2a3a63; // quieter, desaturated slate/grey-blue
-
 function ringToShape(ring){
   const shape = new THREE.Shape();
   ring.forEach((p,i)=>{
@@ -110,32 +105,61 @@ function ringToShape(ring){
 const ThreeDMap = () => {
   const mountRef = useRef(null);
   const tooltipRef = useRef(null);
-
+  const [theme, setTheme] = useState('night'); // 'night' or 'day'
+  
   const refs = useRef({
-    camera: null,
-    renderer: null,
-    scene: null
+    scene: null, camera: null, renderer: null, controls: null,
+    skyMat: null, seaMat: null, sun: null, rim: null, amb: null, capLight: null
   });
+
+  // Apply Theme Changes Dynamically
+  useEffect(() => {
+    if (!refs.current.scene) return;
+    const { scene, skyMat, seaMat, sun, rim, amb, capLight } = refs.current;
+    const isDay = theme === 'day';
+
+    if (isDay) {
+      skyMat.uniforms.topColor.value.setHex(0x3a7bd5);
+      skyMat.uniforms.bottomColor.value.setHex(0xffecd2);
+      scene.fog.color.setHex(0xffecd2);
+      seaMat.color.setHex(0x1a457b);
+      sun.intensity = 2.4;
+      rim.intensity = 0.8;
+      amb.intensity = 0.8;
+      capLight.intensity = 3.5;
+    } else {
+      skyMat.uniforms.topColor.value.setHex(0x071845);
+      skyMat.uniforms.bottomColor.value.setHex(0x2a1c0d);
+      scene.fog.color.setHex(0x071845);
+      seaMat.color.setHex(0x0a2260);
+      sun.intensity = 1.8;
+      rim.intensity = 0.6;
+      amb.intensity = 0.4;
+      capLight.intensity = 2.5;
+    }
+  }, [theme]);
+
+  const resetCamera = () => {
+    if (!refs.current.camera || !refs.current.controls) return;
+    refs.current.camera.position.set(0, 148, 56);
+    refs.current.controls.target.set(0, -4, -8);
+    refs.current.controls.update();
+  };
 
   useEffect(() => {
     const container = mountRef.current;
     if (!container) return;
 
     const width = container.clientWidth;
-    const height = container.clientHeight || 580;
+    const height = container.clientHeight || 650;
 
-    // Scene setup
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x071845);
-    scene.fog = new THREE.Fog(0x071845, 120, 340);
+    scene.fog = new THREE.FogExp2(0x071845, 0.0028); // Smooth distance fog
     refs.current.scene = scene;
 
     const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 950);
-    refs.current.camera = camera;
-
-    // WIDE CAMERA PERSPECTIVE: Encompasses Europe + Neighbors cleanly
     camera.position.set(0, 148, 56);
-    camera.lookAt(0, -4, -8);
+    refs.current.camera = camera;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
@@ -143,13 +167,55 @@ const ThreeDMap = () => {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     refs.current.renderer = renderer;
-
     container.appendChild(renderer.domElement);
 
-    // Enhanced Lighting
-    scene.add(new THREE.AmbientLight(0xabc0e8, 0.85));
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.target.set(0, -4, -8);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.15;
+    controls.maxPolarAngle = Math.PI / 2 - 0.05; // don't go below ground
+    controls.minDistance = 20;
+    controls.maxDistance = 400;
+    refs.current.controls = controls;
 
-    const sun = new THREE.DirectionalLight(0xfff0d0, 2.0);
+    // --- Skydome ---
+    const skyGeo = new THREE.SphereGeometry(600, 32, 15);
+    const skyMat = new THREE.ShaderMaterial({
+      uniforms: {
+        topColor: { value: new THREE.Color(0x071845) },
+        bottomColor: { value: new THREE.Color(0x2a1c0d) }
+      },
+      vertexShader: `
+        varying vec3 vWorldPosition;
+        void main() {
+          vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+          vWorldPosition = worldPosition.xyz;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 topColor;
+        uniform vec3 bottomColor;
+        varying vec3 vWorldPosition;
+        void main() {
+          float h = max(0.0, normalize(vWorldPosition).y);
+          gl_FragColor = vec4(mix(bottomColor, topColor, pow(h, 0.6)), 1.0);
+        }
+      `,
+      side: THREE.BackSide,
+      depthWrite: false
+    });
+    scene.add(new THREE.Mesh(skyGeo, skyMat));
+    refs.current.skyMat = skyMat;
+
+    // --- Lighting ---
+    const amb = new THREE.AmbientLight(0xabc0e8, 0.4);
+    scene.add(amb);
+    refs.current.amb = amb;
+
+    const sun = new THREE.DirectionalLight(0xfff0d0, 1.8);
     sun.position.set(-60, 130, 50);
     sun.castShadow = true;
     sun.shadow.mapSize.set(2048, 2048);
@@ -158,190 +224,223 @@ const ThreeDMap = () => {
     sun.shadow.camera.top = 160; sun.shadow.camera.bottom = -160;
     sun.shadow.bias = -0.0004;
     scene.add(sun);
+    refs.current.sun = sun;
 
-    const rim = new THREE.DirectionalLight(0xffd447, 0.5);
-    rim.position.set(50, 40, -60);
+    const rim = new THREE.DirectionalLight(0xffd447, 0.6); // Warm gold rim light from horizon side
+    rim.position.set(100, 20, -100);
     scene.add(rim);
+    refs.current.rim = rim;
 
-    // Sea Plane
-    const sea = new THREE.Mesh(
-      new THREE.PlaneGeometry(850, 850),
-      new THREE.MeshStandardMaterial({ color: 0x0a2260, roughness: 0.4, metalness: 0.25 })
-    );
-    sea.rotation.x = -Math.PI/2; sea.position.y = -0.5; sea.receiveShadow = true;
+    // --- Animated Ocean ---
+    const seaGeo = new THREE.PlaneGeometry(850, 850, 180, 180);
+    const seaMat = new THREE.MeshStandardMaterial({ color: 0x0a2260, roughness: 0.15, metalness: 0.85 });
+    const seaUniforms = { uTime: { value: 0 } };
+    seaMat.onBeforeCompile = (shader) => {
+      shader.uniforms.uTime = seaUniforms.uTime;
+      shader.vertexShader = `uniform float uTime;\n` + shader.vertexShader;
+      shader.vertexShader = shader.vertexShader.replace(
+        '#include <begin_vertex>',
+        `
+        vec3 transformed = vec3(position);
+        transformed.z += sin(transformed.x * 0.05 + uTime * 0.8) * 0.4;
+        transformed.z += cos(transformed.y * 0.05 + uTime * 0.6) * 0.4;
+        `
+      );
+    };
+    const sea = new THREE.Mesh(seaGeo, seaMat);
+    sea.rotation.x = -Math.PI/2; 
+    sea.position.y = -0.3; 
+    sea.receiveShadow = true;
     scene.add(sea);
-
-    const grid = new THREE.GridHelper(560, 70, 0x1c47a8, 0x123170);
-    grid.position.y = -0.45; grid.material.opacity = 0.35; grid.material.transparent = true;
-    scene.add(grid);
+    refs.current.seaMat = seaMat;
 
     const pickables = [];
     const stateGroup = new THREE.Group();
     scene.add(stateGroup);
 
-    // 1. BUILD SURROUNDING NON-EU SOVEREIGN NATIONS (Lower height, muted slate)
+    // --- Outline Edge Calculation Logic ---
+    const allEdgeCounts = {}, allEdgePoints = {};
+    const fedEdgeCounts = {}, fedEdgePoints = {};
+
+    const processEdges = (data, isFed) => {
+      data.coords.forEach(ring => {
+        for(let i = 0; i < ring.length - 1; i++) {
+          const pt1 = get3DPos(ring[i][0], ring[i][1]);
+          const pt2 = get3DPos(ring[i+1][0], ring[i+1][1]);
+          const k1 = pt1.x.toFixed(2) + ',' + pt1.z.toFixed(2);
+          const k2 = pt2.x.toFixed(2) + ',' + pt2.z.toFixed(2);
+          const key = k1 < k2 ? k1 + '|' + k2 : k2 + '|' + k1;
+          
+          allEdgeCounts[key] = (allEdgeCounts[key] || 0) + 1;
+          if (!allEdgePoints[key]) allEdgePoints[key] = [pt1, pt2];
+          
+          if (isFed) {
+            fedEdgeCounts[key] = (fedEdgeCounts[key] || 0) + 1;
+            if (!fedEdgePoints[key]) fedEdgePoints[key] = [pt1, pt2];
+          }
+        }
+      });
+    };
+    Object.values(GEO_FED).forEach(d => processEdges(d, true));
+    Object.values(GEO_NEIGHBORS).forEach(d => processEdges(d, false));
+
+    // Coastline Glow (All borders facing ocean)
+    const coastPts = [];
+    Object.keys(allEdgeCounts).forEach(key => {
+      if (allEdgeCounts[key] === 1) {
+        coastPts.push(
+          new THREE.Vector3(allEdgePoints[key][0].x, 0.04, allEdgePoints[key][0].z),
+          new THREE.Vector3(allEdgePoints[key][1].x, 0.04, allEdgePoints[key][1].z)
+        );
+      }
+    });
+    scene.add(new THREE.LineSegments(
+      new THREE.BufferGeometry().setFromPoints(coastPts),
+      new THREE.LineBasicMaterial({ color: 0x88ddff, transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending })
+    ));
+
+    // Federation Unity Outer Border (Single continuous gold outline)
+    const fedPts = [];
+    Object.keys(fedEdgeCounts).forEach(key => {
+      if (fedEdgeCounts[key] === 1) {
+        fedPts.push(
+          new THREE.Vector3(fedEdgePoints[key][0].x, 0.1, fedEdgePoints[key][0].z),
+          new THREE.Vector3(fedEdgePoints[key][1].x, 0.1, fedEdgePoints[key][1].z)
+        );
+      }
+    });
+    scene.add(new THREE.LineSegments(
+      new THREE.BufferGeometry().setFromPoints(fedPts),
+      new THREE.LineBasicMaterial({ color: 0xffd447, transparent: true, opacity: 1.0, linewidth: 2 })
+    ));
+
+    // Shared material caches
+    const fMat = new THREE.MeshStandardMaterial({ color: 0x2b56d8, roughness: 0.5, metalness: 0.2, emissive: 0x0c256e, emissiveIntensity: 0.25 });
+    const lMat = new THREE.MeshStandardMaterial({ color: 0x4874f2, roughness: 0.5, metalness: 0.2, emissive: 0x0c256e, emissiveIntensity: 0.25 });
+    const nMat = new THREE.MeshStandardMaterial({ color: 0x2a3a63, roughness: 0.8, metalness: 0.1, emissive: 0x071845, emissiveIntensity: 0.2 });
+    const footprintMat = new THREE.MeshBasicMaterial({ color: 0xffd447, transparent: true, opacity: 0.12, depthWrite: false });
+    const capCylMat = new THREE.MeshStandardMaterial({ color: 0xffd447, roughness: 0.2, metalness: 0.8, emissive: 0xffd447, emissiveIntensity: 0.4 });
+    const capCylGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.12, 16);
+
+    // 1. NEIGHBORS
     Object.entries(GEO_NEIGHBORS).forEach(([iso, data]) => {
       const group = new THREE.Group();
       group.userData = { iso, name: data.name, isNeighbor: true };
 
-      const mat = new THREE.MeshStandardMaterial({
-        color: NEIGHBOR_COLOR,
-        roughness: 0.75, metalness: 0.08,
-        emissive: 0x071845, emissiveIntensity: 0.2 // dark emissive
-      });
-
       data.coords.forEach(ring => {
         if (ring.length < 3) return;
-        const shape = ringToShape(ring);
-        const geo = new THREE.ExtrudeGeometry(shape, {
-          depth: 1.2, bevelEnabled: true, bevelThickness: 0.1, bevelSize: 0.08, bevelSegments: 1
-        });
-        geo.rotateX(-Math.PI/2);
-        geo.computeVertexNormals();
+        const geo = new THREE.ExtrudeGeometry(ringToShape(ring), { depth: 1.2, bevelEnabled: true, bevelThickness: 0.1, bevelSize: 0.08, bevelSegments: 1 });
+        geo.rotateX(-Math.PI/2); geo.computeVertexNormals();
 
-        const mesh = new THREE.Mesh(geo, mat);
+        const mesh = new THREE.Mesh(geo, nMat.clone());
         mesh.receiveShadow = true;
         mesh.userData = group.userData;
-        group.add(mesh);
-        pickables.push(mesh);
-
-        // Dark border edge lines
-        const edges = new THREE.EdgesGeometry(geo, 22);
-        const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x1b284a, transparent: true, opacity: 0.6 }));
-        group.add(line);
+        group.add(mesh); pickables.push(mesh);
+        
+        group.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo, 22), new THREE.LineBasicMaterial({ color: 0x1b284a, transparent: true, opacity: 0.6 })));
       });
-
-      group.userData.material = mat;
+      group.userData.material = group.children[0].material;
       stateGroup.add(group);
     });
 
-    // 2. BUILD 26 FEDERAL EU MEMBER STATES & GOLD GROUND HALO
+    // 2. FEDERAL EU STATES
     Object.entries(GEO_FED).forEach(([iso, data]) => {
       const founding = FOUNDING.has(iso);
       const depth = founding ? 3.0 : 2.3;
       const group = new THREE.Group();
       group.userData = { iso, name: data.name, founding, isFederal: true };
-
-      const mat = new THREE.MeshStandardMaterial({
-        color: founding ? F_COLOR : L_COLOR,
-        roughness: 0.45, metalness: 0.18,
-        emissive: 0x0c256e, emissiveIntensity: 0.25
-      });
       
-      const footprintMat = new THREE.MeshBasicMaterial({
-        color: 0xffd447, transparent: true, opacity: 0.12, depthWrite: false
-      });
+      const stMat = (founding ? fMat : lMat).clone();
 
       data.coords.forEach(ring => {
         if (ring.length < 3) return;
         const shape = ringToShape(ring);
         
-        // Footprint Ground Halo for unity reading
-        const haloGeo = new THREE.ShapeGeometry(shape);
-        haloGeo.rotateX(-Math.PI/2);
-        const haloMesh = new THREE.Mesh(haloGeo, footprintMat);
-        haloMesh.position.y = 0.02; // Just barely above the grid
+        // Ground Halo Footprint
+        const haloGeo = new THREE.ShapeGeometry(shape); haloGeo.rotateX(-Math.PI/2);
+        const haloMesh = new THREE.Mesh(haloGeo, footprintMat); haloMesh.position.y = 0.02;
         group.add(haloMesh);
 
-        // Main Extrusion
-        const geo = new THREE.ExtrudeGeometry(shape, {
-          depth, bevelEnabled: true, bevelThickness: 0.25, bevelSize: 0.22, bevelSegments: 2
-        });
-        geo.rotateX(-Math.PI/2);
-        geo.computeVertexNormals();
-
-        const mesh = new THREE.Mesh(geo, mat);
+        // Extrusion
+        const geo = new THREE.ExtrudeGeometry(shape, { depth, bevelEnabled: true, bevelThickness: 0.25, bevelSize: 0.22, bevelSegments: 2 });
+        geo.rotateX(-Math.PI/2); geo.computeVertexNormals();
+        const mesh = new THREE.Mesh(geo, stMat);
         mesh.castShadow = true; mesh.receiveShadow = true;
         mesh.userData = group.userData;
-        group.add(mesh);
-        pickables.push(mesh);
+        group.add(mesh); pickables.push(mesh);
 
-        // Glowing Gold Border Outlines
-        const edges = new THREE.EdgesGeometry(geo, 20);
-        const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xffd447, transparent: true, opacity: 0.55 }));
-        group.add(line);
+        // Subtle borders
+        group.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo, 20), new THREE.LineBasicMaterial({ color: 0xffd447, transparent: true, opacity: 0.3 })));
       });
 
-      group.userData.material = mat;
-      group.userData.depth = depth;
+      // Capital Marker
+      if (CAPITALS[iso] && CAPITALS[iso].lon) {
+        const p3 = get3DPos(CAPITALS[iso].lon, CAPITALS[iso].lat);
+        const capMesh = new THREE.Mesh(capCylGeo, capCylMat);
+        capMesh.position.set(p3.x, depth + 0.06, p3.z);
+        group.add(capMesh);
+      }
+
+      group.userData.material = stMat;
       if (CAPITALS[iso]) group.userData.capital = CAPITALS[iso];
       stateGroup.add(group);
     });
 
-    // 3. BUILD MICRO-STATES (Malta)
+    // 3. MICRO (Malta)
     Object.entries(MICRO).forEach(([iso, m]) => {
       const pos3d = get3DPos(m.lon, m.lat);
       const g = new THREE.Group();
       g.userData = { iso, name: m.name, founding: false, isFederal: true, capital: { c: m.cap, pop: m.pop } };
 
-      const island = new THREE.Mesh(
-        new THREE.CylinderGeometry(1.2, 1.5, 2.4, 20),
-        new THREE.MeshStandardMaterial({ color: L_COLOR, roughness: 0.45, metalness: 0.18, emissive: 0x0c256e, emissiveIntensity: 0.25 })
-      );
+      const island = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.5, 2.4, 20), lMat.clone());
       island.position.set(pos3d.x, 1.2, pos3d.z);
       island.castShadow = true; island.receiveShadow = true;
       island.userData = g.userData;
       g.userData.material = island.material;
-      g.add(island);
-      pickables.push(island);
+      g.add(island); pickables.push(island);
 
-      const halo = new THREE.Mesh(
-        new THREE.TorusGeometry(2.0, 0.16, 8, 32),
-        new THREE.MeshStandardMaterial({ color: 0xffd447, emissive: 0xffd447, emissiveIntensity: 0.8, roughness: 0.2, metalness: 0.5 })
-      );
-      halo.rotation.x = -Math.PI/2;
-      halo.position.set(pos3d.x, 0.3, pos3d.z);
+      const capMesh = new THREE.Mesh(capCylGeo, capCylMat);
+      capMesh.position.set(pos3d.x, 2.4 + 0.06, pos3d.z);
+      g.add(capMesh);
+
+      const halo = new THREE.Mesh(new THREE.TorusGeometry(2.0, 0.16, 8, 32), capCylMat);
+      halo.rotation.x = -Math.PI/2; halo.position.set(pos3d.x, 0.3, pos3d.z);
       g.add(halo);
       stateGroup.add(g);
     });
 
-    // 4. BRUSSELS FEDERAL CAPITOL (Capital of the EU)
+    // 4. BRUSSELS FEDERAL CAPITOL
     const bPos = get3DPos(4.35, 50.85);
     const capitol = new THREE.Group();
 
-    const plat = new THREE.Mesh(
-      new THREE.CylinderGeometry(3.2, 3.6, 0.8, 6),
-      new THREE.MeshStandardMaterial({ color: 0xffd447, emissive: 0xffd447, emissiveIntensity: 0.35, roughness: 0.3, metalness: 0.5 })
-    );
+    const plat = new THREE.Mesh(new THREE.CylinderGeometry(3.2, 3.6, 0.8, 6), new THREE.MeshStandardMaterial({ color: 0xffd447, emissive: 0xffd447, emissiveIntensity: 0.35, roughness: 0.3, metalness: 0.5 }));
     plat.position.set(bPos.x, 3.6, bPos.z); plat.castShadow = true; capitol.add(plat);
 
-    const dome = new THREE.Mesh(
-      new THREE.SphereGeometry(1.8, 32, 24, 0, Math.PI*2, 0, Math.PI/2),
-      new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2, metalness: 0.4 })
-    );
+    const dome = new THREE.Mesh(new THREE.SphereGeometry(1.8, 32, 24, 0, Math.PI*2, 0, Math.PI/2), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2, metalness: 0.4 }));
     dome.position.set(bPos.x, 4.0, bPos.z); dome.castShadow = true; capitol.add(dome);
 
     for (let i=0; i<8; i++) {
       const a = i/8 * Math.PI*2;
-      const col = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.2, 0.2, 2.2, 10),
-        new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3 })
-      );
-      col.position.set(bPos.x + Math.cos(a)*2.2, 4.6, bPos.z + Math.sin(a)*2.2);
-      col.castShadow = true; capitol.add(col);
+      const col = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 2.2, 10), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3 }));
+      col.position.set(bPos.x + Math.cos(a)*2.2, 4.6, bPos.z + Math.sin(a)*2.2); col.castShadow = true; capitol.add(col);
     }
 
     const ringStars = new THREE.Group();
     for (let i=0; i<12; i++) {
       const a = i/12 * Math.PI*2;
-      const s = new THREE.Mesh(
-        new THREE.OctahedronGeometry(0.32),
-        new THREE.MeshStandardMaterial({ color: 0xffd447, emissive: 0xffd447, emissiveIntensity: 0.9, roughness: 0.1, metalness: 0.6 })
-      );
-      s.position.set(Math.cos(a)*4.2, 0, Math.sin(a)*4.2);
-      ringStars.add(s);
+      const s = new THREE.Mesh(new THREE.OctahedronGeometry(0.32), new THREE.MeshStandardMaterial({ color: 0xffd447, emissive: 0xffd447, emissiveIntensity: 0.9, roughness: 0.1, metalness: 0.6 }));
+      s.position.set(Math.cos(a)*4.2, 0, Math.sin(a)*4.2); ringStars.add(s);
     }
     ringStars.position.set(bPos.x, 7.8, bPos.z);
     capitol.add(ringStars);
-    
     scene.add(capitol);
 
-    // Warm Gold Light over Brussels Capitol
-    const capLight = new THREE.PointLight(0xffd447, 1.8, 35);
-    capLight.position.set(bPos.x, 10, bPos.z);
+    const capLight = new THREE.PointLight(0xffd447, 2.5, 90);
+    capLight.position.set(bPos.x, 3.5, bPos.z);
     scene.add(capLight);
+    refs.current.capLight = capLight;
 
-    // Hover Raycasting with Tooltip
+    // Hover Interaction
     const ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
     let hovered = null;
 
@@ -356,7 +455,6 @@ const ThreeDMap = () => {
       const rect = renderer.domElement.getBoundingClientRect();
       const mouseX = e.clientX - rect.left;
       const mouseY = e.clientY - rect.top;
-
       mouse.x = (mouseX / rect.width) * 2 - 1;
       mouse.y = -(mouseY / rect.height) * 2 + 1;
 
@@ -380,15 +478,9 @@ const ThreeDMap = () => {
           }
           tt.style.opacity = '1';
 
-          const ttHeight = tt.offsetHeight || 80;
-          const ttWidth = tt.offsetWidth || 190;
-
-          let leftPos = mouseX + 16;
-          let topPos = mouseY + 16;
-
-          if (mouseY > height - ttHeight - 25) topPos = mouseY - ttHeight - 12;
-          if (mouseX > width - ttWidth - 25) leftPos = mouseX - ttWidth - 12;
-
+          let leftPos = mouseX + 16, topPos = mouseY + 16;
+          if (mouseY > height - 80 - 25) topPos = mouseY - 80 - 12;
+          if (mouseX > width - 190 - 25) leftPos = mouseX - 190 - 12;
           tt.style.left = `${Math.max(10, leftPos)}px`;
           tt.style.top = `${Math.max(10, topPos)}px`;
         }
@@ -409,9 +501,8 @@ const ThreeDMap = () => {
     const handleResize = () => {
       if (!container) return;
       const w = container.clientWidth;
-      const h = container.clientHeight || 580;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
+      const h = container.clientHeight || 650;
+      camera.aspect = w / h; camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };
     window.addEventListener('resize', handleResize);
@@ -422,12 +513,14 @@ const ThreeDMap = () => {
     const animate = () => {
       animId = requestAnimationFrame(animate);
       const t = clock.getElapsedTime();
+      
+      seaUniforms.uTime.value = t;
 
       ringStars.rotation.y = t * 0.4;
       ringStars.children.forEach((s, i) => s.rotation.y = t * 1.5 + i);
-
       plat.material.emissiveIntensity = 0.3 + Math.sin(t * 2) * 0.1;
 
+      controls.update();
       renderer.render(scene, camera);
     };
     animate();
@@ -436,35 +529,28 @@ const ThreeDMap = () => {
       cancelAnimationFrame(animId);
       window.removeEventListener('resize', handleResize);
       domEl.removeEventListener('pointermove', onPointerMove);
-      if (container.contains(domEl)) {
-        container.removeChild(domEl);
-      }
+      if (container.contains(domEl)) container.removeChild(domEl);
     };
   }, []);
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '580px', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid rgba(255,212,71,0.35)', background: '#071845' }}>
-      <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
+    <div style={{ position: 'relative', width: '100%', height: '650px', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid rgba(255,212,71,0.35)', background: '#071845', paddingBottom: '52px' }}>
+      <div ref={mountRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
 
-      {/* Tooltip Overlay */}
       <div
         ref={tooltipRef}
         style={{
-          position: 'absolute', zIndex: 50, pointerEvents: 'none',
-          background: 'rgba(7, 24, 69, 0.95)', color: '#ffffff',
-          padding: '12px 16px', borderRadius: '6px',
-          fontFamily: 'var(--font-body)', fontSize: '13px', opacity: 0, transition: 'opacity 0.1s ease',
-          boxShadow: '0 14px 36px rgba(0,0,0,0.75)', border: '1px solid rgba(255,212,71,0.5)',
-          borderTop: '3px solid #ffd447', minWidth: '170px', maxWidth: '250px', backdropFilter: 'blur(10px)'
+          position: 'absolute', zIndex: 50, pointerEvents: 'none', background: 'rgba(7, 24, 69, 0.95)', color: '#ffffff',
+          padding: '12px 16px', borderRadius: '6px', fontFamily: 'var(--font-body)', fontSize: '13px', opacity: 0, transition: 'opacity 0.1s ease',
+          boxShadow: '0 14px 36px rgba(0,0,0,0.75)', border: '1px solid rgba(255,212,71,0.5)', borderTop: '3px solid #ffd447',
+          minWidth: '170px', maxWidth: '250px', backdropFilter: 'blur(10px)'
         }}
       />
 
-      {/* Top Left Title Card Overlay */}
       <div style={{
         position: 'absolute', top: '16px', left: '16px', padding: '16px 22px', pointerEvents: 'none',
-        background: 'rgba(7, 24, 69, 0.88)', backdropFilter: 'blur(12px)',
-        borderRadius: '8px', border: '1px solid rgba(255, 212, 71, 0.35)',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)'
+        background: 'rgba(7, 24, 69, 0.88)', backdropFilter: 'blur(12px)', borderRadius: '8px',
+        border: '1px solid rgba(255, 212, 71, 0.35)', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)'
       }}>
         <div style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', fontSize: '10px', color: '#ffd447', fontWeight: 700, marginBottom: '4px' }}>
           Interactive Cartography &middot; Sovereign Federation
@@ -477,12 +563,10 @@ const ThreeDMap = () => {
         </div>
       </div>
 
-      {/* Legend Overlay */}
       <div style={{
-        position: 'absolute', bottom: '16px', left: '16px', padding: '12px 16px', pointerEvents: 'none',
-        background: 'rgba(7, 24, 69, 0.88)', backdropFilter: 'blur(12px)',
-        borderRadius: '8px', border: '1px solid rgba(255, 212, 71, 0.25)',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)', fontFamily: 'var(--font-body)', fontSize: '11px'
+        position: 'absolute', bottom: '68px', left: '16px', padding: '12px 16px', pointerEvents: 'none',
+        background: 'rgba(7, 24, 69, 0.88)', backdropFilter: 'blur(12px)', borderRadius: '8px',
+        border: '1px solid rgba(255, 212, 71, 0.25)', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)', fontFamily: 'var(--font-body)', fontSize: '11px'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
           <div style={{ width: '12px', height: '12px', background: '#2b56d8', border: '1px solid #ffd447', borderRadius: '2px', marginRight: '10px' }}></div>
@@ -492,31 +576,31 @@ const ThreeDMap = () => {
           <div style={{ width: '12px', height: '12px', background: '#ffd447', borderRadius: '50%', marginRight: '10px' }}></div>
           <span style={{ color: '#ffffff', fontWeight: 600 }}>Federal District (Brussels)</span>
         </div>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+          <div style={{ width: '12px', height: '2px', background: '#ffd447', marginRight: '10px' }}></div>
+          <span style={{ color: '#ffffff', fontWeight: 600 }}>Outer Federation Border</span>
+        </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div style={{ width: '12px', height: '12px', background: '#2a3a63', border: '1px solid #1b284a', borderRadius: '2px', marginRight: '10px' }}></div>
-          <span style={{ color: '#94a3b8' }}>Neighboring states (outside the federation)</span>
+          <span style={{ color: '#94a3b8' }}>Outside the federation</span>
         </div>
       </div>
 
-      {/* Top Right Revolving 12-Star Emblem */}
-      <div style={{
-        position: 'absolute', top: '20px', right: '24px', pointerEvents: 'none', zIndex: 10,
-        display: 'flex', flexDirection: 'column', alignItems: 'center'
-      }}>
+      <div style={{ position: 'absolute', bottom: '68px', right: '16px', zIndex: 100, display: 'flex', gap: '8px', background: 'rgba(7, 24, 69, 0.88)', padding: '8px', borderRadius: '8px', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,212,71,0.25)' }}>
+        <button onClick={() => setTheme('night')} style={{ padding: '8px 12px', background: theme==='night' ? '#2b56d8' : 'transparent', color: '#fff', border: '1px solid', borderColor: theme==='night' ? '#4874f2' : 'transparent', borderRadius: '4px', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '11px', textTransform: 'uppercase', transition: 'all 0.2s' }}>Night</button>
+        <button onClick={() => setTheme('day')} style={{ padding: '8px 12px', background: theme==='day' ? '#ffd447' : 'transparent', color: theme==='day' ? '#000' : '#fff', border: '1px solid', borderColor: theme==='day' ? '#ffd447' : 'transparent', borderRadius: '4px', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '11px', textTransform: 'uppercase', transition: 'all 0.2s' }}>Day</button>
+        <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)', margin: '0 4px' }} />
+        <button onClick={resetCamera} style={{ padding: '8px 12px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '4px', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '11px', textTransform: 'uppercase', transition: 'all 0.2s' }}>Reset Cam</button>
+      </div>
+
+      <div style={{ position: 'absolute', top: '20px', right: '24px', pointerEvents: 'none', zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <svg width="56" height="56" viewBox="0 0 100 100" style={{ animation: 'euStarSpin 12s linear infinite' }}>
           <style>{`@keyframes euStarSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
           {Array.from({ length: 12 }).map((_, i) => {
             const angle = (i / 12) * Math.PI * 2 - Math.PI / 2;
             const cx = 50 + Math.cos(angle) * 36;
             const cy = 50 + Math.sin(angle) * 36;
-            return (
-              <polygon
-                key={i}
-                points="0,-5 1.5,-1.5 5,0 1.5,1.5 0,5 -1.5,1.5 -5,0 -1.5,-1.5"
-                transform={`translate(${cx}, ${cy})`}
-                fill="#ffd447"
-              />
-            );
+            return <polygon key={i} points="0,-5 1.5,-1.5 5,0 1.5,1.5 0,5 -1.5,1.5 -5,0 -1.5,-1.5" transform={`translate(${cx}, ${cy})`} fill="#ffd447" />;
           })}
         </svg>
       </div>
