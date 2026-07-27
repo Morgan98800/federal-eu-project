@@ -32,6 +32,7 @@ const GEO = {
 
 const FOUNDING = new Set(["FRA","DEU","ITA","NLD","BEL","LUX"]);
 
+// Micro-states: Correct location for Malta and Cyprus in real geographic coordinates
 const MICRO = {
   MLT:{name:"Malta", lon:14.42, lat:35.9, pop:"0.53M", cap:"Valletta"},
   CYP:{name:"Cyprus", lon:33.2, lat:35.1, pop:"0.92M", cap:"Nicosia"}
@@ -53,10 +54,13 @@ const CAPITALS = {
   EST:{c:"Tallinn",pop:"1.4M"}
 };
 
-const LON0 = 12, LAT0 = 52, SCALE = 1.75;
+// STANDARD MAP PROJECTION:
+// West -> -X (Left), East -> +X (Right)
+// North -> -Z (Top/Up), South -> +Z (Bottom/Down)
+const LON0 = 12, LAT0 = 50, SCALE = 1.75;
 
 function proj(lon, lat){
-  const x = -(lon - LON0) * SCALE;
+  const x = (lon - LON0) * SCALE;
   const rad = lat * Math.PI/180, rad0 = LAT0 * Math.PI/180;
   const my = Math.log(Math.tan(Math.PI/4 + rad/2));
   const my0 = Math.log(Math.tan(Math.PI/4 + rad0/2));
@@ -95,14 +99,11 @@ function makeStar5(outer, inner){
 const ThreeDMap = () => {
   const mountRef = useRef(null);
   const tooltipRef = useRef(null);
-  const [autoRotate, setAutoRotate] = useState(false);
-  const [flagVisible, setFlagVisible] = useState(false);
+  const [flagVisible, setFlagVisible] = useState(true);
 
   const refs = useRef({
-    auto: false,
-    flagOn: false,
+    flagOn: true,
     flagGroup: null,
-    orbit: { theta: 0, phi: 0.62, radius: 115, target: new THREE.Vector3(proj(4.35, 50.85).x, 2, proj(4.35, 50.85).z + 6) },
     camera: null,
     renderer: null,
     scene: null
@@ -113,16 +114,20 @@ const ThreeDMap = () => {
     if (!container) return;
 
     const width = container.clientWidth;
-    const height = container.clientHeight || 550;
+    const height = container.clientHeight || 580;
 
     // Scene setup
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x071845);
-    scene.fog = new THREE.Fog(0x071845, 90, 240);
+    scene.fog = new THREE.Fog(0x071845, 100, 260);
     refs.current.scene = scene;
 
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 800);
+    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 800);
     refs.current.camera = camera;
+
+    // FIXED MAP VIEW: Standard geographic perspective looking down at Europe (North up)
+    camera.position.set(0, 115, 60);
+    camera.lookAt(0, 0, -10);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
@@ -134,10 +139,10 @@ const ThreeDMap = () => {
     container.appendChild(renderer.domElement);
 
     // Lights
-    scene.add(new THREE.AmbientLight(0x8899cc, 0.7));
+    scene.add(new THREE.AmbientLight(0x99aacc, 0.75));
 
     const sun = new THREE.DirectionalLight(0xffe9b8, 1.6);
-    sun.position.set(-60, 110, 50);
+    sun.position.set(-60, 120, 50);
     sun.castShadow = true;
     sun.shadow.mapSize.set(2048, 2048);
     sun.shadow.camera.near = 10; sun.shadow.camera.far = 360;
@@ -147,7 +152,7 @@ const ThreeDMap = () => {
     scene.add(sun);
 
     const rim = new THREE.DirectionalLight(0xffd447, 0.4);
-    rim.position.set(50, 30, -60);
+    rim.position.set(50, 40, -60);
     scene.add(rim);
 
     // Sea
@@ -162,7 +167,7 @@ const ThreeDMap = () => {
     grid.position.y = -0.45; grid.material.opacity = 0.35; grid.material.transparent = true;
     scene.add(grid);
 
-    // Pickables for Raycasting
+    // Pickables for Raycasting (Hover state inspection)
     const pickables = [];
     const stateGroup = new THREE.Group();
     scene.add(stateGroup);
@@ -206,7 +211,7 @@ const ThreeDMap = () => {
       stateGroup.add(group);
     });
 
-    // Build Micro-states (Malta, Cyprus)
+    // Build Micro-states (Malta, Cyprus correctly located)
     Object.entries(MICRO).forEach(([iso, m]) => {
       const p = proj(m.lon, m.lat);
       const g = new THREE.Group();
@@ -280,7 +285,7 @@ const ThreeDMap = () => {
     beam.position.set(bx.x, 25, bx.z);
     scene.add(beam);
 
-    // EU Flag Stars
+    // EU Flag 12-Star Emblem
     const flagGroup = new THREE.Group();
     const FR = 26;
     for (let i=0; i<12; i++) {
@@ -290,23 +295,11 @@ const ThreeDMap = () => {
       flagGroup.add(star);
     }
     flagGroup.position.set(bx.x, 0, bx.z);
-    flagGroup.visible = false;
+    flagGroup.visible = true;
     scene.add(flagGroup);
     refs.current.flagGroup = flagGroup;
 
-    // Apply Camera
-    const applyCamera = () => {
-      const orb = refs.current.orbit;
-      const r = orb.radius;
-      camera.position.x = orb.target.x + r * Math.sin(orb.phi) * Math.sin(orb.theta);
-      camera.position.y = orb.target.y + r * Math.cos(orb.phi);
-      camera.position.z = orb.target.z + r * Math.sin(orb.phi) * Math.cos(orb.theta);
-      camera.lookAt(orb.target);
-    };
-    applyCamera();
-
-    // Event Listeners for Interaction
-    let dragging = false, lastX = 0, lastY = 0;
+    // Hover Raycasting
     const ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
     let hovered = null;
 
@@ -317,10 +310,6 @@ const ThreeDMap = () => {
       }
     };
 
-    const onPointerDown = (e) => {
-      dragging = true; lastX = e.clientX; lastY = e.clientY;
-    };
-    const onPointerUp = () => { dragging = false; };
     const onPointerMove = (e) => {
       const rect = renderer.domElement.getBoundingClientRect();
       mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
@@ -348,34 +337,17 @@ const ThreeDMap = () => {
       } else {
         if (hovered) { setEmissive(hovered, 0x071845, 0.15); hovered = null; }
         if (tooltipRef.current) tooltipRef.current.style.opacity = '0';
-        container.style.cursor = dragging ? 'grabbing' : 'grab';
+        container.style.cursor = 'default';
       }
-
-      if (!dragging) return;
-      const dx = e.clientX - lastX, dy = e.clientY - lastY;
-      lastX = e.clientX; lastY = e.clientY;
-
-      refs.current.orbit.theta -= dx * 0.005;
-      refs.current.orbit.phi = Math.max(0.12, Math.min(1.4, refs.current.orbit.phi - dy * 0.005));
-      applyCamera();
-    };
-
-    const onWheel = (e) => {
-      e.preventDefault();
-      refs.current.orbit.radius = Math.max(45, Math.min(220, refs.current.orbit.radius + e.deltaY * 0.06));
-      applyCamera();
     };
 
     const domEl = renderer.domElement;
-    domEl.addEventListener('pointerdown', onPointerDown);
-    window.addEventListener('pointerup', onPointerUp);
     domEl.addEventListener('pointermove', onPointerMove);
-    domEl.addEventListener('wheel', onWheel, { passive: false });
 
     const handleResize = () => {
       if (!container) return;
       const w = container.clientWidth;
-      const h = container.clientHeight || 550;
+      const h = container.clientHeight || 580;
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
@@ -388,11 +360,6 @@ const ThreeDMap = () => {
     const animate = () => {
       animId = requestAnimationFrame(animate);
       const t = clock.getElapsedTime();
-
-      if (refs.current.auto && !dragging) {
-        refs.current.orbit.theta += 0.0022;
-        applyCamera();
-      }
 
       ringStars.rotation.y = t * 0.4;
       ringStars.children.forEach((s, i) => s.rotation.y = t * 1.5 + i);
@@ -410,21 +377,12 @@ const ThreeDMap = () => {
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('pointerup', onPointerUp);
-      domEl.removeEventListener('pointerdown', onPointerDown);
       domEl.removeEventListener('pointermove', onPointerMove);
-      domEl.removeEventListener('wheel', onWheel);
       if (container.contains(domEl)) {
         container.removeChild(domEl);
       }
     };
   }, []);
-
-  const handleToggleAuto = () => {
-    const next = !autoRotate;
-    setAutoRotate(next);
-    refs.current.auto = next;
-  };
 
   const handleToggleFlag = () => {
     const next = !flagVisible;
@@ -432,22 +390,6 @@ const ThreeDMap = () => {
     refs.current.flagOn = next;
     if (refs.current.flagGroup) {
       refs.current.flagGroup.visible = next;
-    }
-  };
-
-  const handleReset = () => {
-    const bx = proj(4.35, 50.85);
-    refs.current.orbit.theta = 0;
-    refs.current.orbit.phi = 0.62;
-    refs.current.orbit.radius = 115;
-    refs.current.orbit.target.set(bx.x, 2, bx.z + 6);
-    if (refs.current.camera) {
-      const orb = refs.current.orbit;
-      const r = orb.radius;
-      refs.current.camera.position.x = orb.target.x + r * Math.sin(orb.phi) * Math.sin(orb.theta);
-      refs.current.camera.position.y = orb.target.y + r * Math.cos(orb.phi);
-      refs.current.camera.position.z = orb.target.z + r * Math.sin(orb.phi) * Math.cos(orb.theta);
-      refs.current.camera.lookAt(orb.target);
     }
   };
 
@@ -463,92 +405,47 @@ const ThreeDMap = () => {
           background: 'var(--paper)', color: 'var(--text-primary)',
           padding: '10px 14px', borderRadius: '4px',
           fontFamily: 'var(--font-body)', fontSize: '13px', opacity: 0, transition: 'opacity 0.12s',
-          boxShadow: '0 8px 28px rgba(0,0,0,0.4)', borderTop: '3px solid var(--accent-gold, #ffd447)', maxWidth: '240px'
+          boxShadow: '0 8px 28px rgba(0,0,0,0.4)', borderTop: '3px solid #ffd447', maxWidth: '240px'
         }}
       />
 
-      {/* Overlay: Masthead / Title */}
+      {/* Top Left Title Overlay */}
       <div style={{
-        position: 'absolute', top: 0, left: 0, right: 0,
-        padding: '24px 28px 40px', pointerEvents: 'none',
-        background: 'linear-gradient(180deg, rgba(7,24,69,0.92) 0%, rgba(7,24,69,0) 100%)'
+        position: 'absolute', top: 0, left: 0, padding: '24px 28px', pointerEvents: 'none',
+        background: 'linear-gradient(180deg, rgba(7,24,69,0.9) 0%, rgba(7,24,69,0) 100%)'
       }}>
-        <div style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.25em', textTransform: 'uppercase', fontSize: '11px', color: '#ffd447', fontWeight: 700, marginBottom: '6px' }}>
-          3D SPECULATIVE CARTOGRAPHY
+        <div style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.2em', textTransform: 'uppercase', fontSize: '11px', color: '#ffd447', fontWeight: 700, marginBottom: '4px' }}>
+          Cartography
         </div>
-        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px, 3.5vw, 36px)', color: 'var(--paper)', fontWeight: 600, lineHeight: 1.1, margin: 0 }}>
+        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--paper)', fontWeight: 600, margin: 0 }}>
           The United States of <em style={{ fontStyle: 'italic', color: '#ffd447' }}>Europe</em>
         </h3>
-        <p style={{ marginTop: '8px', maxWidth: '480px', fontSize: '13px', lineHeight: 1.4, color: 'rgba(244,241,232,0.85)', fontFamily: 'var(--font-body)' }}>
-          One federation, twenty-six states, real borders. Shared capital in Brussels, single citizenship, common defense. Drag to explore.
-        </p>
       </div>
 
-      {/* Overlay: Legend */}
-      <div style={{
-        position: 'absolute', bottom: '20px', left: '20px', pointerEvents: 'none',
-        fontFamily: 'var(--font-mono)', fontSize: '11px', lineHeight: 1.8, color: 'rgba(244,241,232,0.9)',
-        background: 'rgba(7,24,69,0.75)', border: '1px solid rgba(255,212,71,0.3)',
-        padding: '12px 16px', borderRadius: '4px', backdropFilter: 'blur(6px)'
-      }}>
-        <b style={{ color: '#ffd447', letterSpacing: '0.12em', textTransform: 'uppercase', fontSize: '10px', display: 'block', marginBottom: '6px' }}>
-          THE FEDERATION
-        </b>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ width: '12px', height: '12px', borderRadius: '2px', background: '#ffd447' }} /> Federal District (Brussels)
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ width: '12px', height: '12px', borderRadius: '2px', background: '#2f57c9' }} /> Founding member states
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ width: '12px', height: '12px', borderRadius: '2px', background: '#6d8fe8' }} /> Accession member states
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ffd447' }} /> Island beacons (Malta, Cyprus)
-        </div>
-      </div>
-
-      {/* Overlay: Controls */}
-      <div style={{ position: 'absolute', bottom: '20px', right: '20px', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end', zIndex: 10 }}>
-        <button
-          onClick={handleToggleAuto}
-          style={{
-            fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase',
-            background: autoRotate ? '#ffd447' : 'rgba(255,212,71,0.12)', border: '1px solid #ffd447',
-            color: autoRotate ? '#071845' : '#ffd447', padding: '8px 14px', borderRadius: '3px', cursor: 'pointer', transition: 'all 0.2s ease'
-          }}
-        >
-          Auto-orbit: {autoRotate ? 'On' : 'Off'}
-        </button>
+      {/* Top Right Flag Logo Badge */}
+      <div style={{ position: 'absolute', top: '20px', right: '20px', zIndex: 10 }}>
         <button
           onClick={handleToggleFlag}
+          title="Toggle 12-Star Flag Crown"
           style={{
             fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase',
-            background: flagVisible ? '#ffd447' : 'rgba(255,212,71,0.12)', border: '1px solid #ffd447',
-            color: flagVisible ? '#071845' : '#ffd447', padding: '8px 14px', borderRadius: '3px', cursor: 'pointer', transition: 'all 0.2s ease'
+            background: flagVisible ? '#ffd447' : 'rgba(7,24,69,0.8)', border: '1px solid #ffd447',
+            color: flagVisible ? '#071845' : '#ffd447', padding: '8px 14px', borderRadius: '20px', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 4px 14px rgba(0,0,0,0.3)', transition: 'all 0.2s ease'
           }}
         >
-          Fly the Flag
-        </button>
-        <button
-          onClick={handleReset}
-          style={{
-            fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase',
-            background: 'rgba(255,212,71,0.12)', border: '1px solid #ffd447', color: '#ffd447',
-            padding: '8px 14px', borderRadius: '3px', cursor: 'pointer', transition: 'all 0.2s ease'
-          }}
-        >
-          Reset View
+          <span style={{ fontSize: '14px', lineHeight: 1 }}>★</span>
+          <span>{flagVisible ? 'EU Emblem Active' : 'Show EU Emblem'}</span>
         </button>
       </div>
 
-      {/* Hint */}
+      {/* Subtle Hint */}
       <div style={{
-        position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)',
+        position: 'absolute', bottom: '16px', left: '50%', transform: 'translateX(-50%)',
         fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase',
-        color: 'rgba(244,241,232,0.5)', pointerEvents: 'none'
+        color: 'rgba(244,241,232,0.45)', pointerEvents: 'none'
       }}>
-        Drag to rotate &middot; Scroll to zoom &middot; Hover a state
+        Hover a state to inspect capital &amp; population
       </div>
     </div>
   );
