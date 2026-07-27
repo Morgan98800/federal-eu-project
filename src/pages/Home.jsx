@@ -35,17 +35,17 @@ const Home = () => {
       </section>
 
       <section className="section" aria-labelledby="index-heading">
-        <div class="container">
-          <span class="section-label">The Union Today</span>
-          <h2 class="js-reveal" id="index-heading" style={{ fontSize: 'var(--text-2xl)', marginBottom: 'var(--space-6)' }}>
+        <div className="container">
+          <span className="section-label">The Union Today</span>
+          <h2 className="js-reveal" id="index-heading" style={{ fontSize: 'var(--text-2xl)', marginBottom: 'var(--space-6)' }}>
             European Integration Index, 2006–2023
           </h2>
-          <figure class="chart-figure js-reveal" aria-label="Line chart showing the composite European Integration Index">
+          <figure className="chart-figure js-reveal" aria-label="Line chart showing the composite European Integration Index">
             <div className="integration-index-wrapper" id="home-index-wrapper" ref={chartRef} style={{ minHeight: '180px' }}>
             </div>
             <figcaption>
               Composite index of public support, defence pooling, fiscal capacity, and competence.
-              See the <Link to="/data-room">Data Room</Link> for the full interactive model.
+              See the <Link to="/data-room">Data Room</Link> for the full interactive model and <Link to="/sources">Sources &amp; Methodology</Link> for the complete weighting formula.
             </figcaption>
           </figure>
         </div>
