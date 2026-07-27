@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import ThreeDMap from '../components/ThreeDMap';
 
 const DataRoom = () => {
   useEffect(() => {
@@ -92,11 +93,7 @@ const DataRoom = () => {
         </p>
 
         <figure className="chart-figure js-reveal" aria-labelledby="map-fig-caption">
-          <div id="toggle-map-container" style={{ minHeight: '420px' }}>
-            <noscript>
-              <p style={{ padding: '2rem', color: 'var(--text-secondary)' }}>An interactive map of Europe is displayed here. JavaScript is required.</p>
-            </noscript>
-          </div>
+          <ThreeDMap />
           <figcaption id="map-fig-caption" style={{ marginTop: 'var(--space-4)' }}>
             <button className="csv-download-btn" id="dl-csv-map" style={{ display: 'inline-block', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', background: 'none', border: 'var(--border-hairline)', padding: 'var(--space-1) var(--space-2)', borderRadius: 'var(--radius-sm)', cursor: 'pointer', marginBottom: 'var(--space-3)' }}>Download data (CSV)</button>
             <br />

@@ -1,0 +1,557 @@
+import React, { useEffect, useRef, useState } from 'react';
+import * as THREE from 'three';
+
+// Real GeoJSON Border Data (Low-res, Natural Earth)
+const GEO = {
+  FRA:{name:"France",coords:[[[9.560016,42.152492],[9.229752,41.380007],[8.775723,41.583612],[8.544213,42.256517],[8.746009,42.628122],[9.390001,43.009985],[9.560016,42.152492]],[[3.588184,50.378992],[4.286023,49.907497],[4.799222,49.985373],[5.674052,49.529484],[5.897759,49.442667],[6.18632,49.463803],[6.65823,49.201958],[8.099279,49.017784],[7.593676,48.333019],[7.466759,47.620582],[7.192202,47.449766],[6.736571,47.541801],[6.768714,47.287708],[6.037389,46.725779],[6.022609,46.27299],[6.5001,46.429673],[6.843593,45.991147],[6.802355,45.70858],[7.096652,45.333099],[6.749955,45.028518],[7.007562,44.254767],[7.549596,44.127901],[7.435185,43.693845],[6.529245,43.128892],[4.556963,43.399651],[3.100411,43.075201],[2.985999,42.473015],[1.826793,42.343385],[0.701591,42.795734],[0.338047,42.579546],[-1.502771,43.034014],[-1.901351,43.422802],[-1.384225,44.02261],[-1.193798,46.014918],[-2.225724,47.064363],[-2.963276,47.570327],[-4.491555,47.954954],[-4.59235,48.68416],[-3.295814,48.901692],[-1.616511,48.644421],[-1.933494,49.776342],[-0.989469,49.347376],[1.338761,50.127173],[1.639001,50.946606],[2.513573,51.148506],[2.658422,50.796848],[3.123252,50.780363],[3.588184,50.378992]]]},
+  DEU:{name:"Germany",coords:[[[9.921906,54.983104],[9.93958,54.596642],[10.950112,54.363607],[10.939467,54.008693],[11.956252,54.196486],[12.51844,54.470371],[13.647467,54.075511],[14.119686,53.757029],[14.353315,53.248171],[14.074521,52.981263],[14.4376,52.62485],[14.685026,52.089947],[14.607098,51.745188],[15.016996,51.106674],[14.570718,51.002339],[14.307013,51.117268],[14.056228,50.926918],[13.338132,50.733234],[12.966837,50.484076],[12.240111,50.266338],[12.415191,49.969121],[12.521024,49.547415],[13.031329,49.307068],[13.595946,48.877172],[13.243357,48.416115],[12.884103,48.289146],[13.025851,47.637584],[12.932627,47.467646],[12.62076,47.672388],[12.141357,47.703083],[11.426414,47.523766],[10.544504,47.566399],[10.402084,47.302488],[9.896068,47.580197],[9.594226,47.525058],[8.522612,47.830828],[8.317301,47.61358],[7.466759,47.620582],[7.593676,48.333019],[8.099279,49.017784],[6.65823,49.201958],[6.18632,49.463803],[6.242751,49.902226],[6.043073,50.128052],[6.156658,50.803721],[5.988658,51.851616],[6.589397,51.852029],[6.84287,52.22844],[7.092053,53.144043],[6.90514,53.482162],[7.100425,53.693932],[7.936239,53.748296],[8.121706,53.527792],[8.800734,54.020786],[8.572118,54.395646],[8.526229,54.962744],[9.282049,54.830865],[9.921906,54.983104]]]},
+  ITA:{name:"Italy",coords:[[[15.520376,38.231155],[15.160243,37.444046],[15.309898,37.134219],[15.099988,36.619987],[14.335229,36.996631],[13.826733,37.104531],[12.431004,37.61295],[12.570944,38.126381],[13.741156,38.034966],[14.761249,38.143874],[15.520376,38.231155]],[[9.210012,41.209991],[9.809975,40.500009],[9.669519,39.177376],[9.214818,39.240473],[8.806936,38.906618],[8.428302,39.171847],[8.388253,40.378311],[8.159998,40.950007],[8.709991,40.899984],[9.210012,41.209991]],[[12.376485,46.767559],[13.806475,46.509306],[13.69811,46.016778],[13.93763,45.591016],[13.141606,45.736692],[12.328581,45.381778],[12.383875,44.885374],[12.261453,44.600482],[12.589237,44.091366],[13.526906,43.587727],[14.029821,42.761008],[15.14257,41.95514],[15.926191,41.961315],[16.169897,41.740295],[15.889346,41.541082],[16.785002,41.179606],[17.519169,40.877143],[18.376687,40.355625],[18.480247,40.168866],[18.293385,39.810774],[17.73838,40.277671],[16.869596,40.442235],[16.448743,39.795401],[17.17149,39.4247],[17.052841,38.902871],[16.635088,38.843572],[16.100961,37.985899],[15.684087,37.908849],[15.687963,38.214593],[15.891981,38.750942],[16.109332,38.964547],[15.718814,39.544072],[15.413613,40.048357],[14.998496,40.172949],[14.703268,40.60455],[14.060672,40.786348],[13.627985,41.188287],[12.888082,41.25309],[12.106683,41.704535],[11.191906,42.355425],[10.511948,42.931463],[10.200029,43.920007],[9.702488,44.036279],[8.888946,44.366336],[8.428561,44.231228],[7.850767,43.767148],[7.435185,43.693845],[7.549596,44.127901],[7.007562,44.254767],[6.749955,45.028518],[7.096652,45.333099],[6.802355,45.70858],[6.843593,45.991147],[7.273851,45.776948],[7.755992,45.82449],[8.31663,46.163642],[8.489952,46.005151],[8.966306,46.036932],[9.182882,46.440215],[9.922837,46.314899],[10.363378,46.483571],[10.442701,46.893546],[11.048556,46.751359],[11.164828,46.941579],[12.153088,47.115393],[12.376485,46.767559]]]},
+  ESP:{name:"Spain",coords:[[[-9.034818,41.880571],[-8.984433,42.592775],[-9.392884,43.026625],[-7.97819,43.748338],[-6.754492,43.567909],[-5.411886,43.57424],[-4.347843,43.403449],[-3.517532,43.455901],[-1.901351,43.422802],[-1.502771,43.034014],[0.338047,42.579546],[0.701591,42.795734],[1.826793,42.343385],[2.985999,42.473015],[3.039484,41.89212],[2.091842,41.226089],[0.810525,41.014732],[0.721331,40.678318],[0.106692,40.123934],[-0.278711,39.309978],[0.111291,38.738514],[-0.467124,38.292366],[-0.683389,37.642354],[-1.438382,37.443064],[-2.146453,36.674144],[-3.415781,36.6589],[-4.368901,36.677839],[-4.995219,36.324708],[-5.37716,35.94685],[-5.866432,36.029817],[-6.236694,36.367677],[-6.520191,36.942913],[-7.453726,37.097788],[-7.537105,37.428904],[-7.166508,37.803894],[-7.029281,38.075764],[-7.374092,38.373059],[-7.098037,39.030073],[-7.498632,39.629571],[-7.066592,39.711892],[-7.026413,40.184524],[-6.86402,40.330872],[-6.851127,41.111083],[-6.389088,41.381815],[-6.668606,41.883387],[-7.251309,41.918346],[-7.422513,41.792075],[-8.013175,41.790886],[-8.263857,42.280469],[-8.671946,42.134689],[-9.034818,41.880571]]]},
+  PRT:{name:"Portugal",coords:[[[-9.034818,41.880571],[-8.671946,42.134689],[-8.263857,42.280469],[-8.013175,41.790886],[-7.422513,41.792075],[-7.251309,41.918346],[-6.668606,41.883387],[-6.389088,41.381815],[-6.851127,41.111083],[-6.86402,40.330872],[-7.026413,40.184524],[-7.066592,39.711892],[-7.498632,39.629571],[-7.098037,39.030073],[-7.374092,38.373059],[-7.029281,38.075764],[-7.166508,37.803894],[-7.537105,37.428904],[-7.453726,37.097788],[-7.855613,36.838269],[-8.382816,36.97888],[-8.898857,36.868809],[-8.746101,37.651346],[-8.839998,38.266243],[-9.287464,38.358486],[-9.526571,38.737429],[-9.446989,39.392066],[-9.048305,39.755093],[-8.977353,40.159306],[-8.768684,40.760639],[-8.790853,41.184334],[-8.990789,41.543459],[-9.034818,41.880571]]]},
+  NLD:{name:"Netherlands",coords:[[[6.074183,53.510403],[6.90514,53.482162],[7.092053,53.144043],[6.84287,52.22844],[6.589397,51.852029],[5.988658,51.851616],[6.156658,50.803721],[5.606976,51.037298],[4.973991,51.475024],[4.047071,51.267259],[3.314971,51.345755],[3.830289,51.620545],[4.705997,53.091798],[6.074183,53.510403]]]},
+  BEL:{name:"Belgium",coords:[[[3.314971,51.345781],[4.047071,51.267259],[4.973991,51.475024],[5.606976,51.037298],[6.156658,50.803721],[6.043073,50.128052],[5.782417,50.090328],[5.674052,49.529484],[4.799222,49.985373],[4.286023,49.907497],[3.588184,50.378992],[3.123252,50.780363],[2.658422,50.796848],[2.513573,51.148506],[3.314971,51.345781]]]},
+  LUX:{name:"Luxembourg",coords:[[[6.043073,50.128052],[6.242751,49.902226],[6.18632,49.463803],[5.897759,49.442667],[5.674052,49.529484],[5.782417,50.090328],[6.043073,50.128052]]]},
+  POL:{name:"Poland",coords:[[[15.016996,51.106674],[14.607098,51.745188],[14.685026,52.089947],[14.4376,52.62485],[14.074521,52.981263],[14.353315,53.248171],[14.119686,53.757029],[14.8029,54.050706],[16.363477,54.513159],[17.622832,54.851536],[18.620859,54.682606],[18.696255,54.438719],[19.66064,54.426084],[20.892245,54.312525],[22.731099,54.327537],[23.243987,54.220567],[23.484128,53.912498],[23.527536,53.470122],[23.804935,53.089731],[23.799199,52.691099],[23.199494,52.486977],[23.508002,52.023647],[23.527071,51.578454],[24.029986,50.705407],[23.922757,50.424881],[23.426508,50.308506],[22.51845,49.476774],[22.776419,49.027395],[22.558138,49.085738],[21.607808,49.470107],[20.887955,49.328772],[20.415839,49.431453],[19.825023,49.217125],[19.320713,49.571574],[18.909575,49.435846],[18.853144,49.49623],[18.392914,49.988629],[17.649445,50.049038],[17.554567,50.362146],[16.868769,50.473974],[16.719476,50.215747],[16.176253,50.422607],[16.238627,50.697733],[15.490972,50.78473],[15.016996,51.106674]]]},
+  AUT:{name:"Austria",coords:[[[16.979667,48.123497],[16.903754,47.714866],[16.340584,47.712902],[16.534268,47.496171],[16.202298,46.852386],[16.011664,46.683611],[15.137092,46.658703],[14.632472,46.431817],[13.806475,46.509306],[12.376485,46.767559],[12.153088,47.115393],[11.164828,46.941579],[11.048556,46.751359],[10.442701,46.893546],[9.932448,46.920728],[9.47997,47.10281],[9.632932,47.347601],[9.594226,47.525058],[9.896068,47.580197],[10.402084,47.302488],[10.544504,47.566399],[11.426414,47.523766],[12.141357,47.703083],[12.62076,47.672388],[12.932627,47.467646],[13.025851,47.637584],[12.884103,48.289146],[13.243357,48.416115],[13.595946,48.877172],[14.338898,48.555305],[14.901447,48.964402],[15.253416,49.039074],[16.029647,48.733899],[16.499283,48.785808],[16.960288,48.596982],[16.879983,48.470013],[16.979667,48.123497]]]},
+  CZE:{name:"Czechia",coords:[[[16.960288,48.596982],[16.499283,48.785808],[16.029647,48.733899],[15.253416,49.039074],[14.901447,48.964402],[14.338898,48.555305],[13.595946,48.877172],[13.031329,49.307068],[12.521024,49.547415],[12.415191,49.969121],[12.240111,50.266338],[12.966837,50.484076],[13.338132,50.733234],[14.056228,50.926918],[14.307013,51.117268],[14.570718,51.002339],[15.016996,51.106674],[15.490972,50.78473],[16.238627,50.697733],[16.176253,50.422607],[16.719476,50.215747],[16.868769,50.473974],[17.554567,50.362146],[17.649445,50.049038],[18.392914,49.988629],[18.853144,49.49623],[18.554971,49.495015],[18.399994,49.315001],[18.170498,49.271515],[18.104973,49.043983],[17.913512,48.996493],[17.886485,48.903475],[17.545007,48.800019],[17.101985,48.816969],[16.960288,48.596982]]]},
+  SVK:{name:"Slovakia",coords:[[[18.853144,49.49623],[18.909575,49.435846],[19.320713,49.571574],[19.825023,49.217125],[20.415839,49.431453],[20.887955,49.328772],[21.607808,49.470107],[22.558138,49.085738],[22.280842,48.825392],[22.085608,48.422264],[21.872236,48.319971],[20.801294,48.623854],[20.473562,48.56285],[20.239054,48.327567],[19.769471,48.202691],[19.661364,48.266615],[19.174365,48.111379],[18.777025,48.081768],[18.696513,47.880954],[17.857133,47.758429],[17.488473,47.867466],[16.979667,48.123497],[16.879983,48.470013],[16.960288,48.596982],[17.101985,48.816969],[17.545007,48.800019],[17.886485,48.903475],[17.913512,48.996493],[18.104973,49.043983],[18.170498,49.271515],[18.399994,49.315001],[18.554971,49.495015],[18.853144,49.49623]]]},
+  HUN:{name:"Hungary",coords:[[[16.202298,46.852386],[16.534268,47.496171],[16.340584,47.712902],[16.903754,47.714866],[16.979667,48.123497],[17.488473,47.867466],[17.857133,47.758429],[18.696513,47.880954],[18.777025,48.081768],[19.174365,48.111379],[19.661364,48.266615],[19.769471,48.202691],[20.239054,48.327567],[20.473562,48.56285],[20.801294,48.623854],[21.872236,48.319971],[22.085608,48.422264],[22.64082,48.15024],[22.710531,47.882194],[22.099768,47.672439],[21.626515,46.994238],[21.021952,46.316088],[20.220192,46.127469],[19.596045,46.17173],[18.829838,45.908878],[18.456062,45.759481],[17.630066,45.951769],[16.882515,46.380632],[16.564808,46.503751],[16.370505,46.841327],[16.202298,46.852386]]]},
+  ROU:{name:"Romania",coords:[[[22.710531,47.882194],[23.142236,48.096341],[23.760958,47.985598],[24.402056,47.981878],[24.866317,47.737526],[25.207743,47.891056],[25.945941,47.987149],[26.19745,48.220881],[26.619337,48.220726],[26.924176,48.123264],[27.233873,47.826771],[27.551166,47.405117],[28.12803,46.810476],[28.160018,46.371563],[28.054443,45.944586],[28.233554,45.488283],[28.679779,45.304031],[29.149725,45.464925],[29.603289,45.293308],[29.626543,45.035391],[29.141612,44.82021],[28.837858,44.913874],[28.558081,43.707462],[27.970107,43.812468],[27.2424,44.175986],[26.065159,43.943494],[25.569272,43.688445],[24.100679,43.741051],[23.332302,43.897011],[22.944832,43.823785],[22.65715,44.234923],[22.474008,44.409228],[22.705726,44.578003],[22.459022,44.702517],[22.145088,44.478422],[21.562023,44.768947],[21.483526,45.18117],[20.874313,45.416375],[20.762175,45.734573],[20.220192,46.127469],[21.021952,46.316088],[21.626515,46.994238],[22.099768,47.672439],[22.710531,47.882194]]]},
+  BGR:{name:"Bulgaria",coords:[[[22.65715,44.234923],[22.944832,43.823785],[23.332302,43.897011],[24.100679,43.741051],[25.569272,43.688445],[26.065159,43.943494],[27.2424,44.175986],[27.970107,43.812468],[28.558081,43.707462],[28.039095,43.293172],[27.673898,42.577892],[27.99672,42.007359],[27.135739,42.141485],[26.117042,41.826905],[26.106138,41.328899],[25.197201,41.234486],[24.492645,41.583896],[23.692074,41.309081],[22.952377,41.337994],[22.881374,41.999297],[22.380526,42.32026],[22.545012,42.461362],[22.436595,42.580321],[22.604801,42.898519],[22.986019,43.211161],[22.500157,43.642814],[22.410446,44.008063],[22.65715,44.234923]]]},
+  HRV:{name:"Croatia",coords:[[[18.829838,45.908878],[19.072769,45.521511],[19.390476,45.236516],[19.005486,44.860234],[18.553214,45.08159],[17.861783,45.06774],[17.002146,45.233777],[16.534939,45.211608],[16.318157,45.004127],[15.959367,45.233777],[15.750026,44.818712],[16.23966,44.351143],[16.456443,44.04124],[16.916156,43.667722],[17.297373,43.446341],[17.674922,43.028563],[18.56,42.65],[18.450016,42.479991],[17.50997,42.849995],[16.930006,43.209998],[16.015385,43.507215],[15.174454,44.243191],[15.37625,44.317915],[14.920309,44.738484],[14.901602,45.07606],[14.258748,45.233777],[13.952255,44.802124],[13.656976,45.136935],[13.679403,45.484149],[13.71506,45.500324],[14.411968,45.466166],[14.595109,45.634941],[14.935244,45.471695],[15.327675,45.452316],[15.323954,45.731783],[15.67153,45.834154],[15.768733,46.238108],[16.564808,46.503751],[16.882515,46.380632],[17.630066,45.951769],[18.456062,45.759481],[18.829838,45.908878]]]},
+  SVN:{name:"Slovenia",coords:[[[13.806475,46.509306],[14.632472,46.431817],[15.137092,46.658703],[16.011664,46.683611],[16.202298,46.852386],[16.370505,46.841327],[16.564808,46.503751],[15.768733,46.238108],[15.67153,45.834154],[15.323954,45.731783],[15.327675,45.452316],[14.935244,45.471695],[14.595109,45.634941],[14.411968,45.466166],[13.71506,45.500324],[13.93763,45.591016],[13.69811,46.016778],[13.806475,46.509306]]]},
+  DNK:{name:"Denmark",coords:[[[12.690006,55.609991],[12.089991,54.800015],[11.043543,55.364864],[10.903914,55.779955],[12.370904,56.111407],[12.690006,55.609991]],[[10.912182,56.458621],[10.667804,56.081383],[10.369993,56.190007],[9.649985,55.469999],[9.921906,54.983104],[9.282049,54.830865],[8.526229,54.962744],[8.120311,55.517723],[8.089977,56.540012],[8.256582,56.809969],[8.543438,57.110003],[9.424469,57.172066],[9.775559,57.447941],[10.580006,57.730017],[10.546106,57.215733],[10.25,56.890016],[10.369993,56.609982],[10.912182,56.458621]]]},
+  SWE:{name:"Sweden",coords:[[[22.183173,65.723741],[21.213517,65.026005],[21.369631,64.413588],[19.778876,63.609554],[17.847779,62.7494],[17.119555,61.341166],[17.831346,60.636583],[18.787722,60.081914],[17.869225,58.953766],[16.829185,58.719827],[16.44771,57.041118],[15.879786,56.104302],[14.666681,56.200885],[14.100721,55.407781],[12.942911,55.361737],[12.625101,56.30708],[11.787942,57.441817],[11.027369,58.856149],[11.468272,59.432393],[12.300366,60.117933],[12.631147,61.293572],[11.992064,61.800362],[11.930569,63.128318],[12.579935,64.066219],[13.571916,64.049114],[13.919905,64.445421],[13.55569,64.787028],[15.108411,66.193867],[16.108712,67.302456],[16.768879,68.013937],[17.729182,68.010552],[17.993868,68.567391],[19.87856,68.407194],[20.025269,69.065139],[20.645593,69.106247],[21.978535,68.616846],[23.539473,67.936009],[23.56588,66.396051],[23.903379,66.006927],[22.183173,65.723741]]]},
+  FIN:{name:"Finland",coords:[[[28.59193,69.064777],[28.445944,68.364613],[29.977426,67.698297],[29.054589,66.944286],[30.21765,65.80598],[29.54443,64.948672],[30.444685,64.204453],[30.035872,63.552814],[31.516092,62.867687],[31.139991,62.357693],[30.211107,61.780028],[28.069998,60.503517],[26.255173,60.423961],[24.496624,60.057316],[22.869695,59.846373],[22.290764,60.391921],[21.322244,60.72017],[21.544866,61.705329],[21.059211,62.607393],[21.536029,63.189735],[22.442744,63.81781],[24.730512,64.902344],[25.398068,65.111427],[25.294043,65.534346],[23.903379,66.006927],[23.56588,66.396051],[23.539473,67.936009],[21.978535,68.616846],[20.645593,69.106247],[21.244936,69.370443],[22.356238,68.841741],[23.66205,68.891247],[24.735679,68.649557],[25.689213,69.092114],[26.179622,69.825299],[27.732292,70.164193],[29.015573,69.766491],[28.59193,69.064777]]]},
+  IRL:{name:"Ireland",coords:[[[-6.197885,53.867565],[-6.032985,53.153164],[-6.788857,52.260118],[-8.561617,51.669301],[-9.977086,51.820455],[-9.166283,52.864629],[-9.688525,53.881363],[-8.327987,54.664519],[-7.572168,55.131622],[-7.366031,54.595841],[-7.572168,54.059956],[-6.95373,54.073702],[-6.197885,53.867565]]]},
+  GRC:{name:"Greece",coords:[[[23.69998,35.705004],[24.246665,35.368022],[25.025015,35.424996],[25.769208,35.354018],[25.745023,35.179998],[26.290003,35.29999],[26.164998,35.004995],[24.724982,34.919988],[24.735007,35.084991],[23.514978,35.279992],[23.69998,35.705004]],[[26.604196,41.562115],[26.294602,40.936261],[26.056942,40.824123],[25.447677,40.852545],[24.925848,40.947062],[23.714811,40.687129],[24.407999,40.124993],[23.899968,39.962006],[23.342999,39.960998],[22.813988,40.476005],[22.626299,40.256561],[22.849748,39.659311],[23.350027,39.190011],[22.973099,38.970903],[23.530016,38.510001],[24.025025,38.219993],[24.040011,37.655015],[23.115003,37.920011],[23.409972,37.409991],[22.774972,37.30501],[23.154225,36.422506],[22.490028,36.41],[21.670026,36.844986],[21.295011,37.644989],[21.120034,38.310323],[20.730032,38.769985],[20.217712,39.340235],[20.150016,39.624998],[20.615,40.110007],[20.674997,40.435],[20.99999,40.580004],[21.02004,40.842727],[21.674161,40.931275],[22.055378,41.149866],[22.597308,41.130487],[22.76177,41.3048],[22.952377,41.337994],[23.692074,41.309081],[24.492645,41.583896],[25.197201,41.234486],[26.106138,41.328899],[26.117042,41.826905],[26.604196,41.562115]]]},
+  LTU:{name:"Lithuania",coords:[[[22.731099,54.327537],[22.651052,54.582741],[22.757764,54.856574],[22.315724,55.015299],[21.268449,55.190482],[21.0558,56.031076],[22.201157,56.337802],[23.878264,56.273671],[24.860684,56.372528],[25.000934,56.164531],[25.533047,56.100297],[26.494331,55.615107],[26.588279,55.167176],[25.768433,54.846963],[25.536354,54.282423],[24.450684,53.905702],[23.484128,53.912498],[23.243987,54.220567],[22.731099,54.327537]]]},
+  LVA:{name:"Latvia",coords:[[[21.0558,56.031076],[21.090424,56.783873],[21.581866,57.411871],[22.524341,57.753374],[23.318453,57.006236],[24.12073,57.025693],[24.312863,57.793424],[25.164594,57.970157],[25.60281,57.847529],[26.463532,57.476389],[27.288185,57.474528],[27.770016,57.244258],[27.855282,56.759326],[28.176709,56.16913],[27.10246,55.783314],[26.494331,55.615107],[25.533047,56.100297],[25.000934,56.164531],[24.860684,56.372528],[23.878264,56.273671],[22.201157,56.337802],[21.0558,56.031076]]]},
+  EST:{name:"Estonia",coords:[[[24.312863,57.793424],[24.428928,58.383413],[24.061198,58.257375],[23.42656,58.612753],[23.339795,59.18724],[24.604214,59.465854],[25.864189,59.61109],[26.949136,59.445803],[27.981114,59.475388],[28.131699,59.300825],[27.420166,58.724581],[27.716686,57.791899],[27.288185,57.474528],[26.463532,57.476389],[25.60281,57.847529],[25.164594,57.970157],[24.312863,57.793424]]]}
+};
+
+const FOUNDING = new Set(["FRA","DEU","ITA","NLD","BEL","LUX"]);
+
+const MICRO = {
+  MLT:{name:"Malta", lon:14.42, lat:35.9, pop:"0.53M", cap:"Valletta"},
+  CYP:{name:"Cyprus", lon:33.2, lat:35.1, pop:"0.92M", cap:"Nicosia"}
+};
+
+const CAPITALS = {
+  FRA:{c:"Paris",pop:"68M"}, DEU:{c:"Berlin",pop:"84M"},
+  ITA:{c:"Rome",pop:"59M"}, ESP:{c:"Madrid",pop:"48M"},
+  PRT:{c:"Lisbon",pop:"10M"}, NLD:{c:"Amsterdam",pop:"18M"},
+  BEL:{c:"Brussels",pop:"12M"}, LUX:{c:"Luxembourg",pop:"0.65M"},
+  POL:{c:"Warsaw",pop:"37M"}, AUT:{c:"Vienna",pop:"9M"},
+  CZE:{c:"Prague",pop:"10.7M"}, SVK:{c:"Bratislava",pop:"5.4M"},
+  HUN:{c:"Budapest",pop:"9.6M"}, ROU:{c:"Bucharest",pop:"19M"},
+  BGR:{c:"Sofia",pop:"6.4M"}, HRV:{c:"Zagreb",pop:"3.9M"},
+  SVN:{c:"Ljubljana",pop:"2.1M"}, DNK:{c:"Copenhagen",pop:"5.9M"},
+  SWE:{c:"Stockholm",pop:"10.5M"}, FIN:{c:"Helsinki",pop:"5.5M"},
+  IRL:{c:"Dublin",pop:"5.1M"}, GRC:{c:"Athens",pop:"10.4M"},
+  LTU:{c:"Vilnius",pop:"2.8M"}, LVA:{c:"Riga",pop:"1.9M"},
+  EST:{c:"Tallinn",pop:"1.4M"}
+};
+
+const LON0 = 12, LAT0 = 52, SCALE = 1.75;
+
+function proj(lon, lat){
+  const x = -(lon - LON0) * SCALE;
+  const rad = lat * Math.PI/180, rad0 = LAT0 * Math.PI/180;
+  const my = Math.log(Math.tan(Math.PI/4 + rad/2));
+  const my0 = Math.log(Math.tan(Math.PI/4 + rad0/2));
+  const z = -(my - my0) * (180/Math.PI) * SCALE;
+  return { x, z };
+}
+
+const F_COLOR = 0x2f57c9;
+const L_COLOR = 0x6d8fe8;
+
+function ringToShape(ring){
+  const shape = new THREE.Shape();
+  ring.forEach((p,i)=>{
+    const pr = proj(p[0], p[1]);
+    if(i===0) shape.moveTo(pr.x, pr.z);
+    else shape.lineTo(pr.x, pr.z);
+  });
+  return shape;
+}
+
+function makeStar5(outer, inner){
+  const s = new THREE.Shape();
+  for(let i=0; i<10; i++){
+    const r = i%2===0 ? outer : inner;
+    const ang = i/10*Math.PI*2 - Math.PI/2;
+    const x = Math.cos(ang)*r, y = Math.sin(ang)*r;
+    if(i===0) s.moveTo(x,y); else s.lineTo(x,y);
+  }
+  s.closePath();
+  const geo = new THREE.ExtrudeGeometry(s, { depth:0.3, bevelEnabled:true, bevelThickness:0.1, bevelSize:0.1, bevelSegments:1 });
+  geo.center();
+  geo.rotateX(-Math.PI/2);
+  return new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color:0xffd447, emissive:0xffd447, emissiveIntensity:0.6, roughness:0.3, metalness:0.4 }));
+}
+
+const ThreeDMap = () => {
+  const mountRef = useRef(null);
+  const tooltipRef = useRef(null);
+  const [autoRotate, setAutoRotate] = useState(false);
+  const [flagVisible, setFlagVisible] = useState(false);
+
+  const refs = useRef({
+    auto: false,
+    flagOn: false,
+    flagGroup: null,
+    orbit: { theta: 0, phi: 0.62, radius: 115, target: new THREE.Vector3(proj(4.35, 50.85).x, 2, proj(4.35, 50.85).z + 6) },
+    camera: null,
+    renderer: null,
+    scene: null
+  });
+
+  useEffect(() => {
+    const container = mountRef.current;
+    if (!container) return;
+
+    const width = container.clientWidth;
+    const height = container.clientHeight || 550;
+
+    // Scene setup
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x071845);
+    scene.fog = new THREE.Fog(0x071845, 90, 240);
+    refs.current.scene = scene;
+
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 800);
+    refs.current.camera = camera;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    refs.current.renderer = renderer;
+
+    container.appendChild(renderer.domElement);
+
+    // Lights
+    scene.add(new THREE.AmbientLight(0x8899cc, 0.7));
+
+    const sun = new THREE.DirectionalLight(0xffe9b8, 1.6);
+    sun.position.set(-60, 110, 50);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(2048, 2048);
+    sun.shadow.camera.near = 10; sun.shadow.camera.far = 360;
+    sun.shadow.camera.left = -130; sun.shadow.camera.right = 130;
+    sun.shadow.camera.top = 130; sun.shadow.camera.bottom = -130;
+    sun.shadow.bias = -0.0004;
+    scene.add(sun);
+
+    const rim = new THREE.DirectionalLight(0xffd447, 0.4);
+    rim.position.set(50, 30, -60);
+    scene.add(rim);
+
+    // Sea
+    const sea = new THREE.Mesh(
+      new THREE.PlaneGeometry(700, 700),
+      new THREE.MeshStandardMaterial({ color: 0x0a2260, roughness: 0.45, metalness: 0.3 })
+    );
+    sea.rotation.x = -Math.PI/2; sea.position.y = -0.5; sea.receiveShadow = true;
+    scene.add(sea);
+
+    const grid = new THREE.GridHelper(480, 60, 0x1c47a8, 0x123170);
+    grid.position.y = -0.45; grid.material.opacity = 0.35; grid.material.transparent = true;
+    scene.add(grid);
+
+    // Pickables for Raycasting
+    const pickables = [];
+    const stateGroup = new THREE.Group();
+    scene.add(stateGroup);
+
+    // Build Countries
+    Object.entries(GEO).forEach(([iso, data]) => {
+      const founding = FOUNDING.has(iso);
+      const depth = founding ? 3.0 : 2.3;
+      const group = new THREE.Group();
+      group.userData = { iso, name: data.name, founding };
+
+      const mat = new THREE.MeshStandardMaterial({
+        color: founding ? F_COLOR : L_COLOR,
+        roughness: 0.55, metalness: 0.12,
+        emissive: 0x071845, emissiveIntensity: 0.15
+      });
+
+      data.coords.forEach(ring => {
+        if (ring.length < 3) return;
+        const shape = ringToShape(ring);
+        const geo = new THREE.ExtrudeGeometry(shape, {
+          depth, bevelEnabled: true, bevelThickness: 0.25, bevelSize: 0.22, bevelSegments: 2
+        });
+        geo.rotateX(-Math.PI/2);
+        geo.computeVertexNormals();
+
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.castShadow = true; mesh.receiveShadow = true;
+        mesh.userData = group.userData;
+        group.add(mesh);
+        pickables.push(mesh);
+
+        const edges = new THREE.EdgesGeometry(geo, 22);
+        const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x05102e, transparent: true, opacity: 0.65 }));
+        group.add(line);
+      });
+
+      group.userData.material = mat;
+      group.userData.depth = depth;
+      if (CAPITALS[iso]) group.userData.capital = CAPITALS[iso];
+      stateGroup.add(group);
+    });
+
+    // Build Micro-states (Malta, Cyprus)
+    Object.entries(MICRO).forEach(([iso, m]) => {
+      const p = proj(m.lon, m.lat);
+      const g = new THREE.Group();
+      g.userData = { iso, name: m.name, founding: false, capital: { c: m.cap, pop: m.pop } };
+
+      const island = new THREE.Mesh(
+        new THREE.CylinderGeometry(1.1, 1.4, 2.2, 20),
+        new THREE.MeshStandardMaterial({ color: L_COLOR, roughness: 0.55, metalness: 0.12, emissive: 0x071845, emissiveIntensity: 0.15 })
+      );
+      island.position.set(p.x, 1.1, p.z);
+      island.castShadow = true; island.receiveShadow = true;
+      island.userData = g.userData;
+      g.userData.material = island.material;
+      g.add(island);
+      pickables.push(island);
+
+      const halo = new THREE.Mesh(
+        new THREE.TorusGeometry(1.9, 0.14, 8, 32),
+        new THREE.MeshStandardMaterial({ color: 0xffd447, emissive: 0xffd447, emissiveIntensity: 0.6, roughness: 0.3, metalness: 0.4 })
+      );
+      halo.rotation.x = -Math.PI/2;
+      halo.position.set(p.x, 0.3, p.z);
+      g.add(halo);
+      stateGroup.add(g);
+    });
+
+    // Brussels Federal Capitol
+    const bx = proj(4.35, 50.85);
+    const capitol = new THREE.Group();
+
+    const plat = new THREE.Mesh(
+      new THREE.CylinderGeometry(3.0, 3.4, 0.7, 6),
+      new THREE.MeshStandardMaterial({ color: 0xffd447, emissive: 0xffd447, emissiveIntensity: 0.25, roughness: 0.35, metalness: 0.5 })
+    );
+    plat.position.set(bx.x, 3.4, bx.z); plat.castShadow = true; capitol.add(plat);
+
+    const dome = new THREE.Mesh(
+      new THREE.SphereGeometry(1.7, 32, 24, 0, Math.PI*2, 0, Math.PI/2),
+      new THREE.MeshStandardMaterial({ color: 0xf4f1e8, roughness: 0.3, metalness: 0.3 })
+    );
+    dome.position.set(bx.x, 3.75, bx.z); dome.castShadow = true; capitol.add(dome);
+
+    for (let i=0; i<8; i++) {
+      const a = i/8 * Math.PI*2;
+      const col = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.18, 0.18, 2.0, 10),
+        new THREE.MeshStandardMaterial({ color: 0xf4f1e8, roughness: 0.4 })
+      );
+      col.position.set(bx.x + Math.cos(a)*2.1, 4.4, bx.z + Math.sin(a)*2.1);
+      col.castShadow = true; capitol.add(col);
+    }
+
+    const ringStars = new THREE.Group();
+    for (let i=0; i<12; i++) {
+      const a = i/12 * Math.PI*2;
+      const s = new THREE.Mesh(
+        new THREE.OctahedronGeometry(0.28),
+        new THREE.MeshStandardMaterial({ color: 0xffd447, emissive: 0xffd447, emissiveIntensity: 0.8, roughness: 0.2, metalness: 0.5 })
+      );
+      s.position.set(Math.cos(a)*4.0, 0, Math.sin(a)*4.0);
+      ringStars.add(s);
+    }
+    ringStars.position.set(bx.x, 7.5, bx.z);
+    capitol.add(ringStars);
+    scene.add(capitol);
+
+    const beam = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.12, 1.0, 44, 16, 1, true),
+      new THREE.MeshBasicMaterial({ color: 0xffd447, transparent: true, opacity: 0.07, side: THREE.DoubleSide })
+    );
+    beam.position.set(bx.x, 25, bx.z);
+    scene.add(beam);
+
+    // EU Flag Stars
+    const flagGroup = new THREE.Group();
+    const FR = 26;
+    for (let i=0; i<12; i++) {
+      const a = i/12 * Math.PI*2 - Math.PI/2;
+      const star = makeStar5(1.6, 0.68);
+      star.position.set(Math.cos(a)*FR, 34, Math.sin(a)*FR);
+      flagGroup.add(star);
+    }
+    flagGroup.position.set(bx.x, 0, bx.z);
+    flagGroup.visible = false;
+    scene.add(flagGroup);
+    refs.current.flagGroup = flagGroup;
+
+    // Apply Camera
+    const applyCamera = () => {
+      const orb = refs.current.orbit;
+      const r = orb.radius;
+      camera.position.x = orb.target.x + r * Math.sin(orb.phi) * Math.sin(orb.theta);
+      camera.position.y = orb.target.y + r * Math.cos(orb.phi);
+      camera.position.z = orb.target.z + r * Math.sin(orb.phi) * Math.cos(orb.theta);
+      camera.lookAt(orb.target);
+    };
+    applyCamera();
+
+    // Event Listeners for Interaction
+    let dragging = false, lastX = 0, lastY = 0;
+    const ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
+    let hovered = null;
+
+    const setEmissive = (ud, hex, inten) => {
+      if (ud && ud.material) {
+        ud.material.emissive.setHex(hex);
+        ud.material.emissiveIntensity = inten;
+      }
+    };
+
+    const onPointerDown = (e) => {
+      dragging = true; lastX = e.clientX; lastY = e.clientY;
+    };
+    const onPointerUp = () => { dragging = false; };
+    const onPointerMove = (e) => {
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+      ray.setFromCamera(mouse, camera);
+      const hits = ray.intersectObjects(pickables, false);
+
+      if (hits.length) {
+        const ud = hits[0].object.userData;
+        if (hovered !== ud) {
+          if (hovered) setEmissive(hovered, 0x071845, 0.15);
+          hovered = ud;
+          setEmissive(ud, 0xffd447, 0.5);
+        }
+        const cap = ud.capital;
+        const tt = tooltipRef.current;
+        if (tt) {
+          tt.innerHTML = `<div class="t-name">${ud.name}</div><div class="t-meta">${cap ? `Capital: ${cap.c} &middot; Pop. ${cap.pop}<br>` : ''}${ud.founding ? 'Founding member state' : 'Accession state'}</div>`;
+          tt.style.opacity = '1';
+          tt.style.left = (e.clientX - rect.left + 16) + 'px';
+          tt.style.top = (e.clientY - rect.top + 16) + 'px';
+        }
+        container.style.cursor = 'pointer';
+      } else {
+        if (hovered) { setEmissive(hovered, 0x071845, 0.15); hovered = null; }
+        if (tooltipRef.current) tooltipRef.current.style.opacity = '0';
+        container.style.cursor = dragging ? 'grabbing' : 'grab';
+      }
+
+      if (!dragging) return;
+      const dx = e.clientX - lastX, dy = e.clientY - lastY;
+      lastX = e.clientX; lastY = e.clientY;
+
+      refs.current.orbit.theta -= dx * 0.005;
+      refs.current.orbit.phi = Math.max(0.12, Math.min(1.4, refs.current.orbit.phi - dy * 0.005));
+      applyCamera();
+    };
+
+    const onWheel = (e) => {
+      e.preventDefault();
+      refs.current.orbit.radius = Math.max(45, Math.min(220, refs.current.orbit.radius + e.deltaY * 0.06));
+      applyCamera();
+    };
+
+    const domEl = renderer.domElement;
+    domEl.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('pointerup', onPointerUp);
+    domEl.addEventListener('pointermove', onPointerMove);
+    domEl.addEventListener('wheel', onWheel, { passive: false });
+
+    const handleResize = () => {
+      if (!container) return;
+      const w = container.clientWidth;
+      const h = container.clientHeight || 550;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    };
+    window.addEventListener('resize', handleResize);
+
+    // Animation Loop
+    let animId;
+    const clock = new THREE.Clock();
+    const animate = () => {
+      animId = requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+
+      if (refs.current.auto && !dragging) {
+        refs.current.orbit.theta += 0.0022;
+        applyCamera();
+      }
+
+      ringStars.rotation.y = t * 0.4;
+      ringStars.children.forEach((s, i) => s.rotation.y = t * 1.5 + i);
+
+      flagGroup.rotation.y = t * 0.12;
+      flagGroup.children.forEach((s, i) => s.rotation.y = t * 0.6 + i);
+
+      beam.material.opacity = 0.05 + Math.sin(t * 1.5) * 0.025;
+      plat.material.emissiveIntensity = 0.2 + Math.sin(t * 2) * 0.08;
+
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('pointerup', onPointerUp);
+      domEl.removeEventListener('pointerdown', onPointerDown);
+      domEl.removeEventListener('pointermove', onPointerMove);
+      domEl.removeEventListener('wheel', onWheel);
+      if (container.contains(domEl)) {
+        container.removeChild(domEl);
+      }
+    };
+  }, []);
+
+  const handleToggleAuto = () => {
+    const next = !autoRotate;
+    setAutoRotate(next);
+    refs.current.auto = next;
+  };
+
+  const handleToggleFlag = () => {
+    const next = !flagVisible;
+    setFlagVisible(next);
+    refs.current.flagOn = next;
+    if (refs.current.flagGroup) {
+      refs.current.flagGroup.visible = next;
+    }
+  };
+
+  const handleReset = () => {
+    const bx = proj(4.35, 50.85);
+    refs.current.orbit.theta = 0;
+    refs.current.orbit.phi = 0.62;
+    refs.current.orbit.radius = 115;
+    refs.current.orbit.target.set(bx.x, 2, bx.z + 6);
+    if (refs.current.camera) {
+      const orb = refs.current.orbit;
+      const r = orb.radius;
+      refs.current.camera.position.x = orb.target.x + r * Math.sin(orb.phi) * Math.sin(orb.theta);
+      refs.current.camera.position.y = orb.target.y + r * Math.cos(orb.phi);
+      refs.current.camera.position.z = orb.target.z + r * Math.sin(orb.phi) * Math.cos(orb.theta);
+      refs.current.camera.lookAt(orb.target);
+    }
+  };
+
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '580px', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid rgba(255,212,71,0.25)', background: '#071845' }}>
+      <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
+
+      {/* Tooltip Overlay */}
+      <div
+        ref={tooltipRef}
+        style={{
+          position: 'absolute', zIndex: 20, pointerEvents: 'none',
+          background: 'var(--paper)', color: 'var(--text-primary)',
+          padding: '10px 14px', borderRadius: '4px',
+          fontFamily: 'var(--font-body)', fontSize: '13px', opacity: 0, transition: 'opacity 0.12s',
+          boxShadow: '0 8px 28px rgba(0,0,0,0.4)', borderTop: '3px solid var(--accent-gold, #ffd447)', maxWidth: '240px'
+        }}
+      />
+
+      {/* Overlay: Masthead / Title */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0,
+        padding: '24px 28px 40px', pointerEvents: 'none',
+        background: 'linear-gradient(180deg, rgba(7,24,69,0.92) 0%, rgba(7,24,69,0) 100%)'
+      }}>
+        <div style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.25em', textTransform: 'uppercase', fontSize: '11px', color: '#ffd447', fontWeight: 700, marginBottom: '6px' }}>
+          3D SPECULATIVE CARTOGRAPHY
+        </div>
+        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px, 3.5vw, 36px)', color: 'var(--paper)', fontWeight: 600, lineHeight: 1.1, margin: 0 }}>
+          The United States of <em style={{ fontStyle: 'italic', color: '#ffd447' }}>Europe</em>
+        </h3>
+        <p style={{ marginTop: '8px', maxWidth: '480px', fontSize: '13px', lineHeight: 1.4, color: 'rgba(244,241,232,0.85)', fontFamily: 'var(--font-body)' }}>
+          One federation, twenty-six states, real borders. Shared capital in Brussels, single citizenship, common defense. Drag to explore.
+        </p>
+      </div>
+
+      {/* Overlay: Legend */}
+      <div style={{
+        position: 'absolute', bottom: '20px', left: '20px', pointerEvents: 'none',
+        fontFamily: 'var(--font-mono)', fontSize: '11px', lineHeight: 1.8, color: 'rgba(244,241,232,0.9)',
+        background: 'rgba(7,24,69,0.75)', border: '1px solid rgba(255,212,71,0.3)',
+        padding: '12px 16px', borderRadius: '4px', backdropFilter: 'blur(6px)'
+      }}>
+        <b style={{ color: '#ffd447', letterSpacing: '0.12em', textTransform: 'uppercase', fontSize: '10px', display: 'block', marginBottom: '6px' }}>
+          THE FEDERATION
+        </b>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ width: '12px', height: '12px', borderRadius: '2px', background: '#ffd447' }} /> Federal District (Brussels)
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ width: '12px', height: '12px', borderRadius: '2px', background: '#2f57c9' }} /> Founding member states
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ width: '12px', height: '12px', borderRadius: '2px', background: '#6d8fe8' }} /> Accession member states
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ffd447' }} /> Island beacons (Malta, Cyprus)
+        </div>
+      </div>
+
+      {/* Overlay: Controls */}
+      <div style={{ position: 'absolute', bottom: '20px', right: '20px', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end', zIndex: 10 }}>
+        <button
+          onClick={handleToggleAuto}
+          style={{
+            fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase',
+            background: autoRotate ? '#ffd447' : 'rgba(255,212,71,0.12)', border: '1px solid #ffd447',
+            color: autoRotate ? '#071845' : '#ffd447', padding: '8px 14px', borderRadius: '3px', cursor: 'pointer', transition: 'all 0.2s ease'
+          }}
+        >
+          Auto-orbit: {autoRotate ? 'On' : 'Off'}
+        </button>
+        <button
+          onClick={handleToggleFlag}
+          style={{
+            fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase',
+            background: flagVisible ? '#ffd447' : 'rgba(255,212,71,0.12)', border: '1px solid #ffd447',
+            color: flagVisible ? '#071845' : '#ffd447', padding: '8px 14px', borderRadius: '3px', cursor: 'pointer', transition: 'all 0.2s ease'
+          }}
+        >
+          Fly the Flag
+        </button>
+        <button
+          onClick={handleReset}
+          style={{
+            fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase',
+            background: 'rgba(255,212,71,0.12)', border: '1px solid #ffd447', color: '#ffd447',
+            padding: '8px 14px', borderRadius: '3px', cursor: 'pointer', transition: 'all 0.2s ease'
+          }}
+        >
+          Reset View
+        </button>
+      </div>
+
+      {/* Hint */}
+      <div style={{
+        position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)',
+        fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase',
+        color: 'rgba(244,241,232,0.5)', pointerEvents: 'none'
+      }}>
+        Drag to rotate &middot; Scroll to zoom &middot; Hover a state
+      </div>
+    </div>
+  );
+};
+
+export default ThreeDMap;
