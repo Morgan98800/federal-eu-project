@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-// 26 Sovereign Federal Member States (Highlighted in EU Blue & Gold)
+// 26 Sovereign Federal Member States (Vibrant High-Relief EU Blue & Gold)
 const GEO_FED = {
   FRA:{name:"France",coords:[[[9.560016,42.152492],[9.229752,41.380007],[8.775723,41.583612],[8.544213,42.256517],[8.746009,42.628122],[9.390001,43.009985],[9.560016,42.152492]],[[3.588184,50.378992],[4.286023,49.907497],[4.799222,49.985373],[5.674052,49.529484],[5.897759,49.442667],[6.18632,49.463803],[6.65823,49.201958],[8.099279,49.017784],[7.593676,48.333019],[7.466759,47.620582],[7.192202,47.449766],[6.736571,47.541801],[6.768714,47.287708],[6.037389,46.725779],[6.022609,46.27299],[6.5001,46.429673],[6.843593,45.991147],[6.802355,45.70858],[7.096652,45.333099],[6.749955,45.028518],[7.007562,44.254767],[7.549596,44.127901],[7.435185,43.693845],[6.529245,43.128892],[4.556963,43.399651],[3.100411,43.075201],[2.985999,42.473015],[1.826793,42.343385],[0.701591,42.795734],[0.338047,42.579546],[-1.502771,43.034014],[-1.901351,43.422802],[-1.384225,44.02261],[-1.193798,46.014918],[-2.225724,47.064363],[-2.963276,47.570327],[-4.491555,47.954954],[-4.59235,48.68416],[-3.295814,48.901692],[-1.616511,48.644421],[-1.933494,49.776342],[-0.989469,49.347376],[1.338761,50.127173],[1.639001,50.946606],[2.513573,51.148506],[2.658422,50.796848],[3.123252,50.780363],[3.588184,50.378992]]]},
   DEU:{name:"Germany",coords:[[[9.921906,54.983104],[9.93958,54.596642],[10.950112,54.363607],[10.939467,54.008693],[11.956252,54.196486],[12.51844,54.470371],[13.647467,54.075511],[14.119686,53.757029],[14.353315,53.248171],[14.074521,52.981263],[14.4376,52.62485],[14.685026,52.089947],[14.607098,51.745188],[15.016996,51.106674],[14.570718,51.002339],[14.307013,51.117268],[14.056228,50.926918],[13.338132,50.733234],[12.966837,50.484076],[12.240111,50.266338],[12.415191,49.969121],[12.521024,49.547415],[13.031329,49.307068],[13.595946,48.877172],[13.243357,48.416115],[12.884103,48.289146],[13.025851,47.637584],[12.932627,47.467646],[12.62076,47.672388],[12.141357,47.703083],[11.426414,47.523766],[10.544504,47.566399],[10.402084,47.302488],[9.896068,47.580197],[9.594226,47.525058],[8.522612,47.830828],[8.317301,47.61358],[7.466759,47.620582],[7.593676,48.333019],[8.099279,49.017784],[6.65823,49.201958],[6.18632,49.463803],[6.242751,49.902226],[6.043073,50.128052],[6.156658,50.803721],[5.988658,51.851616],[6.589397,51.852029],[6.84287,52.22844],[7.092053,53.144043],[6.90514,53.482162],[7.100425,53.693932],[7.936239,53.748296],[8.121706,53.527792],[8.800734,54.020786],[8.572118,54.395646],[8.526229,54.962744],[9.282049,54.830865],[9.921906,54.983104]]]},
@@ -31,16 +31,21 @@ const GEO_FED = {
   CYP:{name:"Cyprus",coords:[[[32.2686,35.1325],[32.4418,34.7249],[33.1500,34.5714],[33.7225,34.9723],[34.5813,35.7050],[33.9000,35.4000],[33.3000,35.1800],[32.7000,35.1500],[32.2686,35.1325]]]}
 };
 
-// Surrounding Non-Federal Geographic Neighbor Regions (Dark Muted Slate Neutral)
+// Surrounding Non-Federal Neighbor Regions (Authentic 3D Country Shapes in Muted Dark Slate)
 const GEO_NEIGHBORS = {
-  GBR:{name:"United Kingdom",coords:[[[-5.7, 50.0], [-1.5, 50.8], [1.7, 52.5], [-0.1, 53.5], [-3.1, 58.6], [-5.0, 56.5], [-4.5, 54.0], [-5.7, 50.0]]]},
-  NOR:{name:"Norway",coords:[[[5.0, 60.0], [5.5, 62.0], [10.0, 63.5], [16.0, 69.0], [30.0, 70.5], [29.0, 69.0], [21.0, 69.0], [12.0, 64.0], [10.0, 59.0], [5.0, 60.0]]]},
-  CHE:{name:"Switzerland",coords:[[[6.0, 46.2], [6.8, 47.5], [9.6, 47.5], [10.4, 46.5], [8.9, 46.0], [6.0, 46.2]]]},
-  TUR:{name:"Turkey",coords:[[[26.0, 40.5], [29.0, 41.2], [35.0, 42.0], [44.0, 41.0], [44.0, 37.0], [36.0, 36.5], [32.5, 36.0], [27.3, 37.0], [26.0, 40.5]]]},
-  UKR:{name:"Ukraine",coords:[[[22.2, 48.4], [24.0, 50.7], [33.0, 52.4], [40.2, 49.3], [37.5, 47.0], [35.0, 46.0], [33.5, 44.5], [30.0, 46.5], [28.2, 45.4], [22.2, 48.4]]]},
-  BLR:{name:"Belarus",coords:[[[23.5, 52.0], [23.8, 53.5], [30.0, 55.1], [32.7, 53.4], [30.5, 51.3], [23.5, 52.0]]]},
-  BAL:{name:"Western Balkans",coords:[[[19.0, 42.0], [19.5, 45.0], [22.5, 44.0], [23.0, 41.5], [21.0, 40.8], [19.5, 41.0], [19.0, 42.0]]]},
-  AFR:{name:"North Africa",coords:[[[-10.0, 35.0], [-2.0, 35.2], [8.0, 37.5], [11.0, 37.0], [11.5, 33.0], [25.0, 31.5], [34.0, 31.2], [34.0, 28.0], [-10.0, 28.0], [-10.0, 35.0]]]}
+  GBR:{name:"United Kingdom",coords:[[[-5.6,50.0],[-4.1,50.3],[-1.4,50.7],[0.8,51.1],[1.4,52.0],[1.7,52.7],[0.2,53.4],[-0.1,54.0],[-2.0,55.0],[-1.8,55.8],[-3.0,58.6],[-4.5,58.5],[-5.8,56.5],[-4.7,55.8],[-3.5,54.6],[-3.1,53.3],[-4.2,53.3],[-4.8,52.0],[-5.3,51.8],[-4.2,51.1],[-5.6,50.0]]]},
+  NOR:{name:"Norway",coords:[[[5.2,59.2],[5.9,62.0],[10.0,63.5],[14.2,67.5],[21.0,70.0],[30.0,70.5],[28.5,69.9],[24.0,68.8],[21.0,69.1],[16.1,68.0],[15.1,66.2],[13.6,64.8],[12.0,64.1],[11.9,63.1],[11.9,61.8],[12.6,61.3],[12.3,60.1],[11.5,59.4],[11.0,58.9],[9.3,58.6],[7.1,58.0],[5.2,59.2]]]},
+  CHE:{name:"Switzerland",coords:[[[6.0,46.2],[6.0,46.7],[6.7,47.5],[7.5,47.6],[8.5,47.8],[9.6,47.5],[9.5,47.1],[9.9,46.9],[10.4,46.9],[10.4,46.5],[8.9,46.0],[8.5,46.0],[8.3,46.2],[7.8,45.8],[7.1,45.3],[6.7,45.0],[6.0,46.2]]]},
+  TUR:{name:"Turkey",coords:[[[26.1,41.8],[26.1,41.3],[26.6,41.5],[27.1,42.1],[28.0,42.0],[29.1,41.2],[31.5,41.1],[35.0,42.0],[40.0,41.0],[44.0,41.0],[44.0,37.0],[42.0,37.1],[38.0,37.0],[36.0,36.5],[35.0,36.6],[32.5,36.0],[30.0,36.2],[27.3,37.0],[26.2,38.5],[26.0,40.5],[26.1,41.8]]]},
+  UKR:{name:"Ukraine",coords:[[[22.5,49.5],[23.4,50.3],[24.0,50.7],[23.5,51.6],[23.2,52.5],[25.0,51.8],[30.5,51.3],[32.7,53.4],[34.0,52.2],[38.0,50.0],[40.2,49.3],[38.0,47.0],[35.0,46.0],[33.5,44.5],[30.0,46.5],[28.2,45.4],[29.6,45.3],[29.1,45.5],[28.1,46.8],[28.1,46.4],[27.0,48.1],[26.2,48.2],[22.5,48.2],[22.5,49.5]]]},
+  BLR:{name:"Belarus",coords:[[[23.5,52.0],[23.8,53.5],[25.5,54.3],[25.8,54.8],[26.6,55.2],[27.1,55.8],[28.2,56.2],[30.0,55.1],[30.9,55.0],[32.7,53.4],[30.5,51.3],[25.0,51.8],[23.5,52.0]]]},
+  SRB:{name:"Serbia",coords:[[[19.1,44.9],[19.4,45.2],[18.8,45.9],[20.2,46.1],[20.8,45.7],[20.9,45.4],[21.5,44.8],[22.1,44.5],[22.5,44.2],[22.4,44.0],[22.5,43.6],[23.0,43.2],[22.6,42.9],[22.4,42.6],[22.5,42.5],[22.4,42.3],[21.7,42.3],[20.7,42.2],[20.3,42.9],[19.8,43.2],[19.2,43.5],[19.6,44.0],[19.0,44.9],[19.1,44.9]]]},
+  BIH:{name:"Bosnia and Herzegovina",coords:[[[15.8,44.8],[16.3,45.0],[16.5,45.2],[17.0,45.2],[17.9,45.1],[18.6,45.1],[19.0,44.9],[19.6,44.0],[19.2,43.5],[18.6,43.3],[18.4,42.6],[17.7,43.0],[17.3,43.4],[16.9,43.7],[16.5,44.0],[16.2,44.4],[15.8,44.8]]]},
+  ALB:{name:"Albania",coords:[[[19.4,41.0],[19.5,41.9],[19.8,42.5],[20.6,42.5],[20.7,42.2],[20.6,41.8],[20.7,40.9],[21.0,40.8],[20.2,39.6],[20.0,39.7],[19.4,41.0]]]},
+  MKD:{name:"North Macedonia",coords:[[[20.6,41.8],[20.7,42.2],[21.7,42.3],[22.4,42.3],[23.0,41.3],[22.6,41.1],[22.1,41.1],[21.7,40.9],[20.7,40.9],[20.6,41.8]]]},
+  MAR:{name:"Morocco",coords:[[[-10.0,28.0],[-10.0,32.0],[-9.6,33.0],[-9.3,34.0],[-6.5,35.2],[-5.4,35.9],[-5.0,35.2],[-3.4,35.3],[-2.2,35.1],[-1.7,34.9],[-1.3,32.2],[-4.0,31.0],[-7.0,29.8],[-10.0,28.0]]]},
+  DZA:{name:"Algeria",coords:[[[-1.7,34.9],[-2.2,35.1],[-1.4,35.7],[0.2,36.5],[2.4,36.8],[5.4,36.9],[8.5,36.9],[8.2,34.0],[7.5,32.0],[1.0,32.0],[-1.3,32.2],[-1.7,34.9]]]},
+  TUN:{name:"Tunisia",coords:[[[8.5,36.9],[11.0,37.3],[11.1,35.0],[10.5,33.0],[11.5,33.2],[9.8,32.0],[8.2,34.0],[8.5,36.9]]]}
 };
 
 const FOUNDING = new Set(["FRA","DEU","ITA","NLD","BEL","LUX"]);
@@ -83,8 +88,8 @@ function get3DPos(lon, lat) {
 }
 
 const F_COLOR = 0x2f57c9;
-const L_COLOR = 0x6d8fe8;
-const NEIGHBOR_COLOR = 0x142345;
+const L_COLOR = 0x5b7ee6;
+const NEIGHBOR_COLOR = 0x1a2948;
 
 function ringToShape(ring){
   const shape = new THREE.Shape();
@@ -122,9 +127,9 @@ const ThreeDMap = () => {
     const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 900);
     refs.current.camera = camera;
 
-    // WIDE GEOGRAPHIC CAMERA FRAME: Encompasses all 26 Federal States + Cyprus + Mediterranean + Surrounding Neighbors
-    camera.position.set(0, 165, 75);
-    camera.lookAt(0, -6, -12);
+    // PERFECT CAMERA FRAMING: Encompasses all 26 Federal States + Cyprus + Mediterranean + Surrounding Neighbors
+    camera.position.set(0, 145, 54);
+    camera.lookAt(0, -4, -8);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
@@ -168,22 +173,22 @@ const ThreeDMap = () => {
     const stateGroup = new THREE.Group();
     scene.add(stateGroup);
 
-    // 1. BUILD SURROUNDING GEOGRAPHIC NEIGHBORS (Subtle, Flat Neutral Terrain)
+    // 1. BUILD SURROUNDING NON-FEDERAL NEIGHBORS (Real 3D Extruded Country Geometry, Muted Slate)
     Object.entries(GEO_NEIGHBORS).forEach(([iso, data]) => {
       const group = new THREE.Group();
       group.userData = { iso, name: data.name, isNeighbor: true };
 
       const mat = new THREE.MeshStandardMaterial({
         color: NEIGHBOR_COLOR,
-        roughness: 0.85, metalness: 0.05,
-        emissive: 0x071845, emissiveIntensity: 0.05
+        roughness: 0.75, metalness: 0.08,
+        emissive: 0x071845, emissiveIntensity: 0.08
       });
 
       data.coords.forEach(ring => {
         if (ring.length < 3) return;
         const shape = ringToShape(ring);
         const geo = new THREE.ExtrudeGeometry(shape, {
-          depth: 0.8, bevelEnabled: false
+          depth: 1.4, bevelEnabled: true, bevelThickness: 0.12, bevelSize: 0.1, bevelSegments: 1
         });
         geo.rotateX(-Math.PI/2);
         geo.computeVertexNormals();
@@ -194,8 +199,8 @@ const ThreeDMap = () => {
         group.add(mesh);
         pickables.push(mesh);
 
-        const edges = new THREE.EdgesGeometry(geo);
-        const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x0d1830, transparent: true, opacity: 0.4 }));
+        const edges = new THREE.EdgesGeometry(geo, 22);
+        const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x0c1936, transparent: true, opacity: 0.5 }));
         group.add(line);
       });
 
@@ -316,7 +321,7 @@ const ThreeDMap = () => {
     beam.position.set(bPos.x, 25, bPos.z);
     scene.add(beam);
 
-    // Hover Raycasting with Smart Tooltip Positioning
+    // Hover Raycasting with High Contrast Tooltip
     const ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
     let hovered = null;
 
@@ -343,15 +348,15 @@ const ThreeDMap = () => {
         if (hovered !== ud) {
           if (hovered) setEmissive(hovered, 0x071845, 0.15);
           hovered = ud;
-          setEmissive(ud, ud.isFederal ? 0xffd447 : 0x223355, ud.isFederal ? 0.5 : 0.2);
+          setEmissive(ud, ud.isFederal ? 0xffd447 : 0x2b3d68, ud.isFederal ? 0.55 : 0.25);
         }
         const cap = ud.capital;
         const tt = tooltipRef.current;
         if (tt) {
           if (ud.isFederal) {
-            tt.innerHTML = `<div style="font-weight:700;font-size:14px;color:#ffd447;margin-bottom:2px;">${ud.name}</div><div style="font-size:12px;color:#f4f1e8;line-height:1.4;">${cap ? `Capital: <strong>${cap.c}</strong> &middot; Pop. ${cap.pop}<br>` : ''}${ud.founding ? 'Founding Federal State' : 'Federal Accession State'}</div>`;
+            tt.innerHTML = `<div style="font-weight:700;font-size:14px;color:#ffd447;margin-bottom:2px;">${ud.name}</div><div style="font-size:12px;color:#ffffff;line-height:1.4;">${cap ? `Capital: <strong style="color:#ffd447;">${cap.c}</strong> &middot; Pop. ${cap.pop}<br>` : ''}${ud.founding ? 'Founding Member State' : 'Federal Accession State'}</div>`;
           } else {
-            tt.innerHTML = `<div style="font-weight:700;font-size:13px;color:#94a3b8;margin-bottom:2px;">${ud.name}</div><div style="font-size:11px;color:#64748b;">Non-federal neighboring territory</div>`;
+            tt.innerHTML = `<div style="font-weight:700;font-size:13px;color:#cbd5e1;margin-bottom:2px;">${ud.name}</div><div style="font-size:11px;color:#94a3b8;">Non-federal sovereign territory</div>`;
           }
           tt.style.opacity = '1';
 
@@ -416,7 +421,7 @@ const ThreeDMap = () => {
   }, []);
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '580px', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid rgba(255,212,71,0.25)', background: '#071845' }}>
+    <div style={{ position: 'relative', width: '100%', height: '580px', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid rgba(255,212,71,0.3)', background: '#071845' }}>
       <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
 
       {/* Tooltip Overlay */}
@@ -424,30 +429,32 @@ const ThreeDMap = () => {
         ref={tooltipRef}
         style={{
           position: 'absolute', zIndex: 50, pointerEvents: 'none',
-          background: '#0a1d4a', color: '#f4f1e8',
+          background: 'rgba(7, 24, 69, 0.95)', color: '#ffffff',
           padding: '10px 14px', borderRadius: '6px',
           fontFamily: 'var(--font-body)', fontSize: '13px', opacity: 0, transition: 'opacity 0.1s ease',
-          boxShadow: '0 12px 32px rgba(0,0,0,0.6)', border: '1px solid rgba(255,212,71,0.4)',
-          borderTop: '3px solid #ffd447', minWidth: '160px', maxWidth: '240px'
+          boxShadow: '0 12px 32px rgba(0,0,0,0.7)', border: '1px solid rgba(255,212,71,0.5)',
+          borderTop: '3px solid #ffd447', minWidth: '160px', maxWidth: '240px', backdropFilter: 'blur(8px)'
         }}
       />
 
-      {/* Top Left Title & Subtitle Overlay */}
+      {/* Top Left Title Card Overlay (High Readability) */}
       <div style={{
-        position: 'absolute', top: 0, left: 0, padding: '24px 28px', pointerEvents: 'none',
-        background: 'linear-gradient(180deg, rgba(7,24,69,0.9) 0%, rgba(7,24,69,0) 100%)'
+        position: 'absolute', top: '16px', left: '16px', padding: '16px 22px', pointerEvents: 'none',
+        background: 'rgba(7, 24, 69, 0.82)', backdropFilter: 'blur(10px)',
+        borderRadius: '8px', border: '1px solid rgba(255, 212, 71, 0.25)',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
       }}>
-        <div style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', fontSize: '11px', color: '#ffd447', fontWeight: 700, marginBottom: '4px' }}>
-          Interactive Cartography &middot; Highlighted Sovereign European Federation
+        <div style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', fontSize: '10px', color: '#ffd447', fontWeight: 700, marginBottom: '4px' }}>
+          Interactive Cartography &middot; Sovereign Federation
         </div>
-        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--paper)', fontWeight: 600, margin: 0 }}>
-          The United States of <em style={{ fontStyle: 'italic', color: '#ffd447' }}>Europe</em>
+        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: '#ffffff', fontWeight: 700, margin: 0, letterSpacing: '-0.01em' }}>
+          The United States of <span style={{ color: '#ffd447' }}>Europe</span>
         </h3>
       </div>
 
       {/* Top Right Revolving 12-Star Emblem */}
       <div style={{
-        position: 'absolute', top: '24px', right: '28px', pointerEvents: 'none', zIndex: 10,
+        position: 'absolute', top: '20px', right: '24px', pointerEvents: 'none', zIndex: 10,
         display: 'flex', flexDirection: 'column', alignItems: 'center'
       }}>
         <svg width="56" height="56" viewBox="0 0 100 100" style={{ animation: 'euStarSpin 12s linear infinite' }}>
