@@ -194,6 +194,7 @@ const ThreeDMap = () => {
     });
 
     // Build Micro-states (Malta, Cyprus in South-East Mediterranean)
+    // IMPORTANT FIX: Micro-states 3D Z must be -p.z to match extruded 3D geometry!
     Object.entries(MICRO).forEach(([iso, m]) => {
       const p = proj(m.lon, m.lat);
       const g = new THREE.Group();
@@ -203,7 +204,8 @@ const ThreeDMap = () => {
         new THREE.CylinderGeometry(1.1, 1.4, 2.2, 20),
         new THREE.MeshStandardMaterial({ color: L_COLOR, roughness: 0.55, metalness: 0.12, emissive: 0x071845, emissiveIntensity: 0.15 })
       );
-      island.position.set(p.x, 1.1, p.z);
+      // Corrected 3D Z: -p.z
+      island.position.set(p.x, 1.1, -p.z);
       island.castShadow = true; island.receiveShadow = true;
       island.userData = g.userData;
       g.userData.material = island.material;
@@ -215,7 +217,7 @@ const ThreeDMap = () => {
         new THREE.MeshStandardMaterial({ color: 0xffd447, emissive: 0xffd447, emissiveIntensity: 0.6, roughness: 0.3, metalness: 0.4 })
       );
       halo.rotation.x = -Math.PI/2;
-      halo.position.set(p.x, 0.3, p.z);
+      halo.position.set(p.x, 0.3, -p.z);
       g.add(halo);
       stateGroup.add(g);
     });
@@ -228,13 +230,13 @@ const ThreeDMap = () => {
       new THREE.CylinderGeometry(3.0, 3.4, 0.7, 6),
       new THREE.MeshStandardMaterial({ color: 0xffd447, emissive: 0xffd447, emissiveIntensity: 0.25, roughness: 0.35, metalness: 0.5 })
     );
-    plat.position.set(bx.x, 3.4, bx.z); plat.castShadow = true; capitol.add(plat);
+    plat.position.set(bx.x, 3.4, -bx.z); plat.castShadow = true; capitol.add(plat);
 
     const dome = new THREE.Mesh(
       new THREE.SphereGeometry(1.7, 32, 24, 0, Math.PI*2, 0, Math.PI/2),
       new THREE.MeshStandardMaterial({ color: 0xf4f1e8, roughness: 0.3, metalness: 0.3 })
     );
-    dome.position.set(bx.x, 3.75, bx.z); dome.castShadow = true; capitol.add(dome);
+    dome.position.set(bx.x, 3.75, -bx.z); dome.castShadow = true; capitol.add(dome);
 
     for (let i=0; i<8; i++) {
       const a = i/8 * Math.PI*2;
@@ -242,7 +244,7 @@ const ThreeDMap = () => {
         new THREE.CylinderGeometry(0.18, 0.18, 2.0, 10),
         new THREE.MeshStandardMaterial({ color: 0xf4f1e8, roughness: 0.4 })
       );
-      col.position.set(bx.x + Math.cos(a)*2.1, 4.4, bx.z + Math.sin(a)*2.1);
+      col.position.set(bx.x + Math.cos(a)*2.1, 4.4, -bx.z + Math.sin(a)*2.1);
       col.castShadow = true; capitol.add(col);
     }
 
@@ -256,7 +258,7 @@ const ThreeDMap = () => {
       s.position.set(Math.cos(a)*4.0, 0, Math.sin(a)*4.0);
       ringStars.add(s);
     }
-    ringStars.position.set(bx.x, 7.5, bx.z);
+    ringStars.position.set(bx.x, 7.5, -bx.z);
     capitol.add(ringStars);
     scene.add(capitol);
 
@@ -264,7 +266,7 @@ const ThreeDMap = () => {
       new THREE.CylinderGeometry(0.12, 1.0, 44, 16, 1, true),
       new THREE.MeshBasicMaterial({ color: 0xffd447, transparent: true, opacity: 0.07, side: THREE.DoubleSide })
     );
-    beam.position.set(bx.x, 25, bx.z);
+    beam.position.set(bx.x, 25, -bx.z);
     scene.add(beam);
 
     // Hover Raycasting
