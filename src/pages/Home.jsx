@@ -1,0 +1,99 @@
+import React, { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import ShaderHero from '../components/ShaderHero';
+import { renderIntegrationIndex } from '../js/integration-index';
+
+const Home = () => {
+  const chartRef = useRef(null);
+
+  useEffect(() => {
+    // We only want to render once
+    if (chartRef.current && !chartRef.current.hasChildNodes()) {
+      fetch('./src/data/integration-index.json')
+        .then(r => r.json())
+        .then(data => {
+          renderIntegrationIndex('#home-index-wrapper', data, { compact: true });
+        })
+        .catch(e => console.error(e));
+    }
+  }, []);
+
+  return (
+    <div className="home-page">
+      <section className="page-masthead" aria-labelledby="hero-title" style={{ position: 'relative', overflow: 'hidden' }}>
+        <ShaderHero />
+        <div className="container" style={{ position: 'relative', zIndex: 1, paddingBlock: 'var(--space-20)' }}>
+          <p className="page-masthead__overline js-reveal reveal-fast">Federal Vision for Europe</p>
+          <h1 className="page-masthead__title js-reveal reveal-delay-1" id="hero-title">
+            To secure its political agency and economic model in a multipolar world, 
+            Europe must transition from a treaty-based confederation to a sovereign federal republic.
+          </h1>
+          <p className="page-masthead__deck js-reveal reveal-delay-2">
+            This project outlines the structural mechanisms, historical basis, and democratic necessity of that union.
+          </p>
+        </div>
+      </section>
+
+      <section className="section" aria-labelledby="index-heading">
+        <div class="container">
+          <span class="section-label">The Union Today</span>
+          <h2 class="js-reveal" id="index-heading" style={{ fontSize: 'var(--text-2xl)', marginBottom: 'var(--space-6)' }}>
+            European Integration Index, 2006–2023
+          </h2>
+          <figure class="chart-figure js-reveal" aria-label="Line chart showing the composite European Integration Index">
+            <div className="integration-index-wrapper" id="home-index-wrapper" ref={chartRef} style={{ minHeight: '180px' }}>
+            </div>
+            <figcaption>
+              Composite index of public support, defence pooling, fiscal capacity, and competence.
+              See the <Link to="/data-room">Data Room</Link> for the full interactive model.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section className="section" aria-labelledby="sections-heading">
+        <div className="container">
+          <h2 className="js-reveal section-label" id="sections-heading" style={{ fontSize: 'var(--text-xs)' }}>
+            Contents
+          </h2>
+          <nav className="entry-grid" aria-label="Site sections">
+            <Link className="entry-card hover-lift" to="/the-case">
+              <span className="entry-card__num">01</span>
+              <span className="entry-card__title">The Case</span>
+              <span className="entry-card__excerpt">
+                The argument for a federal Europe — historical, economic, democratic, and security rationale.
+              </span>
+              <span className="entry-card__arrow">&rarr;</span>
+            </Link>
+            <Link className="entry-card hover-lift" to="/archive">
+              <span className="entry-card__num">02</span>
+              <span className="entry-card__title">Archive</span>
+              <span className="entry-card__excerpt">
+                A chronological, citation-backed timeline of European federalist thought and integration.
+              </span>
+              <span className="entry-card__arrow">&rarr;</span>
+            </Link>
+            <Link className="entry-card hover-lift" to="/data-room">
+              <span className="entry-card__num">03</span>
+              <span className="entry-card__title">Data Room</span>
+              <span className="entry-card__excerpt">
+                Real, sourced visualisations: Eurobarometer support over time, member-state GDP fragmentation, defence spending.
+              </span>
+              <span className="entry-card__arrow">&rarr;</span>
+            </Link>
+            <Link className="entry-card hover-lift" to="/sources">
+              <span className="entry-card__num">04</span>
+              <span className="entry-card__title">Sources</span>
+              <span className="entry-card__excerpt">
+                A real bibliography: primary treaty texts, Eurostat datasets, and named scholarly works.
+              </span>
+              <span className="entry-card__arrow">&rarr;</span>
+            </Link>
+          </nav>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Home;

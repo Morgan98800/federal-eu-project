@@ -1,20 +1,15 @@
 /* ==========================================================================
-   TYPOGRAPHY — Federal Vision for Europe
-   §4.2 of the build brief
-   ==========================================================================
-   Typefaces:
-     Display / headlines: Source Serif 4 (Google Fonts)
-     Body & UI:           Public Sans (Google Fonts)
-     Data / mono:         IBM Plex Mono (Google Fonts)
+   TYPOGRAPHY — Font Loading & Global Settings
+   Federal Vision for Europe
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..900;1,8..60,300..900&family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap');
+/* Using Fontshare: Cabinet Grotesk (Headings) & Satoshi (Body) */
 
-/* --- Base typographic scale --- */
 :root {
-  --font-display:  'Source Serif 4', Georgia, 'Times New Roman', serif;
-  --font-body:     'Public Sans', system-ui, -apple-system, sans-serif;
-  --font-mono:     'IBM Plex Mono', 'Courier New', monospace;
+  /* Font families */
+  --font-display: 'Cabinet Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-body:    'Satoshi', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono:    'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Modular scale — 1.25 ratio (Major Third) */
   --text-xs:   0.75rem;    /* 12px — footnote numerals, metadata */
