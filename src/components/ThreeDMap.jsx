@@ -138,7 +138,8 @@ const ThreeDMap = () => {
     const height = container.clientHeight || 650;
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x1a2c5e, 120, 320);
+    // Deep, seamless atmospheric fog
+    scene.fog = new THREE.FogExp2(0x060f26, 0.0035);
     refs.current.scene = scene;
 
     const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 950);
@@ -157,19 +158,19 @@ const ThreeDMap = () => {
     controls.target.set(0, -4, -8);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.autoRotate = false; // NO DEFAULT ORBIT
+    controls.autoRotate = false;
     controls.autoRotateSpeed = 0.2;
     controls.maxPolarAngle = Math.PI / 2 - 0.05;
     controls.minDistance = 20;
     controls.maxDistance = 400;
     refs.current.controls = controls;
 
-    // --- SKY + HORIZON ---
-    const skyGeo = new THREE.SphereGeometry(600, 32, 16);
+    // --- SKYDOME: Smooth, deep, seamless gradient ---
+    const skyGeo = new THREE.SphereGeometry(650, 32, 16);
     const skyMat = new THREE.ShaderMaterial({
       uniforms: {
-        topColor: { value: new THREE.Color(0x0a1f5c) },
-        bottomColor: { value: new THREE.Color(0xd9b45a) }
+        topColor: { value: new THREE.Color(0x04091a) },
+        bottomColor: { value: new THREE.Color(0x0c1936) }
       },
       vertexShader: `
         varying vec3 vWorldPosition;
@@ -184,8 +185,8 @@ const ThreeDMap = () => {
         uniform vec3 bottomColor;
         varying vec3 vWorldPosition;
         void main() {
-          float h = clamp(normalize(vWorldPosition).y, 0.0, 1.0);
-          gl_FragColor = vec4(mix(bottomColor, topColor, pow(h, 0.55)), 1.0);
+          float h = clamp(normalize(vWorldPosition).y * 0.5 + 0.5, 0.0, 1.0);
+          gl_FragColor = vec4(mix(bottomColor, topColor, pow(h, 0.7)), 1.0);
         }
       `,
       side: THREE.BackSide,
@@ -195,7 +196,7 @@ const ThreeDMap = () => {
     refs.current.skyMat = skyMat;
 
     // --- LIGHTING ---
-    const amb = new THREE.AmbientLight(0xabc0e8, 0.3);
+    const amb = new THREE.AmbientLight(0xabc0e8, 0.45);
     scene.add(amb);
     refs.current.amb = amb;
 
@@ -215,24 +216,23 @@ const ThreeDMap = () => {
     scene.add(rim);
     refs.current.rim = rim;
 
-    // --- ANIMATED OCEAN ---
-    const seaGeo = new THREE.PlaneGeometry(900, 900, 200, 200);
+    // --- DEEP OCEAN: Long gentle swells, velvety non-checkerboard finish ---
+    const seaGeo = new THREE.PlaneGeometry(1000, 1000, 120, 120);
     const seaMat = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
-        uColorDeep: { value: new THREE.Color(0x0a2260) },
-        uColorShallow: { value: new THREE.Color(0x1f479e) }
+        uColorDeep: { value: new THREE.Color(0x06112a) },
+        uColorShallow: { value: new THREE.Color(0x0b1a3d) }
       },
       vertexShader: `
         uniform float uTime;
         varying vec2 vUv;
         varying vec3 vPosition;
-        varying float vElevation;
         void main() {
           vUv = uv;
           vPosition = position;
-          float el = sin(position.x * 0.15 + uTime * 0.6) * 0.35 + sin(position.y * 0.22 + uTime * 0.9) * 0.25;
-          vElevation = el;
+          // Long, low-frequency natural ocean swells
+          float el = sin(position.x * 0.025 + uTime * 0.4) * 0.45 + cos(position.y * 0.018 + uTime * 0.3) * 0.35;
           vec3 pos = position;
           pos.z += el;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
@@ -242,12 +242,10 @@ const ThreeDMap = () => {
         uniform vec3 uColorDeep;
         uniform vec3 uColorShallow;
         varying vec3 vPosition;
-        varying float vElevation;
         void main() {
-          float dist = clamp(length(vPosition.xy) / 450.0, 0.0, 1.0);
-          vec3 color = mix(uColorDeep, uColorShallow, dist);
-          float spec = max(0.0, vElevation) * 0.22;
-          color += vec3(spec * 0.6, spec * 0.7, spec * 1.0);
+          // Smooth radial vignette extending outwards
+          float dist = clamp(length(vPosition.xy) / 500.0, 0.0, 1.0);
+          vec3 color = mix(uColorDeep, uColorShallow, pow(dist, 1.2));
           gl_FragColor = vec4(color, 1.0);
         }
       `
@@ -260,11 +258,11 @@ const ThreeDMap = () => {
 
     // --- BRUSSELS OCEAN REFLECTION GLOW ---
     const bPos = get3DPos(4.35, 50.85);
-    const reflGeo = new THREE.PlaneGeometry(16, 16);
+    const reflGeo = new THREE.PlaneGeometry(18, 18);
     const reflMat = new THREE.MeshBasicMaterial({
       color: 0xffd447,
       transparent: true,
-      opacity: 0.15,
+      opacity: 0.14,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
@@ -317,7 +315,7 @@ const ThreeDMap = () => {
     const capitalDotGeo = new THREE.CircleGeometry(0.35, 16);
     capitalDotGeo.rotateX(-Math.PI / 2);
 
-    // 1. NEIGHBORS (NO HALOS)
+    // 1. NEIGHBORS
     Object.entries(GEO_NEIGHBORS).forEach(([iso, data]) => {
       const group = new THREE.Group();
       group.userData = { iso, name: data.name, isNeighbor: true };
@@ -338,7 +336,7 @@ const ThreeDMap = () => {
       stateGroup.add(group);
     });
 
-    // 2. FEDERAL MEMBER STATES (WITH HALO & CAPITAL DOTS)
+    // 2. FEDERAL MEMBER STATES
     Object.entries(GEO_FED).forEach(([iso, data]) => {
       const founding = FOUNDING.has(iso);
       const depth = founding ? 3.0 : 2.3;
@@ -372,7 +370,7 @@ const ThreeDMap = () => {
         group.add(new THREE.LineSegments(edgesGeo, new THREE.LineBasicMaterial({ color: 0xffd447, transparent: true, opacity: 0.85 })));
       });
 
-      // Capital Marker (Flush on surface, not in pickables)
+      // Capital Marker
       if (CAPITALS[iso] && CAPITALS[iso].lon) {
         const p3 = get3DPos(CAPITALS[iso].lon, CAPITALS[iso].lat);
         const dotMesh = new THREE.Mesh(capitalDotGeo, capitalDotMat);
@@ -533,7 +531,7 @@ const ThreeDMap = () => {
 
   const buttonStyle = () => ({
     padding: '8px 12px',
-    background: 'rgba(15, 23, 42, 0.75)',
+    background: 'rgba(12, 25, 54, 0.75)',
     color: '#cbd5e1',
     border: '1px solid rgba(255, 255, 255, 0.15)',
     borderRadius: '6px',
@@ -551,13 +549,13 @@ const ThreeDMap = () => {
   });
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '650px', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid rgba(255,212,71,0.35)', background: '#071845', paddingBottom: '52px' }}>
+    <div style={{ position: 'relative', width: '100%', height: '650px', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid rgba(255,212,71,0.25)', background: '#050c1e', paddingBottom: '52px' }}>
       <div ref={mountRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
 
       <div
         ref={tooltipRef}
         style={{
-          position: 'absolute', zIndex: 50, pointerEvents: 'none', background: 'rgba(7, 24, 69, 0.95)', color: '#ffffff',
+          position: 'absolute', zIndex: 50, pointerEvents: 'none', background: 'rgba(5, 12, 30, 0.95)', color: '#ffffff',
           padding: '12px 16px', borderRadius: '6px', fontFamily: 'var(--font-body)', fontSize: '13px', opacity: 0, transition: 'opacity 0.1s ease',
           boxShadow: '0 14px 36px rgba(0,0,0,0.75)', border: '1px solid rgba(255,212,71,0.5)', borderTop: '3px solid #ffd447',
           minWidth: '170px', maxWidth: '250px', backdropFilter: 'blur(10px)'
@@ -567,8 +565,8 @@ const ThreeDMap = () => {
       {/* Title Header Overlay */}
       <div style={{
         position: 'absolute', top: '16px', left: '16px', padding: '16px 22px', pointerEvents: 'none',
-        background: 'rgba(7, 24, 69, 0.88)', backdropFilter: 'blur(16px)', borderRadius: '8px',
-        border: '1px solid rgba(255, 212, 71, 0.35)', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)'
+        background: 'rgba(5, 12, 30, 0.88)', backdropFilter: 'blur(16px)', borderRadius: '8px',
+        border: '1px solid rgba(255, 212, 71, 0.3)', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)'
       }}>
         <div style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', fontSize: '10px', color: '#ffd447', fontWeight: 700, marginBottom: '4px' }}>
           Interactive Cartography &middot; Sovereign Federation
@@ -584,7 +582,7 @@ const ThreeDMap = () => {
       {/* Clean Control Bar: Zoom +, Zoom -, Reset */}
       <div style={{
         position: 'absolute', bottom: '68px', right: '16px', zIndex: 100, display: 'flex', gap: '6px',
-        background: 'rgba(7, 24, 69, 0.88)', padding: '8px', borderRadius: '8px', backdropFilter: 'blur(16px)',
+        background: 'rgba(5, 12, 30, 0.88)', padding: '8px', borderRadius: '8px', backdropFilter: 'blur(16px)',
         border: '1px solid rgba(255,212,71,0.25)', boxShadow: '0 8px 24px rgba(0,0,0,0.4)'
       }}>
         <button onClick={zoomIn} style={buttonStyle()} title="Zoom In">+</button>
