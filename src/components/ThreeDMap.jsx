@@ -64,15 +64,6 @@ function proj(lon, lat){
   const rad = lat * Math.PI/180, rad0 = LAT0 * Math.PI/180;
   const my = Math.log(Math.tan(Math.PI/4 + rad/2));
   const my0 = Math.log(Math.tan(Math.PI/4 + rad0/2));
-  // Notice - (my - my0) so lat > LAT0 (North) gives NEGATIVE 2D Y
-  // Then ExtrudeGeometry + rotateX(-pi/2) transforms 2D Y to 3D Z = - (2D Y) = POSITIVE (North)!
-  // Wait! Let's check:
-  // Sweden (lat 65 > 50): my > my0.
-  // If z = - (my - my0) * 100 => z is NEGATIVE.
-  // 2D Y is NEGATIVE. Extrude + rotateX(-pi/2) -> 3D Z = - 2D Y = POSITIVE 3D Z (away from camera / TOP of screen / NORTH)!
-  // Cyprus (lat 35.1 < 50): my < my0.
-  // z = - (my - my0) * 100 => z is POSITIVE.
-  // 2D Y is POSITIVE. Extrude + rotateX(-pi/2) -> 3D Z = - 2D Y = NEGATIVE 3D Z (towards camera / BOTTOM of screen / SOUTH)!
   const z = -(my - my0) * (180/Math.PI) * SCALE;
   return { x, z };
 }
@@ -116,9 +107,9 @@ const ThreeDMap = () => {
     const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 800);
     refs.current.camera = camera;
 
-    // FIXED GEOGRAPHIC MAP VIEW: Looking straight down at Europe (North = Top, South = Bottom)
-    camera.position.set(0, 125, 45);
-    camera.lookAt(0, 0, -10);
+    // GEOGRAPHIC MAP VIEW: Shifted slightly South to give southern countries (Cyprus, Malta, Greece, Italy, Spain) ample breathing room
+    camera.position.set(0, 135, 30);
+    camera.lookAt(0, -6, -8);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
@@ -212,7 +203,6 @@ const ThreeDMap = () => {
         new THREE.CylinderGeometry(1.1, 1.4, 2.2, 20),
         new THREE.MeshStandardMaterial({ color: L_COLOR, roughness: 0.55, metalness: 0.12, emissive: 0x071845, emissiveIntensity: 0.15 })
       );
-      // 3D Z for cylinder = -p.z so lat < LAT0 (South) sits near South of map
       island.position.set(p.x, 1.1, -p.z);
       island.castShadow = true; island.receiveShadow = true;
       island.userData = g.userData;
@@ -233,8 +223,6 @@ const ThreeDMap = () => {
     // Brussels Federal Capitol
     const bx = proj(4.35, 50.85);
     const capitol = new THREE.Group();
-
-    // 3D Z for Brussels = -bx.z
     const bz = -bx.z;
 
     const plat = new THREE.Mesh(
@@ -280,7 +268,7 @@ const ThreeDMap = () => {
     beam.position.set(bx.x, 25, bz);
     scene.add(beam);
 
-    // Hover Raycasting
+    // Hover Raycasting with Smart Tooltip Positioning
     const ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
     let hovered = null;
 
@@ -293,8 +281,11 @@ const ThreeDMap = () => {
 
     const onPointerMove = (e) => {
       const rect = renderer.domElement.getBoundingClientRect();
-      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      mouse.x = (mouseX / rect.width) * 2 - 1;
+      mouse.y = -(mouseY / rect.height) * 2 + 1;
 
       ray.setFromCamera(mouse, camera);
       const hits = ray.intersectObjects(pickables, false);
@@ -309,10 +300,25 @@ const ThreeDMap = () => {
         const cap = ud.capital;
         const tt = tooltipRef.current;
         if (tt) {
-          tt.innerHTML = `<div class="t-name">${ud.name}</div><div class="t-meta">${cap ? `Capital: ${cap.c} &middot; Pop. ${cap.pop}<br>` : ''}${ud.founding ? 'Founding member state' : 'Accession state'}</div>`;
+          tt.innerHTML = `<div style="font-weight:700;font-size:14px;color:#ffd447;margin-bottom:2px;">${ud.name}</div><div style="font-size:12px;color:var(--text-secondary);line-height:1.4;">${cap ? `Capital: <strong>${cap.c}</strong> &middot; Pop. ${cap.pop}<br>` : ''}${ud.founding ? 'Founding member state' : 'Accession state'}</div>`;
           tt.style.opacity = '1';
-          tt.style.left = (e.clientX - rect.left + 16) + 'px';
-          tt.style.top = (e.clientY - rect.top + 16) + 'px';
+
+          // SMART TOOLTIP POSITIONING: Flip vertically if near bottom, flip horizontally if near right
+          const ttHeight = tt.offsetHeight || 75;
+          const ttWidth = tt.offsetWidth || 180;
+
+          let leftPos = mouseX + 16;
+          let topPos = mouseY + 16;
+
+          if (mouseY > height - ttHeight - 25) {
+            topPos = mouseY - ttHeight - 12;
+          }
+          if (mouseX > width - ttWidth - 25) {
+            leftPos = mouseX - ttWidth - 12;
+          }
+
+          tt.style.left = `${Math.max(10, leftPos)}px`;
+          tt.style.top = `${Math.max(10, topPos)}px`;
         }
         container.style.cursor = 'pointer';
       } else {
@@ -366,32 +372,33 @@ const ThreeDMap = () => {
     <div style={{ position: 'relative', width: '100%', height: '580px', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid rgba(255,212,71,0.25)', background: '#071845' }}>
       <div ref={mountRef} style={{ width: '100%', height: '100%' }} />
 
-      {/* Tooltip Overlay */}
+      {/* Tooltip Overlay - High Z-Index & Smart Overflow Safety */}
       <div
         ref={tooltipRef}
         style={{
-          position: 'absolute', zIndex: 20, pointerEvents: 'none',
-          background: 'var(--paper)', color: 'var(--text-primary)',
-          padding: '10px 14px', borderRadius: '4px',
-          fontFamily: 'var(--font-body)', fontSize: '13px', opacity: 0, transition: 'opacity 0.12s',
-          boxShadow: '0 8px 28px rgba(0,0,0,0.4)', borderTop: '3px solid #ffd447', maxWidth: '240px'
+          position: 'absolute', zIndex: 50, pointerEvents: 'none',
+          background: '#0a1d4a', color: '#f4f1e8',
+          padding: '10px 14px', borderRadius: '6px',
+          fontFamily: 'var(--font-body)', fontSize: '13px', opacity: 0, transition: 'opacity 0.1s ease',
+          boxShadow: '0 12px 32px rgba(0,0,0,0.6)', border: '1px solid rgba(255,212,71,0.4)',
+          borderTop: '3px solid #ffd447', minWidth: '160px', maxWidth: '240px'
         }}
       />
 
-      {/* Top Left Title Overlay */}
+      {/* Top Left Title & Hint Overlay */}
       <div style={{
         position: 'absolute', top: 0, left: 0, padding: '24px 28px', pointerEvents: 'none',
         background: 'linear-gradient(180deg, rgba(7,24,69,0.9) 0%, rgba(7,24,69,0) 100%)'
       }}>
-        <div style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.2em', textTransform: 'uppercase', fontSize: '11px', color: '#ffd447', fontWeight: 700, marginBottom: '4px' }}>
-          Cartography
+        <div style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', fontSize: '11px', color: '#ffd447', fontWeight: 700, marginBottom: '4px' }}>
+          Interactive Cartography &middot; Hover state for details
         </div>
         <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: 'var(--paper)', fontWeight: 600, margin: 0 }}>
           The United States of <em style={{ fontStyle: 'italic', color: '#ffd447' }}>Europe</em>
         </h3>
       </div>
 
-      {/* Top Right Revolving 12-Star Emblem (Positioned directly in top-right corner of map box) */}
+      {/* Top Right Revolving 12-Star Emblem */}
       <div style={{
         position: 'absolute', top: '24px', right: '28px', pointerEvents: 'none', zIndex: 10,
         display: 'flex', flexDirection: 'column', alignItems: 'center'
@@ -412,15 +419,6 @@ const ThreeDMap = () => {
             );
           })}
         </svg>
-      </div>
-
-      {/* Subtle Hint */}
-      <div style={{
-        position: 'absolute', bottom: '16px', left: '50%', transform: 'translateX(-50%)',
-        fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase',
-        color: 'rgba(244,241,232,0.45)', pointerEvents: 'none'
-      }}>
-        Hover a state to inspect capital &amp; population
       </div>
     </div>
   );
