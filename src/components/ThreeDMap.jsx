@@ -321,15 +321,6 @@ const ThreeDMap = () => {
     }
     ringStars.position.set(bPos.x, 7.8, bPos.z);
     capitol.add(ringStars);
-    scene.add(capitol);
-
-    const beam = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.15, 1.2, 48, 16, 1, true),
-      new THREE.MeshBasicMaterial({ color: 0xffd447, transparent: true, opacity: 0.09, side: THREE.DoubleSide })
-    );
-    beam.position.set(bPos.x, 27, bPos.z);
-    scene.add(beam);
-
     // Warm Gold Light over Capitol
     const capLight = new THREE.PointLight(0xffd447, 1.5, 35);
     capLight.position.set(bPos.x, 10, bPos.z);
@@ -420,7 +411,6 @@ const ThreeDMap = () => {
       ringStars.rotation.y = t * 0.4;
       ringStars.children.forEach((s, i) => s.rotation.y = t * 1.5 + i);
 
-      beam.material.opacity = 0.07 + Math.sin(t * 1.5) * 0.03;
       plat.material.emissiveIntensity = 0.3 + Math.sin(t * 2) * 0.1;
 
       renderer.render(scene, camera);
