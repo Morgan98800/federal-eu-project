@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-// Real GeoJSON Border Data (Low-res, Natural Earth)
+// Real GeoJSON Border Data (Low-res, Natural Earth) - 26 Sovereign Federal Member States
 const GEO = {
   FRA:{name:"France",coords:[[[9.560016,42.152492],[9.229752,41.380007],[8.775723,41.583612],[8.544213,42.256517],[8.746009,42.628122],[9.390001,43.009985],[9.560016,42.152492]],[[3.588184,50.378992],[4.286023,49.907497],[4.799222,49.985373],[5.674052,49.529484],[5.897759,49.442667],[6.18632,49.463803],[6.65823,49.201958],[8.099279,49.017784],[7.593676,48.333019],[7.466759,47.620582],[7.192202,47.449766],[6.736571,47.541801],[6.768714,47.287708],[6.037389,46.725779],[6.022609,46.27299],[6.5001,46.429673],[6.843593,45.991147],[6.802355,45.70858],[7.096652,45.333099],[6.749955,45.028518],[7.007562,44.254767],[7.549596,44.127901],[7.435185,43.693845],[6.529245,43.128892],[4.556963,43.399651],[3.100411,43.075201],[2.985999,42.473015],[1.826793,42.343385],[0.701591,42.795734],[0.338047,42.579546],[-1.502771,43.034014],[-1.901351,43.422802],[-1.384225,44.02261],[-1.193798,46.014918],[-2.225724,47.064363],[-2.963276,47.570327],[-4.491555,47.954954],[-4.59235,48.68416],[-3.295814,48.901692],[-1.616511,48.644421],[-1.933494,49.776342],[-0.989469,49.347376],[1.338761,50.127173],[1.639001,50.946606],[2.513573,51.148506],[2.658422,50.796848],[3.123252,50.780363],[3.588184,50.378992]]]},
   DEU:{name:"Germany",coords:[[[9.921906,54.983104],[9.93958,54.596642],[10.950112,54.363607],[10.939467,54.008693],[11.956252,54.196486],[12.51844,54.470371],[13.647467,54.075511],[14.119686,53.757029],[14.353315,53.248171],[14.074521,52.981263],[14.4376,52.62485],[14.685026,52.089947],[14.607098,51.745188],[15.016996,51.106674],[14.570718,51.002339],[14.307013,51.117268],[14.056228,50.926918],[13.338132,50.733234],[12.966837,50.484076],[12.240111,50.266338],[12.415191,49.969121],[12.521024,49.547415],[13.031329,49.307068],[13.595946,48.877172],[13.243357,48.416115],[12.884103,48.289146],[13.025851,47.637584],[12.932627,47.467646],[12.62076,47.672388],[12.141357,47.703083],[11.426414,47.523766],[10.544504,47.566399],[10.402084,47.302488],[9.896068,47.580197],[9.594226,47.525058],[8.522612,47.830828],[8.317301,47.61358],[7.466759,47.620582],[7.593676,48.333019],[8.099279,49.017784],[6.65823,49.201958],[6.18632,49.463803],[6.242751,49.902226],[6.043073,50.128052],[6.156658,50.803721],[5.988658,51.851616],[6.589397,51.852029],[6.84287,52.22844],[7.092053,53.144043],[6.90514,53.482162],[7.100425,53.693932],[7.936239,53.748296],[8.121706,53.527792],[8.800734,54.020786],[8.572118,54.395646],[8.526229,54.962744],[9.282049,54.830865],[9.921906,54.983104]]]},
@@ -27,15 +27,15 @@ const GEO = {
   GRC:{name:"Greece",coords:[[[23.69998,35.705004],[24.246665,35.368022],[25.025015,35.424996],[25.769208,35.354018],[25.745023,35.179998],[26.290003,35.29999],[26.164998,35.004995],[24.724982,34.919988],[24.735007,35.084991],[23.514978,35.279992],[23.69998,35.705004]],[[26.604196,41.562115],[26.294602,40.936261],[26.056942,40.824123],[25.447677,40.852545],[24.925848,40.947062],[23.714811,40.687129],[24.407999,40.124993],[23.899968,39.962006],[23.342999,39.960998],[22.813988,40.476005],[22.626299,40.256561],[22.849748,39.659311],[23.350027,39.190011],[22.973099,38.970903],[23.530016,38.510001],[24.025025,38.219993],[24.040011,37.655015],[23.115003,37.920011],[23.409972,37.409991],[22.774972,37.30501],[23.154225,36.422506],[22.490028,36.41],[21.670026,36.844986],[21.295011,37.644989],[21.120034,38.310323],[20.730032,38.769985],[20.217712,39.340235],[20.150016,39.624998],[20.615,40.110007],[20.674997,40.435],[20.99999,40.580004],[21.02004,40.842727],[21.674161,40.931275],[22.055378,41.149866],[22.597308,41.130487],[22.76177,41.3048],[22.952377,41.337994],[23.692074,41.309081],[24.492645,41.583896],[25.197201,41.234486],[26.106138,41.328899],[26.117042,41.826905],[26.604196,41.562115]]]},
   LTU:{name:"Lithuania",coords:[[[22.731099,54.327537],[22.651052,54.582741],[22.757764,54.856574],[22.315724,55.015299],[21.268449,55.190482],[21.0558,56.031076],[22.201157,56.337802],[23.878264,56.273671],[24.860684,56.372528],[25.000934,56.164531],[25.533047,56.100297],[26.494331,55.615107],[26.588279,55.167176],[25.768433,54.846963],[25.536354,54.282423],[24.450684,53.905702],[23.484128,53.912498],[23.243987,54.220567],[22.731099,54.327537]]]},
   LVA:{name:"Latvia",coords:[[[21.0558,56.031076],[21.090424,56.783873],[21.581866,57.411871],[22.524341,57.753374],[23.318453,57.006236],[24.12073,57.025693],[24.312863,57.793424],[25.164594,57.970157],[25.60281,57.847529],[26.463532,57.476389],[27.288185,57.474528],[27.770016,57.244258],[27.855282,56.759326],[28.176709,56.16913],[27.10246,55.783314],[26.494331,55.615107],[25.533047,56.100297],[25.000934,56.164531],[24.860684,56.372528],[23.878264,56.273671],[22.201157,56.337802],[21.0558,56.031076]]]},
-  EST:{name:"Estonia",coords:[[[24.312863,57.793424],[24.428928,58.383413],[24.061198,58.257375],[23.42656,58.612753],[23.339795,59.18724],[24.604214,59.465854],[25.864189,59.61109],[26.949136,59.445803],[27.981114,59.475388],[28.131699,59.300825],[27.420166,58.724581],[27.716686,57.791899],[27.288185,57.474528],[26.463532,57.476389],[25.60281,57.847529],[25.164594,57.970157],[24.312863,57.793424]]]}
+  EST:{name:"Estonia",coords:[[[24.312863,57.793424],[24.428928,58.383413],[24.061198,58.257375],[23.42656,58.612753],[23.339795,59.18724],[24.604214,59.465854],[25.864189,59.61109],[26.949136,59.445803],[27.981114,59.475388],[28.131699,59.300825],[27.420166,58.724581],[27.716686,57.791899],[27.288185,57.474528],[26.463532,57.476389],[25.60281,57.847529],[25.164594,57.970157],[24.312863,57.793424]]]},
+  CYP:{name:"Cyprus",coords:[[[32.2686,35.1325],[32.4418,34.7249],[33.1500,34.5714],[33.7225,34.9723],[34.5813,35.7050],[33.9000,35.4000],[33.3000,35.1800],[32.7000,35.1500],[32.2686,35.1325]]]}
 };
 
 const FOUNDING = new Set(["FRA","DEU","ITA","NLD","BEL","LUX"]);
 
-// Micro-states: Real geographic coordinates (Malta & Cyprus in East Med)
+// Micro-states (Malta)
 const MICRO = {
-  MLT:{name:"Malta", lon:14.42, lat:35.9, pop:"0.53M", cap:"Valletta"},
-  CYP:{name:"Cyprus", lon:33.2, lat:35.1, pop:"0.92M", cap:"Nicosia"}
+  MLT:{name:"Malta", lon:14.42, lat:35.9, pop:"0.53M", cap:"Valletta"}
 };
 
 const CAPITALS = {
@@ -51,10 +51,10 @@ const CAPITALS = {
   SWE:{c:"Stockholm",pop:"10.5M"}, FIN:{c:"Helsinki",pop:"5.5M"},
   IRL:{c:"Dublin",pop:"5.1M"}, GRC:{c:"Athens",pop:"10.4M"},
   LTU:{c:"Vilnius",pop:"2.8M"}, LVA:{c:"Riga",pop:"1.9M"},
-  EST:{c:"Tallinn",pop:"1.4M"}
+  EST:{c:"Tallinn",pop:"1.4M"}, CYP:{c:"Nicosia",pop:"0.92M"}
 };
 
-// STANDARD MAP PROJECTION:
+// STANDARD MERCATOR MAP PROJECTION:
 // North -> -Z (Top), South -> +Z (Bottom)
 // East -> +X (Right), West -> -X (Left)
 const LON0 = 12, LAT0 = 50, SCALE = 1.75;
@@ -64,7 +64,16 @@ function proj(lon, lat){
   const rad = lat * Math.PI/180, rad0 = LAT0 * Math.PI/180;
   const my = Math.log(Math.tan(Math.PI/4 + rad/2));
   const my0 = Math.log(Math.tan(Math.PI/4 + rad0/2));
-  const z = (my - my0) * (180/Math.PI) * SCALE;
+  // Notice - (my - my0) so lat > LAT0 (North) gives NEGATIVE 2D Y
+  // Then ExtrudeGeometry + rotateX(-pi/2) transforms 2D Y to 3D Z = - (2D Y) = POSITIVE (North)!
+  // Wait! Let's check:
+  // Sweden (lat 65 > 50): my > my0.
+  // If z = - (my - my0) * 100 => z is NEGATIVE.
+  // 2D Y is NEGATIVE. Extrude + rotateX(-pi/2) -> 3D Z = - 2D Y = POSITIVE 3D Z (away from camera / TOP of screen / NORTH)!
+  // Cyprus (lat 35.1 < 50): my < my0.
+  // z = - (my - my0) * 100 => z is POSITIVE.
+  // 2D Y is POSITIVE. Extrude + rotateX(-pi/2) -> 3D Z = - 2D Y = NEGATIVE 3D Z (towards camera / BOTTOM of screen / SOUTH)!
+  const z = -(my - my0) * (180/Math.PI) * SCALE;
   return { x, z };
 }
 
@@ -154,7 +163,7 @@ const ThreeDMap = () => {
     const stateGroup = new THREE.Group();
     scene.add(stateGroup);
 
-    // Build Countries
+    // Build Countries (Includes Cyprus as extruded 3D state in SE Med)
     Object.entries(GEO).forEach(([iso, data]) => {
       const founding = FOUNDING.has(iso);
       const depth = founding ? 3.0 : 2.3;
@@ -193,8 +202,7 @@ const ThreeDMap = () => {
       stateGroup.add(group);
     });
 
-    // Build Micro-states (Malta, Cyprus in South-East Mediterranean)
-    // IMPORTANT FIX: Micro-states 3D Z must be -p.z to match extruded 3D geometry!
+    // Build Micro-states (Malta in Mediterranean)
     Object.entries(MICRO).forEach(([iso, m]) => {
       const p = proj(m.lon, m.lat);
       const g = new THREE.Group();
@@ -204,7 +212,7 @@ const ThreeDMap = () => {
         new THREE.CylinderGeometry(1.1, 1.4, 2.2, 20),
         new THREE.MeshStandardMaterial({ color: L_COLOR, roughness: 0.55, metalness: 0.12, emissive: 0x071845, emissiveIntensity: 0.15 })
       );
-      // Corrected 3D Z: -p.z
+      // 3D Z for cylinder = -p.z so lat < LAT0 (South) sits near South of map
       island.position.set(p.x, 1.1, -p.z);
       island.castShadow = true; island.receiveShadow = true;
       island.userData = g.userData;
@@ -226,17 +234,20 @@ const ThreeDMap = () => {
     const bx = proj(4.35, 50.85);
     const capitol = new THREE.Group();
 
+    // 3D Z for Brussels = -bx.z
+    const bz = -bx.z;
+
     const plat = new THREE.Mesh(
       new THREE.CylinderGeometry(3.0, 3.4, 0.7, 6),
       new THREE.MeshStandardMaterial({ color: 0xffd447, emissive: 0xffd447, emissiveIntensity: 0.25, roughness: 0.35, metalness: 0.5 })
     );
-    plat.position.set(bx.x, 3.4, -bx.z); plat.castShadow = true; capitol.add(plat);
+    plat.position.set(bx.x, 3.4, bz); plat.castShadow = true; capitol.add(plat);
 
     const dome = new THREE.Mesh(
       new THREE.SphereGeometry(1.7, 32, 24, 0, Math.PI*2, 0, Math.PI/2),
       new THREE.MeshStandardMaterial({ color: 0xf4f1e8, roughness: 0.3, metalness: 0.3 })
     );
-    dome.position.set(bx.x, 3.75, -bx.z); dome.castShadow = true; capitol.add(dome);
+    dome.position.set(bx.x, 3.75, bz); dome.castShadow = true; capitol.add(dome);
 
     for (let i=0; i<8; i++) {
       const a = i/8 * Math.PI*2;
@@ -244,7 +255,7 @@ const ThreeDMap = () => {
         new THREE.CylinderGeometry(0.18, 0.18, 2.0, 10),
         new THREE.MeshStandardMaterial({ color: 0xf4f1e8, roughness: 0.4 })
       );
-      col.position.set(bx.x + Math.cos(a)*2.1, 4.4, -bx.z + Math.sin(a)*2.1);
+      col.position.set(bx.x + Math.cos(a)*2.1, 4.4, bz + Math.sin(a)*2.1);
       col.castShadow = true; capitol.add(col);
     }
 
@@ -258,7 +269,7 @@ const ThreeDMap = () => {
       s.position.set(Math.cos(a)*4.0, 0, Math.sin(a)*4.0);
       ringStars.add(s);
     }
-    ringStars.position.set(bx.x, 7.5, -bx.z);
+    ringStars.position.set(bx.x, 7.5, bz);
     capitol.add(ringStars);
     scene.add(capitol);
 
@@ -266,7 +277,7 @@ const ThreeDMap = () => {
       new THREE.CylinderGeometry(0.12, 1.0, 44, 16, 1, true),
       new THREE.MeshBasicMaterial({ color: 0xffd447, transparent: true, opacity: 0.07, side: THREE.DoubleSide })
     );
-    beam.position.set(bx.x, 25, -bx.z);
+    beam.position.set(bx.x, 25, bz);
     scene.add(beam);
 
     // Hover Raycasting
