@@ -565,24 +565,46 @@ const ThreeDMap = () => {
       {/* Title Header Overlay */}
       <div style={{
         position: 'absolute', top: '16px', left: '16px', padding: '16px 22px', pointerEvents: 'none',
-        background: 'rgba(5, 12, 30, 0.88)', backdropFilter: 'blur(16px)', borderRadius: '8px',
-        border: '1px solid rgba(255, 212, 71, 0.3)', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)'
+        background: 'rgba(5, 12, 30, 0.92)', backdropFilter: 'blur(16px)', borderRadius: '8px',
+        border: '1px solid rgba(255, 212, 71, 0.35)', boxShadow: '0 12px 36px rgba(0, 0, 0, 0.6)'
       }}>
-        <div style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', fontSize: '10px', color: '#ffd447', fontWeight: 700, marginBottom: '4px' }}>
-          Interactive Cartography &middot; Sovereign Federation
+        <div style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', fontSize: '10px', color: '#ffd447', fontWeight: 700, marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ffd447' }} />
+          CARTOGRAPHIC PROJECTION &middot; 50.85° N, 4.35° E
         </div>
-        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: '#ffffff', fontWeight: 700, margin: 0, letterSpacing: '-0.01em' }}>
+        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '24px', color: '#ffffff', fontWeight: 700, margin: 0, letterSpacing: '-0.01em' }}>
           The United States of <span style={{ color: '#ffd447' }}>Europe</span>
         </h3>
-        <div style={{ fontFamily: 'var(--font-body)', fontSize: '11px', color: '#94a3b8', marginTop: '4px' }}>
-          The federation within the wider continent
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: '#94a3b8', marginTop: '6px', letterSpacing: '0.04em' }}>
+          26 Federal Member States &bull; Brussels District &bull; Neighboring Sovereigns
+        </div>
+      </div>
+
+      {/* Cartographic Scale & Legend Bar */}
+      <div style={{
+        position: 'absolute', bottom: '16px', left: '16px', pointerEvents: 'none', zIndex: 10,
+        display: 'flex', alignItems: 'center', gap: '16px', background: 'rgba(5, 12, 30, 0.85)',
+        padding: '6px 14px', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)',
+        fontFamily: 'var(--font-mono)', fontSize: '10px', color: '#cbd5e1'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span style={{ width: '12px', height: '12px', background: '#2f57c9', border: '1px solid #ffd447', borderRadius: '2px' }} />
+          <span>Founding Member</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span style={{ width: '12px', height: '12px', background: '#6d8fe8', border: '1px solid #ffd447', borderRadius: '2px' }} />
+          <span>Accession State</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span style={{ width: '12px', height: '12px', background: '#2a3a63', borderRadius: '2px' }} />
+          <span>Non-Federation Neighbor</span>
         </div>
       </div>
 
       {/* Clean Control Bar: Zoom +, Zoom -, Reset */}
       <div style={{
-        position: 'absolute', bottom: '68px', right: '16px', zIndex: 100, display: 'flex', gap: '6px',
-        background: 'rgba(5, 12, 30, 0.88)', padding: '8px', borderRadius: '8px', backdropFilter: 'blur(16px)',
+        position: 'absolute', bottom: '16px', right: '16px', zIndex: 100, display: 'flex', gap: '6px',
+        background: 'rgba(5, 12, 30, 0.88)', padding: '6px', borderRadius: '6px', backdropFilter: 'blur(16px)',
         border: '1px solid rgba(255,212,71,0.25)', boxShadow: '0 8px 24px rgba(0,0,0,0.4)'
       }}>
         <button onClick={zoomIn} style={buttonStyle()} title="Zoom In">+</button>
@@ -592,7 +614,7 @@ const ThreeDMap = () => {
 
       {/* EU Flag 12-Star Rotating Emblem */}
       <div style={{ position: 'absolute', top: '20px', right: '24px', pointerEvents: 'none', zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <svg width="56" height="56" viewBox="0 0 100 100" style={{ animation: 'euStarSpin 12s linear infinite' }}>
+        <svg width="52" height="52" viewBox="0 0 100 100" style={{ animation: 'euStarSpin 12s linear infinite' }}>
           <style>{`@keyframes euStarSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
           {Array.from({ length: 12 }).map((_, i) => {
             const angle = (i / 12) * Math.PI * 2 - Math.PI / 2;
