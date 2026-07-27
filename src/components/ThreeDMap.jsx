@@ -54,9 +54,12 @@ const CAPITALS = {
   EST:{c:"Tallinn",pop:"1.4M"}, CYP:{c:"Nicosia",pop:"0.92M"}
 };
 
-// STANDARD MERCATOR MAP PROJECTION:
-// North -> -Z (Top), South -> +Z (Bottom)
-// East -> +X (Right), West -> -X (Left)
+// STANDARD MERCATOR PROJECTION:
+// LON0 = 12, LAT0 = 50.
+// lat > LAT0 (North) -> my > my0 -> z is POSITIVE.
+// ExtrudeGeometry + rotateX(-Math.PI/2) transforms 2D Y (z) to 3D Z = - 2D Y = NEGATIVE (Away from camera / TOP of screen / NORTH)!
+// lat < LAT0 (South) -> my < my0 -> z is NEGATIVE.
+// ExtrudeGeometry + rotateX(-Math.PI/2) transforms 2D Y (z) to 3D Z = - 2D Y = POSITIVE (Towards camera / BOTTOM of screen / SOUTH)!
 const LON0 = 12, LAT0 = 50, SCALE = 1.75;
 
 function proj(lon, lat){
@@ -64,8 +67,15 @@ function proj(lon, lat){
   const rad = lat * Math.PI/180, rad0 = LAT0 * Math.PI/180;
   const my = Math.log(Math.tan(Math.PI/4 + rad/2));
   const my0 = Math.log(Math.tan(Math.PI/4 + rad0/2));
-  const z = -(my - my0) * (180/Math.PI) * SCALE;
+  const z = (my - my0) * (180/Math.PI) * SCALE;
   return { x, z };
+}
+
+// 3D Z converter for direct objects (Brussels, Beams, Micro-states):
+// Converts proj.z into 3D Z: 3D Z = - proj.z
+function get3DPos(lon, lat) {
+  const p = proj(lon, lat);
+  return { x: p.x, z: -p.z };
 }
 
 const F_COLOR = 0x2f57c9;
@@ -107,9 +117,11 @@ const ThreeDMap = () => {
     const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 800);
     refs.current.camera = camera;
 
-    // GEOGRAPHIC MAP VIEW: Shifted slightly South to give southern countries (Cyprus, Malta, Greece, Italy, Spain) ample breathing room
-    camera.position.set(0, 135, 30);
-    camera.lookAt(0, -6, -8);
+    // FIXED GEOGRAPHIC MAP VIEW:
+    // North (Scandinavia) = Top of screen (-Z)
+    // South (Italy/Greece/Spain/Cyprus) = Bottom of screen (+Z)
+    camera.position.set(0, 125, 45);
+    camera.lookAt(0, 0, -10);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
@@ -195,7 +207,7 @@ const ThreeDMap = () => {
 
     // Build Micro-states (Malta in Mediterranean)
     Object.entries(MICRO).forEach(([iso, m]) => {
-      const p = proj(m.lon, m.lat);
+      const pos3d = get3DPos(m.lon, m.lat);
       const g = new THREE.Group();
       g.userData = { iso, name: m.name, founding: false, capital: { c: m.cap, pop: m.pop } };
 
@@ -203,7 +215,7 @@ const ThreeDMap = () => {
         new THREE.CylinderGeometry(1.1, 1.4, 2.2, 20),
         new THREE.MeshStandardMaterial({ color: L_COLOR, roughness: 0.55, metalness: 0.12, emissive: 0x071845, emissiveIntensity: 0.15 })
       );
-      island.position.set(p.x, 1.1, -p.z);
+      island.position.set(pos3d.x, 1.1, pos3d.z);
       island.castShadow = true; island.receiveShadow = true;
       island.userData = g.userData;
       g.userData.material = island.material;
@@ -215,27 +227,26 @@ const ThreeDMap = () => {
         new THREE.MeshStandardMaterial({ color: 0xffd447, emissive: 0xffd447, emissiveIntensity: 0.6, roughness: 0.3, metalness: 0.4 })
       );
       halo.rotation.x = -Math.PI/2;
-      halo.position.set(p.x, 0.3, -p.z);
+      halo.position.set(pos3d.x, 0.3, pos3d.z);
       g.add(halo);
       stateGroup.add(g);
     });
 
     // Brussels Federal Capitol
-    const bx = proj(4.35, 50.85);
+    const bPos = get3DPos(4.35, 50.85);
     const capitol = new THREE.Group();
-    const bz = -bx.z;
 
     const plat = new THREE.Mesh(
       new THREE.CylinderGeometry(3.0, 3.4, 0.7, 6),
       new THREE.MeshStandardMaterial({ color: 0xffd447, emissive: 0xffd447, emissiveIntensity: 0.25, roughness: 0.35, metalness: 0.5 })
     );
-    plat.position.set(bx.x, 3.4, bz); plat.castShadow = true; capitol.add(plat);
+    plat.position.set(bPos.x, 3.4, bPos.z); plat.castShadow = true; capitol.add(plat);
 
     const dome = new THREE.Mesh(
       new THREE.SphereGeometry(1.7, 32, 24, 0, Math.PI*2, 0, Math.PI/2),
       new THREE.MeshStandardMaterial({ color: 0xf4f1e8, roughness: 0.3, metalness: 0.3 })
     );
-    dome.position.set(bx.x, 3.75, bz); dome.castShadow = true; capitol.add(dome);
+    dome.position.set(bPos.x, 3.75, bPos.z); dome.castShadow = true; capitol.add(dome);
 
     for (let i=0; i<8; i++) {
       const a = i/8 * Math.PI*2;
@@ -243,7 +254,7 @@ const ThreeDMap = () => {
         new THREE.CylinderGeometry(0.18, 0.18, 2.0, 10),
         new THREE.MeshStandardMaterial({ color: 0xf4f1e8, roughness: 0.4 })
       );
-      col.position.set(bx.x + Math.cos(a)*2.1, 4.4, bz + Math.sin(a)*2.1);
+      col.position.set(bPos.x + Math.cos(a)*2.1, 4.4, bPos.z + Math.sin(a)*2.1);
       col.castShadow = true; capitol.add(col);
     }
 
@@ -257,7 +268,7 @@ const ThreeDMap = () => {
       s.position.set(Math.cos(a)*4.0, 0, Math.sin(a)*4.0);
       ringStars.add(s);
     }
-    ringStars.position.set(bx.x, 7.5, bz);
+    ringStars.position.set(bPos.x, 7.5, bPos.z);
     capitol.add(ringStars);
     scene.add(capitol);
 
@@ -265,7 +276,7 @@ const ThreeDMap = () => {
       new THREE.CylinderGeometry(0.12, 1.0, 44, 16, 1, true),
       new THREE.MeshBasicMaterial({ color: 0xffd447, transparent: true, opacity: 0.07, side: THREE.DoubleSide })
     );
-    beam.position.set(bx.x, 25, bz);
+    beam.position.set(bPos.x, 25, bPos.z);
     scene.add(beam);
 
     // Hover Raycasting with Smart Tooltip Positioning
