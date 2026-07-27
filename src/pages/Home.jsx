@@ -44,7 +44,7 @@ const Home = () => {
             The United States of Europe — 3D Speculative Map
           </h2>
           <p style={{ color: 'var(--text-secondary)', maxWidth: '68ch', marginBottom: 'var(--space-6)', lineHeight: 'var(--leading-relaxed)' }}>
-            An interactive 3D vision of a sovereign European federation: 26 states with real extruded boundaries, island beacons, and a federal district in Brussels. Drag to orbit, scroll to zoom, or fly the flag.
+            An interactive 3D cartography of a sovereign European federation: 26 federal states highlighted in relief alongside neighboring territories, with a federal district in Brussels.
           </p>
           <div className="js-reveal" style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
             <ThreeDMap />
