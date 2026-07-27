@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
@@ -105,42 +105,11 @@ function ringToShape(ring){
 const ThreeDMap = () => {
   const mountRef = useRef(null);
   const tooltipRef = useRef(null);
-  const [theme, setTheme] = useState('night'); // 'night' or 'day'
-  const [autoRotate, setAutoRotate] = useState(true);
   
   const refs = useRef({
     scene: null, camera: null, renderer: null, controls: null,
     skyMat: null, seaMat: null, sun: null, rim: null, amb: null, capLight: null
   });
-
-  // Apply Theme Changes Dynamically
-  useEffect(() => {
-    if (!refs.current.scene) return;
-    const { scene, skyMat, seaMat, sun, rim, amb } = refs.current;
-    const isDay = theme === 'day';
-
-    if (isDay) {
-      skyMat.uniforms.topColor.value.setHex(0x3a7bd5);
-      skyMat.uniforms.bottomColor.value.setHex(0xfce3a6);
-      scene.fog.color.setHex(0xe0ecf8);
-      seaMat.uniforms.uColorDeep.value.setHex(0x0f3b82);
-      seaMat.uniforms.uColorShallow.value.setHex(0x2b62ba);
-      sun.color.setHex(0xfff1d0);
-      sun.intensity = 1.9;
-      rim.intensity = 0.7;
-      amb.intensity = 0.75;
-    } else {
-      skyMat.uniforms.topColor.value.setHex(0x0a1f5c);
-      skyMat.uniforms.bottomColor.value.setHex(0xd9b45a);
-      scene.fog.color.setHex(0x1a2c5e);
-      seaMat.uniforms.uColorDeep.value.setHex(0x0a2260);
-      seaMat.uniforms.uColorShallow.value.setHex(0x1f479e);
-      sun.color.setHex(0xffe9b8);
-      sun.intensity = 1.6;
-      rim.intensity = 0.5;
-      amb.intensity = 0.3;
-    }
-  }, [theme]);
 
   const resetCamera = () => {
     if (!refs.current.camera || !refs.current.controls) return;
@@ -159,13 +128,6 @@ const ThreeDMap = () => {
     if (!refs.current.controls) return;
     refs.current.controls.dollyOut(1.25);
     refs.current.controls.update();
-  };
-
-  const toggleAutoRotate = () => {
-    if (!refs.current.controls) return;
-    const nextState = !refs.current.controls.autoRotate;
-    refs.current.controls.autoRotate = nextState;
-    setAutoRotate(nextState);
   };
 
   useEffect(() => {
@@ -195,7 +157,7 @@ const ThreeDMap = () => {
     controls.target.set(0, -4, -8);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.autoRotate = true;
+    controls.autoRotate = false; // NO DEFAULT ORBIT
     controls.autoRotateSpeed = 0.2;
     controls.maxPolarAngle = Math.PI / 2 - 0.05;
     controls.minDistance = 20;
@@ -410,7 +372,7 @@ const ThreeDMap = () => {
         group.add(new THREE.LineSegments(edgesGeo, new THREE.LineBasicMaterial({ color: 0xffd447, transparent: true, opacity: 0.85 })));
       });
 
-      // Capital Marker
+      // Capital Marker (Flush on surface, not in pickables)
       if (CAPITALS[iso] && CAPITALS[iso].lon) {
         const p3 = get3DPos(CAPITALS[iso].lon, CAPITALS[iso].lat);
         const dotMesh = new THREE.Mesh(capitalDotGeo, capitalDotMat);
@@ -569,12 +531,11 @@ const ThreeDMap = () => {
     };
   }, []);
 
-  const buttonStyle = (active = false) => ({
+  const buttonStyle = () => ({
     padding: '8px 12px',
-    background: active ? 'linear-gradient(135deg, #2b56d8 0%, #1e40af 100%)' : 'rgba(15, 23, 42, 0.6)',
-    color: active ? '#ffffff' : '#cbd5e1',
-    border: '1px solid',
-    borderColor: active ? '#60a5fa' : 'rgba(255, 255, 255, 0.15)',
+    background: 'rgba(15, 23, 42, 0.75)',
+    color: '#cbd5e1',
+    border: '1px solid rgba(255, 255, 255, 0.15)',
     borderRadius: '6px',
     cursor: 'pointer',
     fontFamily: 'var(--font-mono, monospace)',
@@ -586,7 +547,6 @@ const ThreeDMap = () => {
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    boxShadow: active ? '0 0 12px rgba(96, 165, 250, 0.35)' : 'none',
     userSelect: 'none'
   });
 
@@ -621,45 +581,15 @@ const ThreeDMap = () => {
         </div>
       </div>
 
-      {/* Legend Overlay */}
-      <div style={{
-        position: 'absolute', bottom: '68px', left: '16px', padding: '12px 16px', pointerEvents: 'none',
-        background: 'rgba(7, 24, 69, 0.88)', backdropFilter: 'blur(16px)', borderRadius: '8px',
-        border: '1px solid rgba(255, 212, 71, 0.25)', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)', fontFamily: 'var(--font-body)', fontSize: '11px'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-          <div style={{ width: '12px', height: '12px', background: '#2f57c9', border: '1px solid #ffd447', borderRadius: '2px', marginRight: '10px' }}></div>
-          <span style={{ color: '#ffffff', fontWeight: 600 }}>Federal Member States</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-          <div style={{ width: '12px', height: '12px', background: '#ffd447', borderRadius: '50%', marginRight: '10px' }}></div>
-          <span style={{ color: '#ffffff', fontWeight: 600 }}>Federal District (Brussels)</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-          <div style={{ width: '12px', height: '2px', background: '#ffd447', marginRight: '10px' }}></div>
-          <span style={{ color: '#ffffff', fontWeight: 600 }}>Outer Federation Border</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div style={{ width: '12px', height: '12px', background: '#2a3a63', border: '1px solid #1b284a', borderRadius: '2px', marginRight: '10px' }}></div>
-          <span style={{ color: '#94a3b8' }}>Outside the federation</span>
-        </div>
-      </div>
-
-      {/* Interactive Controls Bar */}
+      {/* Clean Control Bar: Zoom +, Zoom -, Reset */}
       <div style={{
         position: 'absolute', bottom: '68px', right: '16px', zIndex: 100, display: 'flex', gap: '6px',
         background: 'rgba(7, 24, 69, 0.88)', padding: '8px', borderRadius: '8px', backdropFilter: 'blur(16px)',
         border: '1px solid rgba(255,212,71,0.25)', boxShadow: '0 8px 24px rgba(0,0,0,0.4)'
       }}>
-        <button onClick={() => setTheme('night')} style={buttonStyle(theme === 'night')} title="Switch to Night View">Night</button>
-        <button onClick={() => setTheme('day')} style={buttonStyle(theme === 'day')} title="Switch to Daylight View">Daylight</button>
-        
-        <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)', margin: '0 3px' }} />
-        
-        <button onClick={zoomIn} style={buttonStyle(false)} title="Zoom In">+</button>
-        <button onClick={zoomOut} style={buttonStyle(false)} title="Zoom Out">&minus;</button>
-        <button onClick={toggleAutoRotate} style={buttonStyle(autoRotate)} title="Toggle Slow Orbit Rotation">{autoRotate ? 'Orbit On' : 'Orbit Off'}</button>
-        <button onClick={resetCamera} style={buttonStyle(false)} title="Reset Camera View">Reset Cam</button>
+        <button onClick={zoomIn} style={buttonStyle()} title="Zoom In">+</button>
+        <button onClick={zoomOut} style={buttonStyle()} title="Zoom Out">&minus;</button>
+        <button onClick={resetCamera} style={buttonStyle()} title="Reset Camera View">Reset Cam</button>
       </div>
 
       {/* EU Flag 12-Star Rotating Emblem */}
